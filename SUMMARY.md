@@ -1,1 +1,2 @@
-* [Waiting](content/waiting.md)
+* [Async](content/async/index.md)
+  * [Waiting](content/async/waiting.md)

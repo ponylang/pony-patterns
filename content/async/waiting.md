@@ -1,6 +1,6 @@
 # Waiting
 
-## The Problem
+## Problem
 
 Here's the problem: you're writing an application that needs to execute an
 action every few seconds. In a language with blocking operations, I could just 
@@ -9,7 +9,7 @@ it would work. In Pony, no such obvious solution exists.  One of Pony's key
 features is there are no blocking operations. It's a bit of a riddle: how do you
 wait when you can't wait? 
 
-## The Solution
+## Solution
 
 You want to use the [Time package](http://www.ponylang.org/ponyc/time--index/).
 In particular, the [Timer](http://www.ponylang.org/ponyc/time-Timer/) and 
@@ -80,10 +80,13 @@ $ ./timer
 6
 ```
 
-## The Conclusion
+## Discussion
 
 It's not the most exciting output in the world but, it's a pattern that can
-be adapted to many different scenarios.
+be adapted to many different scenarios. Timer can be put to use for rate
+limiting outgoing network connections, creating buffers that flush at a set
+interval, implementing timeouts and variety of other time based _blocking_
+operations. 
 
 ---
 
