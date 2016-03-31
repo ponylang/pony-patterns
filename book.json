@@ -1,0 +1,8 @@
+{
+    "plugins": [
+        "footnote-string-to-number",
+        "highlight"
+    ],
+    "pluginsConfig": {
+    }
+}
