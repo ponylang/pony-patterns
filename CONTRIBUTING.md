@@ -5,6 +5,12 @@ being developed in Markdown and hosted at
 [Gitbook](https://www.gitbook.com/book/ponylang/pony-patterns/details). We
 welcome external contributors. In fact, we encourage them.
 
+Please note, that by submitting any content to the Pony Patterns book you are
+agreeing that it can be licensed under our [liscense](LICENSE.md). Furthermore,
+you are testifying that you own the copyright to the submitted content and
+indemnify Pony Patterns from any copyright claim that might result from your not
+being the authorized copyright holder.
+
 ## How to format your Pattern
 
 Pony Patterns is a series of cookbook style recipes. What does this mean? Each
