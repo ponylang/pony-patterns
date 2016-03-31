@@ -6,7 +6,7 @@ being developed in Markdown and hosted at
 welcome external contributors. In fact, we encourage them.
 
 Please note, that by submitting any content to the Pony Patterns book you are
-agreeing that it can be licensed under our [liscense](LICENSE.md). Furthermore,
+agreeing that it can be licensed under our [license](LICENSE.md). Furthermore,
 you are testifying that you own the copyright to the submitted content and
 indemnify Pony Patterns from any copyright claim that might result from your not
 being the authorized copyright holder.
