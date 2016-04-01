@@ -42,7 +42,7 @@ actor Main is TestList
     test(_TestImportantPrinting)
 
 class iso _TestImportantPrinting is UnitTest
-  fun name(): String => "my file test"
+  fun name(): String => "my important printing test"
 
   fun apply(h: TestHelper) =>
     let promise = Promise[String]
