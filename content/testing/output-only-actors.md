@@ -111,8 +111,9 @@ Remember, we are attempting to verify that when we print to `MyImportantClass`
 that we get the correct output on the stream. In a real world example, our
 class would probably be doing some sort of formatting and wouldn't just be a
 pass through of the data. Instead of testing file stream directly, we are
-testing a stub `_TestStream` that is standing in for the standard library
-`FileStream` actor. Our stub implements the OutStream interface and records
+testing a stub `_TestStream` that is standing in a standard library
+`OutStream` interface. In real code, this would probably be the concrete actor
+`FileStream` or similar. Our stub implements the OutStream interface and records
 everything we write to it:
 
 ```pony
