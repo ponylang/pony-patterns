@@ -47,13 +47,13 @@ the linked text and url are more than 76 characters).
 
 ## Where to put your pattern
 
-All patterns go in the `content` directory within an appropriate section. If an
-appropriate section doesn't exist, create one and then add pattern within that
-directory. For example, to add a new section called `Networking`, you'd create a
-new folder `content/networking` then you can add your pattern to that directory.
-If you are creating a new section, add an `index.md` file that has the name of
-section as a level one entry: `#` in Markdown as well as description of the type
-of patterns to be found in the section.
+All patterns go in the top level of the repo within a directory for
+the appropriate section. If an appropriate section doesn't exist, create one and
+then add pattern within that directory. For example, to add a new section called
+`Networking`, you'd create a new folder `networking` then you can add your
+pattern to the directory. If you are creating a new section, add an `index.md`
+file that has the name of section as a level one entry: `#` in Markdown as well
+as description of the type of patterns to be found in the section.
 
 ## How to update the Table of Contents
 
