@@ -12,10 +12,11 @@ general purpose pattern to address this problem.
 
 ## Solution
 
-Our solution draws on two primary elements:
+Our solution draws on three primary elements:
 
 * Pony promises
 * Stub objects
+* Pony's causal messaging
 
 The code below can used to test that you are outputting data correctly to a
 file stream. In this particular case, "correctly" means that when we call
@@ -191,6 +192,27 @@ partially applied, supplying the `TestHelper` parameter:
 ```pony
     promise.next[String](recover this~_fulfill(h) end)
 ```
+
+It's important to note that the above solution only works because we can rely on
+Pony's causal messaging. That is, each message sent to an actor from another
+actor will arrive in order. In our test, we call:
+
+```pony
+    important.print("Hello World!")
+    stream.written()
+```
+
+because important.print calls a method on stream:
+
+```pony
+  fun print(s: String) =>
+    _stream.print(s)
+``
+
+`stream.written()` is guaranteed to happen after the `_stream.print(s)`. Without
+that guarantee this test wouldn't work. Without causal messaging, our promise
+might fire before it ever saw any data and our test could pass sometimes and
+fail others.
 
 ## Discussion
 
