@@ -18,7 +18,7 @@ Our solution draws on three primary elements:
 * Stub objects
 * Pony's causal messaging
 
-The code below can used to test that you are outputting data correctly to a
+The code below can be used to test that you are outputting data correctly to a
 file stream. In this particular case, "correctly" means that when we call
 `print` on `MyImportantClass` with the argument "Hello World!" that we would
 get "Hello World!" as output from the stream that `MyImportantClass` is using.
@@ -108,8 +108,8 @@ bits. Here is the core of our test, the apply method on our test class:
 
 ```
 
-Remember, we are attempting to verify that when we print to `MyImportantClass`
-that we get the correct output on the stream. In a real world example, our
+Remember, we are attempting to verify that when we print to `MyImportantClass`,
+we get the correct output on the stream. In a real world example, our
 class would probably be doing some sort of formatting and wouldn't just be a
 pass through of the data. Instead of testing file stream directly, we are
 testing a stub `_TestStream` that is standing in a standard library
@@ -207,12 +207,12 @@ because important.print calls a method on stream:
 ```pony
   fun print(s: String) =>
     _stream.print(s)
-``
+```
 
 `stream.written()` is guaranteed to happen after the `_stream.print(s)`. Without
 that guarantee this test wouldn't work. Without causal messaging, our promise
-might fire before it ever saw any data and our test could pass sometimes and
-fail others.
+might fire before it ever saw any data and our test could pass some times and
+fail other times.
 
 ## Discussion
 
