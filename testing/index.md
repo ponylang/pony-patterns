@@ -7,4 +7,7 @@ Testing concurrency is Pony is much easier but if you haven't encountered
 anything like it before it can be hard to know where to start.
 
 The patterns in this chapter will cover various ways of testing your Pony code.
-We will pay particular emphasis to how to test actors.
+We will pay particular attention to how to test actors. Please note that this
+chapter assumes that you are familiar with the basics of using PonyTest, the
+Pony unit testing framework. If you aren't, please review the
+[PonyTest documentation](http://www.ponylang.org/ponyc/ponytest--index/).
