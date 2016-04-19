@@ -36,7 +36,7 @@ output
 ## Discussion
 
 If you want to make your Pony code go fast (and who doesn't want to go fast?),
-there are two simple steps you can take that will get  you a lot of reward:
+there are two simple steps you can take that will get you a lot of reward:
 reducing the number of objects you create and reducing the number of memory
 allocations. Our solution does both. 
 
