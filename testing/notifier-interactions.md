@@ -2,13 +2,7 @@
 
 ## Problem
 
-Event driven code is very common in Pony. Many classes take a "notifier" class
-that has callbacks that get triggered when certain events happen. The network
-code such as `UDPNotify` and `TCPNotify` are examples of this. As you write your
-own Pony code, the notifier pattern is one you'll end up using quite a bit.
-Testing that your code is correctly interacting with notifiers is
-straightforward; however, how you go about doing that isn't immediately obvious.
-Imagine for a moment that you have the following actor:
+Event driven code is very common in Pony. Many classes take a "notifier" class that has callbacks that get triggered when certain events happen. The network code such as `UDPNotify` and `TCPNotify` are examples of this. As you write your own Pony code, the notifier pattern is one you'll end up using quite a bit. Testing that your code is correctly interacting with notifiers is straightforward; however, how you go about doing that isn't immediately obvious. Imagine for a moment that you have the following actor:
 
 ```
 actor Receiver
@@ -21,18 +15,14 @@ actor Receiver
     _notify.received(this, msg)
 ```
 
-It's really simple. When it receives some string, it will pass its own identity
-and that string along to the object it is supposed to notify. What is the object
-it will notify? Anything that conforms to the interface
+It's really simple. When it receives some string, it will pass its own identity and that string along to the object it is supposed to notify. What is the object it will notify? Anything that conforms to the interface
 
 ```
 interface Notified
   fun ref received(rec: Receiver ref, msg: String)
 ```
 
-In our contrived, simplified example, we want to know that if we call `receive` 
-on the `Receiver` actor, then the string we call it with will end up being 
-passed to our notifier where we can process it. So, how do we go about that?
+In our contrived, simplified example, we want to know that if we call `receive`  on the `Receiver` actor, then the string we call it with will end up being  passed to our notifier where we can process it. So, how do we go about that?
 
 ## Solution
 
@@ -85,9 +75,7 @@ actor Receiver
 
 ## Discussion
 
-Notifiers work by using structual typing. We define an interface that the given
-notifier has to implement and then create concrete implementations. In our above
-solution, you can see this with:
+Notifiers work by using structual typing. We define an interface that the given notifier has to implement and then create concrete implementations. In our above solution, you can see this with:
 
 ```
 interface Notified
@@ -110,9 +98,7 @@ class TestNotifier is Notified
    _h.complete(true)
 ```
 
-Our test is verifying that our Receiver correctly uses the notifier and that 
-when we call `receive` on a `Receiver`, we pass the correct data to the 
-notifier's `received` method:
+Our test is verifying that our Receiver correctly uses the notifier and that  when we call `receive` on a `Receiver`, we pass the correct data to the  notifier's `received` method:
 
 ```
   fun ref received(rec: Receiver ref, msg: String) =>

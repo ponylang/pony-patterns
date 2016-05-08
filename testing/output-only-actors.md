@@ -2,13 +2,7 @@
 
 ## Problem
 
-A lot of the Pony code you will need to test involves actors that take input
-and create output that leaves your system. A good example of this is testing
-writing to a file. How can you verify that the contents of the file are what
-you expect? You could write the file as normal and then compare its contents to
-what you were expecting. In the end though, that doesn't work for everything.
-What if you are writing to standard out or over a network? Luckily, there is a
-general purpose pattern to address this problem.
+A lot of the Pony code you will need to test involves actors that take input and create output that leaves your system. A good example of this is testing writing to a file. How can you verify that the contents of the file are what you expect? You could write the file as normal and then compare its contents to what you were expecting. In the end though, that doesn't work for everything. What if you are writing to standard out or over a network? Luckily, there is a general purpose pattern to address this problem.
 
 ## Solution
 
@@ -18,10 +12,7 @@ Our solution draws on three primary elements:
 * Stub objects
 * Pony's causal messaging
 
-The code below can be used to test that you are outputting data correctly to a
-file stream. In this particular case, "correctly" means that when we call
-`print` on `MyImportantClass` with the argument "Hello World!" that we would
-get "Hello World!" as output from the stream that `MyImportantClass` is using.
+The code below can be used to test that you are outputting data correctly to a file stream. In this particular case, "correctly" means that when we call `print` on `MyImportantClass` with the argument "Hello World!" that we would get "Hello World!" as output from the stream that `MyImportantClass` is using.
 
 ```pony
 use "ponytest"
@@ -93,8 +84,7 @@ actor _TestStream is OutStream
     _promise(s)
 ```
 
-That's a nice chunk of code, let's break it down and focus on the important
-bits. Here is the core of our test, the apply method on our test class:
+That's a nice chunk of code, let's break it down and focus on the important bits. Here is the core of our test, the apply method on our test class:
 
 ```pony
   fun apply(h: TestHelper) =>
@@ -108,14 +98,7 @@ bits. Here is the core of our test, the apply method on our test class:
 
 ```
 
-Remember, we are attempting to verify that when we print to `MyImportantClass`,
-we get the correct output on the stream. In a real world example, our
-class would probably be doing some sort of formatting and wouldn't just be a
-pass through of the data. Instead of testing file stream directly, we are
-testing a stub `_TestStream` that is standing in a standard library
-`OutStream` interface. In real code, this would probably be the concrete actor
-`FileStream` or similar. Our stub implements the OutStream interface and records
-everything we write to it:
+Remember, we are attempting to verify that when we print to `MyImportantClass`, we get the correct output on the stream. In a real world example, our class would probably be doing some sort of formatting and wouldn't just be a pass through of the data. Instead of testing file stream directly, we are testing a stub `_TestStream` that is standing in a standard library `OutStream` interface. In real code, this would probably be the concrete actor `FileStream` or similar. Our stub implements the OutStream interface and records everything we write to it:
 
 ```pony
 actor _TestStream is OutStream
@@ -149,8 +132,7 @@ actor _TestStream is OutStream
     _promise(s)
 ```
 
-The most interesting method in `_TestStream` is `be written()`, what's going on
-in there?
+The most interesting method in `_TestStream` is `be written()`, what's going on in there?
 
 ```pony
   be written() =>
@@ -171,8 +153,7 @@ And fulfills it with any data we have collected so far:
     _promise(s)
 ```
 
-Our promise was setup to call the `_fulfill` method on our test class when the
-promise is fulfilled.
+Our promise was setup to call the `_fulfill` method on our test class when the promise is fulfilled.
 
 ```pony
   fun tag _fulfill(h: TestHelper, value: String): String =>
@@ -181,21 +162,15 @@ promise is fulfilled.
     value
 ```
 
-What's going on in there? Well, we take our string of output that our stub got
-and compare it to our expected value (in this case "Hello World!") and then
-indicate that our test is complete.
+What's going on in there? Well, we take our string of output that our stub got and compare it to our expected value (in this case "Hello World!") and then indicate that our test is complete.
 
-We have access to the `TestHelper` we need to run `assert_eq` in `_fulfill`
-because when we constructed our promise initially, we created the promise as
-partially applied, supplying the `TestHelper` parameter:
+We have access to the `TestHelper` we need to run `assert_eq` in `_fulfill` because when we constructed our promise initially, we created the promise as partially applied, supplying the `TestHelper` parameter:
 
 ```pony
     promise.next[String](recover this~_fulfill(h) end)
 ```
 
-It's important to note that the above solution only works because we can rely on
-Pony's causal messaging. That is, each message sent to an actor from another
-actor will arrive in order. In our test, we call:
+It's important to note that the above solution only works because we can rely on Pony's causal messaging. That is, each message sent to an actor from another actor will arrive in order. In our test, we call:
 
 ```pony
     important.print("Hello World!")
@@ -209,28 +184,12 @@ because important.print calls a method on stream:
     _stream.print(s)
 ```
 
-`stream.written()` is guaranteed to happen after the `_stream.print(s)`. Without
-that guarantee this test wouldn't work. Without causal messaging, our promise
-might fire before it ever saw any data and our test could pass some times and
-fail other times.
+`stream.written()` is guaranteed to happen after the `_stream.print(s)`. Without that guarantee this test wouldn't work. Without causal messaging, our promise might fire before it ever saw any data and our test could pass some times and fail other times.
 
 ## Discussion
 
-Well, there you have it. How to test our interactions with an actor whose
-side-effects are only observable outside out system. As mentioned in the
-_Problem_ section, this pattern can be applied in many different scenarios so
-long as it involves testing an actor. And the code above can be used to test
-any actor that implements `OutStream`. Before we wrap up, let's cover one
-additional benefit of using a stub to test a `FileStream`.
+Well, there you have it. How to test our interactions with an actor whose side-effects are only observable outside out system. As mentioned in the _Problem_ section, this pattern can be applied in many different scenarios so long as it involves testing an actor. And the code above can be used to test any actor that implements `OutStream`. Before we wrap up, let's cover one additional benefit of using a stub to test a `FileStream`.
 
-The `FileStream` constructor takes a `File` object. That's an external
-dependency. When testing, avoiding external dependencies is good. In the case
-of a file, that might seem like a relatively benign dependency right up until
-the day the file system permissions on your test machine change or a directory
-you depend on isn't there and your tests start failing. The important part of
-all this is, we've left our process and can't rely on the external party to
-help our test (nor do we want to).
+The `FileStream` constructor takes a `File` object. That's an external dependency. When testing, avoiding external dependencies is good. In the case of a file, that might seem like a relatively benign dependency right up until the day the file system permissions on your test machine change or a directory you depend on isn't there and your tests start failing. The important part of all this is, we've left our process and can't rely on the external party to help our test (nor do we want to).
 
-If you want to see an example of this pattern in the wild, check out the 
-[tests for the `logger` package](https://github.com/ponylang/ponyc/blob/master/packages/logger/test.pony) 
-in the [Pony standard library](http://www.ponylang.org/ponyc).
+If you want to see an example of this pattern in the wild, check out the  [tests for the `logger` package](https://github.com/ponylang/ponyc/blob/master/packages/logger/test.pony)  in the [Pony standard library](http://www.ponylang.org/ponyc).
