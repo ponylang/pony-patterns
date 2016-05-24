@@ -1,4 +1,5 @@
 * [Async](async/index.md)
+  * [Access](async/access.md)
   * [Waiting](async/waiting.md)
 * [Performance](performance/index.md)
   * [Limiting String Allocations](performance/limiting-string-allocations.md)
