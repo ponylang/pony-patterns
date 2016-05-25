@@ -1,8 +1,8 @@
-# Error Prone Actor Dependencies
+# Supply Chain
 
 ## Problem
 
-The Pony type system is very demanding when it comes to handling errors. The lack of `null` means that you are forced to initialize every variable and explictly handle and possible source of initialization error. In return, you get freedom from `Null Pointer Exceptions` and their equivalents. However, a naive use of Pony's `None` type when initializing dependencies can lead to poor programmer ergononmics and frustration. 
+The Pony type system is very demanding when it comes to handling errors. The lack of `null` means that you are forced to initialize every variable and explictly handle every possible source of initialization error. In return, you get freedom from `Null Pointer Exceptions` and their equivalents. However, a naive use of Pony's `None` type when initializing dependencies can lead to poor programmer ergononmics and frustration. This is particularly true when constructing actors. In Pony, an actor's constructor runs asynchronously so, unlike a class, it can't be a partial function.
 
 Take, as an example, a Pony actor that receives messages and writes them to a file. Our first naive pass might look something like:
 
@@ -86,7 +86,7 @@ And even if there was, we want to fail on initilization, not lazily at some unkn
 
 ## Solution
 
-All of the problems that we enumerated above come from attempting to create objects whose creation can fail in the constructor of our actor. Rather than delay errors until we are in our actor's constructor, a much better approach, is supply our dependencies fully initialized.
+All of the problems that we enumerated above come from attempting to create objects whose creation can fail in the constructor of our actor. Rather than delay errors until we are in our actor's constructor, a much better approach is to supply our dependencies fully initialized.
 
 In our previous case, we were relying on two things:
 
@@ -110,7 +110,7 @@ actor Main
     end
 
 actor Writer
-  let _file: File iso
+  let _file: File
 
   new create(file: File iso) =>
     _file = consume file
