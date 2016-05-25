@@ -2,7 +2,7 @@
 
 ## Problem
 
-The Pony type system is very demanding when it comes to handling errors. The lack of `null` means that you are forced to initialize every variable and explictly handle and possible source of initialization error. In return, you get freedom from `Null Pointer Exceptions` and their equivalents. However, a naive use of Pony's `None` type when initializing dependencies can led to poor programmer ergononmics and frustration. 
+The Pony type system is very demanding when it comes to handling errors. The lack of `null` means that you are forced to initialize every variable and explictly handle and possible source of initialization error. In return, you get freedom from `Null Pointer Exceptions` and their equivalents. However, a naive use of Pony's `None` type when initializing dependencies can lead to poor programmer ergononmics and frustration. 
 
 Take, as an example, a Pony actor that receives messages and writes them to a file. Our first naive pass might look something like:
 
@@ -40,7 +40,7 @@ actor Writer
 
 We're now left with one more compiler error to address.
 
-```bash
+```
 x.pony:13:9: couldn't find write in None val
     _file.write(it)
          ^
