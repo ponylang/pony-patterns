@@ -37,6 +37,8 @@ class iso _TestImportantPrinting is UnitTest
   fun name(): String => "my important printing test"
 
   fun apply(h: TestHelper) =>
+    h.long_test(1_000_000_000)
+
     let promise = Promise[String]
     promise.next[String](recover this~_fulfill(h) end)
 
@@ -88,6 +90,8 @@ That's a nice chunk of code, let's break it down and focus on the important bits
 
 ```pony
   fun apply(h: TestHelper) =>
+    h.long_test(1_000_000_000)
+
     let promise = Promise[String]
     promise.next[String](recover this~_fulfill(h) end)
 
@@ -98,7 +102,11 @@ That's a nice chunk of code, let's break it down and focus on the important bits
 
 ```
 
-Remember, we are attempting to verify that when we print to `MyImportantClass`, we get the correct output on the stream. In a real world example, our class would probably be doing some sort of formatting and wouldn't just be a pass through of the data. Instead of testing file stream directly, we are testing a stub `_TestStream` that is standing in a standard library `OutStream` interface. In real code, this would probably be the concrete actor `FileStream` or similar. Our stub implements the OutStream interface and records everything we write to it:
+Note the use of `TestHelper.long_test(1_000_000_000)`, where we tell the test framework that our test will continue
+to run until an assertion fails or one of `TestHelper.complete(true)` or `TestHelper.complete(false)` is called.
+We also provide it with a 1 second timeout after which it will fail the test with a timeout error.
+
+Remember, we are attempting to verify that when we print to `MyImportantClass`, we get the correct output on the stream. In a real world example, our class would probably be doing some sort of formatting and wouldn't just be a pass through of the data. Instead of testing file stream directly, we are testing a stub `_TestStream` that is standing in for a standard library `OutStream` interface. In real code, this would probably be the concrete actor `FileStream` or similar. Our stub implements the OutStream interface and records everything we write to it:
 
 ```pony
 actor _TestStream is OutStream
@@ -163,7 +171,6 @@ Our promise was setup to call the `_fulfill` method on our test class when the p
 ```
 
 What's going on in there? Well, we take our string of output that our stub got and compare it to our expected value (in this case "Hello World!") and then indicate that our test is complete.
-
 We have access to the `TestHelper` we need to run `assert_eq` in `_fulfill` because when we constructed our promise initially, we created the promise as partially applied, supplying the `TestHelper` parameter:
 
 ```pony
