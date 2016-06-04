@@ -8,3 +8,5 @@
 * [Testing](testing/index.md)
   * [Testing Notifier Interactions](testing/notifier-interactions.md)
   * [Testing Output Only Actors](testing/output-only-actors.md)
+* [Misc](misc/index.md)
+  * [Object Algebra](misc/object-algebra.md)
