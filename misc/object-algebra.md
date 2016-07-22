@@ -2,7 +2,7 @@
 
 ## Problem
 
-There's a real problem inherint in most data modelling we tend to do with our programming language. Its a problem that is so commin that Phillip Wadler gave it a name, "[the Expression Problem](http://homepages.inf.ed.ac.uk/wadler/papers/expression/expression.txt)". A full discussion of the Expression Problem is out of the scope of this pattern, please refer to the linked original formulation of the issue for a more in depth discussion. A summarized version of the Expression Problem is this:
+There's a real problem inherent in most data modeling we tend to do with our programming languages. It's a problem that is so common that Phillip Wadler gave it a name, "[the Expression Problem](http://homepages.inf.ed.ac.uk/wadler/papers/expression/expression.txt)". A full discussion of the Expression Problem is out of the scope of this pattern, please refer to the linked original formulation of the issue for a more in depth discussion. A summarized version of the Expression Problem is:
 
 ### Expression Problem in Object-Oriented languages
 
@@ -12,7 +12,7 @@ The kinds of data abstraction found in object-oriented languages allows for easi
 
 The kinds of data abstraction in functional languages allows for extending our data types with new operations but adding new adding new types is difficult. When we define our operations as functions, it is trivial to add a new function, however, those functions typically have to know about all the data types to be operated on and if you want to add a new data type, you have to modify the source code, which might be unavailable to us, of said functions.
 
-### Expresion problem solutions
+### Expression problem solutions
 
 There are a variety of solutions to the Expression Problem in various languages, all with various levels of success. One such solution is "[Object Algebras](http://ropas.snu.ac.kr/~bruno/papers/ecoop2012.pdf)". 
 
