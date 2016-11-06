@@ -37,13 +37,13 @@ actor Main
     reg.write("x", 99)
     reg.write("y", 100)
 
-    reg.read("x", recover lambda(value: I64)(out) =>
+    reg.read("x", {(value: I64)(out) =>
       out.print("The value of x is " + value.string())
-    end end)
+    } val)
 
-    reg.read("y", recover lambda(value: I64)(out) =>
+    reg.read("y", {(value: I64)(out) =>
       out.print("The value of y is " + value.string())
-    end end)
+    } val)
 ```
 
 Because of Pony's causal messaging, we can expect this program to perform those operations in the written order, printing the following:
@@ -70,11 +70,11 @@ actor Mathematician
     let reg = _reg
     let out = _out
 
-    reg.read(name, recover lambda(value: I64)(reg, out, name) =>
+    reg.read(name, {(value: I64)(reg, out, name) =>
       let new_value = value + 1
       reg.write(name, new_value)
       out.print("Incremented " + name + " to " + new_value.string())
-    end end)
+    } val)
 ```
 
 However, there's a problem with this in the context of concurrent access to the same `SharedRegisters`. What if some other write operation changed the value of the register between the read operation and write operation that make up our `increment`? We can try to experiment with this situation by creating many `Mathematician`s and having them concurrently `increment` the same register.
@@ -117,11 +117,11 @@ Furthermore, if the `SharedRegisters` were part of a library package maintained 
 
 ## Solution
 
-Essentially, we want to provide a way for the caller to define a custom transaction, then execute it atomically within a single behaviour of the actor. This part is simple enough - the caller can pass a `lambda`, and the actor can execute it directly, just as we did before with the `read` behaviour when we passed the value to the caller's function.
+Essentially, we want to provide a way for the caller to define a custom transaction, then execute it atomically within a single behaviour of the actor. This part is simple enough - the caller can pass a lambda, and the actor can execute it directly, just as we did before with the `read` behaviour when we passed the value to the caller's function.
 
-However, unlike in the `read` behaviour, we also need the transaction `lambda` passed to the `access` behaviour to have exclusive synchronous access to perform arbitrary combinations of operations on the actor's state. In other words, we need the `lambda` to see the actor *as the actor sees itself*, instead of how it is seen from the outside.
+However, unlike in the `read` behaviour, we also need the transaction lambda passed to the `access` behaviour to have exclusive synchronous access to perform arbitrary combinations of operations on the actor's state. In other words, we need the lambda to see the actor *as the actor sees itself*, instead of how it is seen from the outside.
 
-Luckily, Pony has exactly the concepts we need to implement this idea. An actor is always seen from the outside as a `tag` (an opaque reference that you can only send messages to), but an actor is seen from the inside as a `ref` (by default, behaviours have read and write access to the actor's state). Because the transaction `lambda` will be executed inside the actor, we can pass the non-sendable `ref` reference to the actor itself as the argument, giving the transaction exclusive synchronous read/write access through that reference.
+Luckily, Pony has exactly the concepts we need to implement this idea. An actor is always seen from the outside as a `tag` (an opaque reference that you can only send messages to), but an actor is seen from the inside as a `ref` (by default, behaviours have read and write access to the actor's state). Because the transaction lambda will be executed inside the actor, we can pass the non-sendable `ref` reference to the actor itself as the argument, giving the transaction exclusive synchronous read/write access through that reference.
 
 Let's take a look at a reworked implementation of `SharedRegisters` that includes an `access` behaviour as well as some synchronous versions of the `read` and `write` behaviours for use in the custom transactions.
 
@@ -164,11 +164,11 @@ actor Mathematician
     let reg = _reg
     let out = _out
 
-    reg.access(recover lambda(reg: SharedRegisters ref)(out, name) =>
+    reg.access({(reg: SharedRegisters ref)(out, name) =>
       let new_value = reg.read_now(name) + 1
       reg.write_now(name, new_value)
       out.print("Incremented " + name + " to " + new_value.string())
-    end end)
+    } val)
 ```
 
 Sure enough, our example program using 10 concurrent `Mathematician`s to increment the same register will now give the expected output, with each `increment` transaction guaranteed to be atomic.
@@ -190,6 +190,6 @@ Incremented x to 109
 
 Using the "access pattern" in Pony, we can create actors that provide not only asynchronous APIs, but also synchronous APIs, which can be used together in transactions that are defined and passed in by the caller. This dramatically enhances the realm of possible interactions with a service actor, whose synchronous API can provide the fundamental building blocks from which the caller can build arbitrarily complex atomic transactions.
 
-The accessed actor can control the scope of what is possible in a transaction by controlling the reference capability of the reference that is passed to the transaction `lambda`. For example, we could choose to pass `box` instead of a `ref` if we wanted to provide read-only access to the transaction.
+The accessed actor can control the scope of what is possible in a transaction by controlling the reference capability of the reference that is passed to the transaction lambda. For example, we could choose to pass `box` instead of a `ref` if we wanted to provide read-only access to the transaction.
 
-Even though we said that the transaction `lambda` is seeing the actor "as it sees itself", the accessed actor can still hide implementation details in the same way as any other class - by making those fields and methods private. The private fields and methods will not be accessible from within the transaction, so the implementation details can remain protected and hidden from the API surface.
+Even though we said that the transaction lambda is seeing the actor "as it sees itself", the accessed actor can still hide implementation details in the same way as any other class - by making those fields and methods private. The private fields and methods will not be accessible from within the transaction, so the implementation details can remain protected and hidden from the API surface.
