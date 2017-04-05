@@ -2,11 +2,15 @@
 
 ## Problem
 
-Your code is performance sensitive and need to make your `String` concatenation code as fast as possible.
+Your code is performance sensitive and need to make your `String` modification code as fast as possible.
 
 ## Solution
 
-Replace any usage of `String.add` with `String.append`. Going from code like:
+Replace `String.substring` with the following non-copying operations where possible:
+- `String.trim_in_place` to modify the existing string
+- `String.trim` to return a shared portion of an immutable string
+
+Also, replace any usage of `String.add` with `String.append`. Going from code like:
 
 ```pony
 let output = file_name + ":" + file_linenum + ":" + file_linepos + ": " + msg
