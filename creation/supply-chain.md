@@ -82,7 +82,7 @@ else
 end
 ```
 
-And even if there was, we want to fail on initilization, not lazily at some unknown time in the future.
+And even if there was, we want to fail on initialization, not lazily at some unknown time in the future.
 
 ## Solution
 
@@ -93,7 +93,7 @@ In our previous case, we were relying on two things:
 * Ambient Authority
 * Existence of our File
 
-If we initialize these outside of our actor then we can easily report construction erorrs and avoid messing with `None` as a possibility inside our `Writer` actor:
+If we initialize these outside of our actor then we can easily report construction errors and avoid messing with `None` as a possibility inside our `Writer` actor:
 
 ```pony
 use "files"

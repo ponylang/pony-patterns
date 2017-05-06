@@ -4,7 +4,7 @@
 
 With asynchronous APIs on actors, we have the problem of not being able to combine multiple asynchronous calls to form an atomic operation, as messages to an actor may be interleaved. This means that any operation that isn't exposed as a single behaviour on the actor cannot be done in an atomic way, which puts a pressure on our API to provide "ancillary" behaviours that are just combinations and compositions of the "fundamental" behaviours. We'd prefer to solve this problem in a way that alleviated that pressure without creating a larger API surface to maintain, and without having to do the constant guesswork of imagining which combinations and compositions will be needed.
 
-Let's say we want to create a simple set of named registers which can each hold an integer value, and that we want to be able to share read/write access to these registers among multiple actors in our application. So, we declare an actor type named `SharedRegisters` which holds a map of string register names to integer values, and provides access to this register data via `read` and `write` behaviours.
+Let's say we want to create a simple set of named registers which can each hold an integer value, and that we want to be able to share read/write access to these registers among multiple actors in our application. So, we declare an actor type named `SharedRegisters` which holds a map of string register names to integer values and provides access to this register data via `read` and `write` behaviours.
 
 ```pony
 use collections = "collections"
@@ -188,7 +188,7 @@ Incremented x to 109
 
 ## Discussion
 
-Using the "access pattern" in Pony, we can create actors that provide not only asynchronous APIs, but also synchronous APIs, which can be used together in transactions that are defined and passed in by the caller. This dramatically enhances the realm of possible interactions with a service actor, whose synchronous API can provide the fundamental building blocks from which the caller can build arbitrarily complex atomic transactions.
+Using the "access pattern" in Pony, we can create actors that provide not only asynchronous APIs but also synchronous APIs, which can be used together in transactions that are defined and passed in by the caller. This dramatically enhances the realm of possible interactions with a service actor, whose synchronous API can provide the fundamental building blocks from which the caller can build arbitrarily complex atomic transactions.
 
 The accessed actor can control the scope of what is possible in a transaction by controlling the reference capability of the reference that is passed to the transaction lambda. For example, we could choose to pass `box` instead of a `ref` if we wanted to provide read-only access to the transaction.
 
