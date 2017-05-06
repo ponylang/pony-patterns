@@ -44,7 +44,7 @@ Zooming in on the key bits, we first set up our timers, create one and add it to
     timers(consume timer)
 ```
 
-The Timer constructor takes 3 arguments, the class to notify, how long until our timer expires and how often to fire. In our example code an instance of NumberGenerator will be called every 5 billion nanoseconds i.e. every 5 seconds until the program is killed.
+The Timer constructor takes 3 arguments, the class to notify, how long until our timer expires and how often to fire. In our example code, an instance of NumberGenerator will be called every 5 billion nanoseconds i.e. every 5 seconds until the program is killed.
 
 Here's our method in NumberGenerator that gets executed:
 
@@ -69,14 +69,8 @@ $ ./timer
 
 ## Discussion
 
-It's not the most exciting output in the world but, it's a pattern that can be adapted to many different scenarios. Timer can be put to use for rate limiting outgoing network connections, creating buffers that flush at a set interval, implementing timeouts and variety of other time based _blocking_ operations.
+It's not the most exciting output in the world but, it's a pattern that can be adapted to many different scenarios. `Timer` can be put to use for rate limiting outgoing network connections, creating buffers that flush at a set interval, implementing timeouts and variety of other time based _blocking_ operations.
 
 ---
 
 This pattern is based on a [blog post](http://www.monkeysnatchbanana.com/2016/01/18/pony-patterns-waiting/) previously published by Sean T. Allen.
-
-
-
-
-
-

@@ -2,7 +2,7 @@
 
 ## Problem
 
-A lot of the Pony code you will need to test involves actors that take input and create output that leaves your system. A good example of this is testing writing to a file. How can you verify that the contents of the file are what you expect? You could write the file as normal and then compare its contents to what you were expecting. In the end though, that doesn't work for everything. What if you are writing to standard out or over a network? Luckily, there is a general purpose pattern to address this problem.
+A lot of the Pony code you will need to test involves actors that take input and create output that leaves your system. A good example of this is testing writing to a file. How can you verify that the contents of the file are what you expect? You could write the file as normal and then compare its contents to what you were expecting. In the end, though, that doesn't work for everything. What if you are writing to standard out or over a network? Luckily, there is a general purpose pattern to address this problem.
 
 ## Solution
 
@@ -86,7 +86,7 @@ actor _TestStream is OutStream
     _promise(s)
 ```
 
-That's a nice chunk of code, let's break it down and focus on the important bits. Here is the core of our test, the apply method on our test class:
+That's a nice chunk of code, let's break it down and focus on the important bits. Here is the core of our test, the `apply` method on our test class:
 
 ```pony
   fun apply(h: TestHelper) =>
@@ -102,7 +102,7 @@ That's a nice chunk of code, let's break it down and focus on the important bits
 
 ```
 
-Note the use of `TestHelper.long_test(1_000_000_000)`, where we tell the test framework that our test will continue to run until an assertion fails or one of `TestHelper.complete(true)` or `TestHelper.complete(false)` is called. We also provide it with a 1 second timeout after which it will fail the test with a timeout error.
+Note the use of `TestHelper.long_test(1_000_000_000)`, where we tell the test framework that our test will continue to run until an assertion fails or one of `TestHelper.complete(true)` or `TestHelper.complete(false)` is called. We also provide it with a 1-second timeout after which it will fail the test with a timeout error.
 
 Remember, we are attempting to verify that when we print to `MyImportantClass`, we get the correct output on the stream. In a real world example, our class would probably be doing some sort of formatting and wouldn't just be a pass through of the data. Instead of testing file stream directly, we are testing a stub `_TestStream` that is standing in for a standard library `OutStream` interface. In real code, this would probably be the concrete actor `FileStream` or similar. Our stub implements the OutStream interface and records everything we write to it:
 
@@ -159,7 +159,7 @@ And fulfills it with any data we have collected so far:
     _promise(s)
 ```
 
-Our promise was setup to call the `_fulfill` method on our test class when the promise is fulfilled.
+Our promise was set up to call the `_fulfill` method on our test class when the promise is fulfilled.
 
 ```pony
   fun tag _fulfill(h: TestHelper, value: String): String =>
@@ -189,7 +189,7 @@ because important.print calls a method on stream:
     _stream.print(s)
 ```
 
-`stream.written()` is guaranteed to happen after the `_stream.print(s)`. Without that guarantee this test wouldn't work. Without causal messaging, our promise might fire before it ever saw any data and our test could pass some times and fail other times.
+`stream.written()` is guaranteed to happen after the `_stream.print(s)`. Without that guarantee, this test wouldn't work. Without causal messaging, our promise might fire before it ever saw any data and our test could pass sometimes and fail other times.
 
 ## Discussion
 

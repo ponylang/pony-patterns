@@ -1,3 +1,8 @@
+# Testing
+
+Most of us are familiar with unit testing code with more traditional concurrency models. In this case of threaded code, for many, this means throwing up your hands in disgust and walking away. Testing concurrency with threads is hard. Testing concurrency in Pony is much easier but, if you haven't encountered anything like it before it can be hard to know where to start.
+
+The patterns in this chapter will cover various ways of testing your Pony code. We will pay particular attention to how to test actors. Please note that this chapter assumes that you are familiar with the basics of using PonyTest, the Pony unit testing framework. If you aren't, please review the [PonyTest documentation](http://www.ponylang.org/ponyc/ponytest--index/).
 # Testing Notifier Interactions
 
 ## Problem
@@ -22,7 +27,7 @@ interface Notified
   fun ref received(rec: Receiver ref, msg: String)
 ```
 
-In our contrived, simplified example, we want to know that if we call `receive`  on the `Receiver` actor, then the string we call it with will end up being  passed to our notifier where we can process it. So, how do we go about that?
+In our contrived, simplified example, we want to know that if we call `receive`  on the `Receiver` actor, then the string we call it with will end up being passed to our notifier where we can process it. So, how do we go about that?
 
 ## Solution
 
@@ -75,7 +80,7 @@ actor Receiver
 
 ## Discussion
 
-Notifiers work by using structual typing. We define an interface that the given notifier has to implement and then create concrete implementations. In our above solution, you can see this with:
+Notifiers work by using structural typing. We define an interface that the given notifier has to implement and then create concrete implementations. In our above solution, you can see this with:
 
 ```
 interface Notified
