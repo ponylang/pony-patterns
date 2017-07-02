@@ -6,7 +6,7 @@ Here's the problem: you're writing an application that needs to execute an actio
 
 ## Solution
 
-You want to use the [Time package](http://www.ponylang.org/ponyc/time--index/). In particular, the [Timer](http://www.ponylang.org/ponyc/time-Timer/) and [Timers](http://www.ponylang.org/ponyc/time-Timers/) types.
+You want to use the [Time package](https://stdlib.ponylang.org/time--index). In particular, the [Timer](https://stdlib.ponylang.org/time-Timer/) and [Timers](https://stdlib.ponylang.org/time-Timers/) types.
 
 A timer allows you to execute code at set intervals. Let's walk through using a timer. Below is a simple application that prints out a number to the console every 5 seconds until someone terminates the program:
 
@@ -73,4 +73,4 @@ It's not the most exciting output in the world but, it's a pattern that can be a
 
 ---
 
-This pattern is based on a [blog post](http://www.monkeysnatchbanana.com/2016/01/18/pony-patterns-waiting/) previously published by Sean T. Allen.
+This pattern is based on a [blog post](http://www.monkeysnatchbanana.com/2016/01/16/pony-patterns-waiting/) previously published by Sean T. Allen.
