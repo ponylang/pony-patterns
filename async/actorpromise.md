@@ -82,6 +82,38 @@ actor Collector[A: Any #send]
       _target.receivecollection(consume output)
     end
 ```
+Now that we have an intermediary, we can create multiple promises to send to multiple bank accounts:
+```pony
+let a = AccountAggregate("00001", 100)
+let b = AccountAggregate("00002", 300)
+let c = AccountAggregate("00003", 5000)
 
+let collector = Collector[AccountSummary](3, this)
+
+let p1 = Promise[AccountSummary]
+p1.next[None](recover collector~receive() end)
+let p2 = Promise[AccountSummary]
+p2.next[None](recover collector~receive() end)
+let p3 = Promise[AccountSummary]
+p3.next[None](recover collector~receive() end)
+
+a.summarize(p1)
+b.summarize(p2)
+c.summarize(p3)
+```
+Our bank account aggregate can be modified to include an account summary with the summarize method:
+
+```pony
+be summarize(p: Promise[AccountSummary]) =>    
+    let summary: AccountSummary val = recover AccountSummary(_balance, _account) end 
+    p(summary)
+```
+
+And we can add the method that the collector is expecting to the calling actor in order to respond to the list of account summaries:
+
+```pony
+be summarize(p: Promise[AccountSummary]) =>    
+  p(recover AccountSummary(_balance, _account) end)
+```
 ## Discussion
 TBD
