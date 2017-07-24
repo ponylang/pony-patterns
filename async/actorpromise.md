@@ -36,6 +36,26 @@ The above code _does not_ compile. This is because the receiver (_savings_) is a
 ## Solution
 Unlike Akka, we don't have an _ask_ pattern. As mentioned in the [access](./access.md) pattern, we can send a lambda value to the actor which allows for internal state to be captured as a parameter, but there might be a cleaner way to deal with this one problem: _Promises_.
 
+A _promise_ allows to declare that we realize that some value will either be fulfilled or rejected sometime in the future by whatever has been tasked with that promise. Since a `Promise` is an actor, we can send a promise to an actor as a `tag` without breaking any of the safety rules of actors and messaging.
+
+In the simplest case, we can have the `AccountAggregate` actor fulfill the promise inside a behavior:
+
+```pony
+ be balance(p: Promise[U64]) =>
+    p(_balance)
+```
+We can then send the promise to the aggregate with the following code:
+
+```pony
+let p = Promise[U64]
+agg.balance(p)
+```
+This is somewhat useful, but we still want to be able to respond to the value used to fulfill the promise somehow. We can do this with _promise chaining_:
+
+```pony
+```
+
+TBD
 
 ## Discussion
 TBD
