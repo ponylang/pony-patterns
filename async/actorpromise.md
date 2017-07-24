@@ -53,9 +53,16 @@ agg.balance(p)
 This is somewhat useful, but we still want to be able to respond to the value used to fulfill the promise somehow. We can do this with _promise chaining_:
 
 ```pony
+let p = Promise[U64]
+p.next[None](Outputter~output(env))
+agg.balance(p)
 ```
+This gets us a little closer to what we want. Now, when the aggregate actor fulfills the promise, the result of that fulfillment will be sent as a parameter to the partially-applied `output` function on the `Outputter` primitive.
 
-TBD
+What we really want to be able to do is query multiple actors to get the account summary data and then send _all_ of that data (preferably bundled up in a nice array) to a destination actor that can then display and/or process the information. For this we're going to need an intermediary - something that awaits promise fulfillment and adds to a collection when fulfilled. Finally, once this intermediary has received all expected fulfillments, it can then send the results to a destination. You can think of this intermediary as a _promise buffer_:
+
+```pony
+```
 
 ## Discussion
 TBD
