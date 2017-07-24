@@ -105,15 +105,17 @@ Our bank account aggregate can be modified to include an account summary with th
 
 ```pony
 be summarize(p: Promise[AccountSummary]) =>    
-    let summary: AccountSummary val = recover AccountSummary(_balance, _account) end 
-    p(summary)
+  p(recover AccountSummary(_balance, _account) end)
 ```
 
 And we can add the method that the collector is expecting to the calling actor in order to respond to the list of account summaries:
 
 ```pony
-be summarize(p: Promise[AccountSummary]) =>    
-  p(recover AccountSummary(_balance, _account) end)
+be receivecollection(coll: Array[AccountSummary] val) =>
+  _env.out.print("received account summaries:")
+  for summary in coll.values() do
+    _env.out.print("Account " + summary.accountnumber() + ": $" + summary.currentbalance().string())
+  end
 ```
 ## Discussion
 TBD
