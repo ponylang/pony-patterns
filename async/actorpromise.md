@@ -189,10 +189,10 @@ actor Main
     for summary in coll.values() do
       _env.out.print("Account " + summary.accountnumber() + ": $" + summary.currentbalance().string())
     end
-
 ```
 
 ## Discussion
+
 Actor systems have been around for quite some time now, but most developers don't default to modeling their problems as actor patterns. Most of us want to solve this problem with synchronous code that looks like this:
 
 ```pony
