@@ -22,12 +22,12 @@ actor AccountAggregate
 ```
 In our sample problem, the system might be holding onto hundreds of instances of the `AccountAggregate` actor, each with its own balance. What if we want to make a quick tour through all of these actors and ask them for their balances for display on a dashboard of some kind? We can't access the individual fields of the actor.
 
-We can't write a method like this that returns the internal state:
+We can try to write a method like this that returns the internal state:
 ```pony
     fun balance(): U64 =>
       _balance
 ```
-This compiles, so we think we might be onto something. Then, we attempt to invoke this method:
+This compiles, so we think we might be onto something! Then, we attempt to invoke this method:
 ```pony
 let bal = savings.balance()
 ```
