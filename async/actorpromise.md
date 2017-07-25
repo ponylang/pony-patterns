@@ -36,7 +36,7 @@ The above code _does not_ compile. This is because the receiver (_savings_) is a
 ## Solution
 Unlike Akka, we don't have an _ask_ pattern. As mentioned in the [access](./access.md) pattern, we can send a lambda value to the actor which allows for internal state to be captured as a parameter, but there might be a cleaner way to deal with this one problem: _Promises_.
 
-A _promise_ allows to declare that we realize that some value will either be fulfilled or rejected sometime in the future by whatever has been tasked with that promise. Since a `Promise` is an actor, we can send a promise to an actor as a `tag` without breaking any of the safety rules of actors and messaging.
+A _promise_ lets us declare that we realize that some value will either be fulfilled or rejected sometime in the future by whatever has been tasked with that promise. Since a `Promise` is an actor, we can send a promise to an actor as a `tag` without breaking any of the safety rules of actors and messaging.
 
 In the simplest case, we can have the `AccountAggregate` actor fulfill the promise inside a behavior:
 
@@ -50,7 +50,7 @@ We can then send the promise to the aggregate with the following code:
 let p = Promise[U64]
 agg.balance(p)
 ```
-This is somewhat useful, but we still want to be able to respond to the value used to fulfill the promise somehow. We can do this with _promise chaining_:
+This is somewhat useful, but the value of the promise is lost. We still want to be able to respond to the value used to fulfill the promise somehow. We can do this with _promise chaining_:
 
 ```pony
 let p = Promise[U64]
@@ -59,7 +59,7 @@ agg.balance(p)
 ```
 This gets us a little closer to what we want. Now, when the aggregate actor fulfills the promise, the result of that fulfillment will be sent as a parameter to the partially-applied `output` function on the `Outputter` primitive.
 
-What we really want to be able to do is query multiple actors to get the account summary data and then send _all_ of that data (preferably bundled up in a nice array) to a destination actor that can then display and/or process the information. For this we're going to need an intermediary - something that awaits promise fulfillment and adds to a collection when fulfilled. Finally, once this intermediary has received all expected fulfillments, it can then send the results to a destination. You can think of this intermediary as a _promise buffer_:
+Getting better, but not good enough. What we _really_ want to be able to do is query multiple actors to get the account summary data and then send _all_ of that data (preferably bundled up in a nice array) to a destination actor that can then display and/or process the information. For this we're going to need an intermediary - something that awaits promise fulfillment and adds to a collection when fulfilled. Finally, once this intermediary has received all expected fulfillments, it can then send the results to a destination. You can think of this intermediary as a _promise buffer_:
 
 ```pony
 interface CollectionReceiver[A]
@@ -94,14 +94,14 @@ for account in accounts.values() do
   aggregate.summarize(p)
 end 
 ```
-Our bank account aggregate can be modified to include an account summary with the summarize method:
+Our bank account aggregate can be modified to include an account summary with the **summarize** method:
 
 ```pony
 be summarize(p: Promise[AccountSummary]) =>    
   p(recover AccountSummary(_balance, _account) end)
 ```
 
-And we can add the method that the collector is expecting to the calling actor in order to respond to the list of account summaries:
+Finally, we add the behavior that the collector is expecting to the calling actor in order to respond to the list of account summaries:
 
 ```pony
 be receivecollection(coll: Array[AccountSummary] val) =>
@@ -122,6 +122,6 @@ Truthfully this is probably a good way to solve a lot of problems. In the trivia
 
 What if the `balance` wasn't a cached field; what if we had to run through the list of events and calculate it on the fly every time a consumer asked for the balance? What if part of the account summary included a test for reconciliation and pending transactions that might incur a network call to an out-of-process cache or a microservice?
 
-Now there's a _cost_ associated with asking a bank account to provide a summary. Just running through the summarization method in a for loop can now cause a consumer to wait an undetermined amount of time. By sending out a flood of promises, we can let each of the actors fulfill the promise on their own time and we'll get the results back far sooner than if we'd done the requests synchronously. This also gives us an added degree of reliability - by sending out these promises, we can also set a timeout so that we can build in things like a "circuit breaker" and return data indicating that we couldn't summarize all of the accounts.
+Now there's a _cost_ associated with asking a bank account to provide a summary. Just running through the summarization method in a for loop can now cause a consumer to wait an indeterminate amount of time. By sending out a flood of promises, we can let each of the actors fulfill the promise on their own time and we'll get the results back far sooner than if we'd done the requests synchronously. This also gives us an added degree of reliability - by sending out these promises, we can also set a timeout in the collector so that we can build in things like a "circuit breaker" and return data indicating that we couldn't summarize all of the accounts.
 
 You can find a working example of the code for this pattern in [this repository](https://github.com/autodidaddict/bank-pony)
