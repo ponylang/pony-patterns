@@ -1,5 +1,6 @@
 * [Async](async/index.md)
   * [Access](async/access.md)
+  * [Interrogating Actors with Promises](async/actorpromise.md)
   * [Waiting](async/waiting.md)
 * [Creation](creation/index.md)
   * [Supply Chain](creation/supply-chain.md)
