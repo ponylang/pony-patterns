@@ -84,22 +84,15 @@ actor Collector[A: Any #send]
 ```
 Now that we have an intermediary, we can create multiple promises to send to multiple bank accounts:
 ```pony
-let a = AccountAggregate("00001", 100)
-let b = AccountAggregate("00002", 300)
-let c = AccountAggregate("00003", 5000)
-
-let collector = Collector[AccountSummary](3, this)
-
-let p1 = Promise[AccountSummary]
-p1.next[None](recover collector~receive() end)
-let p2 = Promise[AccountSummary]
-p2.next[None](recover collector~receive() end)
-let p3 = Promise[AccountSummary]
-p3.next[None](recover collector~receive() end)
-
-a.summarize(p1)
-b.summarize(p2)
-c.summarize(p3)
+let accounts = ["0001"; "0002"; "0003"; "0004"]
+let collector = Collector[AccountSummary](accounts.size(), this)
+    
+for account in accounts.values() do
+  let aggregate = AccountAggregate(account, 6000)
+  let p = Promise[AccountSummary]
+  p.next[None](recover collector~receive() end)
+  aggregate.summarize(p)
+end 
 ```
 Our bank account aggregate can be modified to include an account summary with the summarize method:
 
