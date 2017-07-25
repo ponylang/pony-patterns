@@ -119,7 +119,8 @@ Finally, we add the behavior that the collector is expecting to the calling acto
 be receivecollection(coll: Array[AccountSummary] val) =>
   _env.out.print("received account summaries:")
   for summary in coll.values() do
-    _env.out.print("Account " + summary.accountnumber() + ": $" + summary.currentbalance().string())
+    _env.out.print("Account " + summary.accountnumber() + ": $" + 
+      summary.currentbalance().string())
   end
 ```
 
@@ -187,7 +188,8 @@ actor Main
   be receivecollection(coll: Array[AccountSummary] val) =>
     _env.out.print("received account summaries:")
     for summary in coll.values() do
-      _env.out.print("Account " + summary.accountnumber() + ": $" + summary.currentbalance().string())
+      _env.out.print("Account " + summary.accountnumber() + ": $" + 
+        summary.currentbalance().string())
     end
 ```
 
