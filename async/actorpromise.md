@@ -111,4 +111,15 @@ be receivecollection(coll: Array[AccountSummary] val) =>
   end
 ```
 ## Discussion
-TBD
+Actor systems have been around for quite some time now, but most developers don't default to modeling their problems as actor patterns. Most of us want to solve this problem with synchronous code that looks like this:
+
+```pony
+for acct in _accounts.values() do
+    _summaries.push(acct.summarize())
+end
+```
+Truthfully this is probably a good way to solve a lot of problems. In the trivial example discussed here, we're not actually gaining all that much from the use of actors, so why incur all that extra complexity? Consider these questions:
+
+What if the `balance` wasn't a cached field; what if we had to run through the list of events and calculate it on the fly every time a consumer asked for the balance? What if part of the account summary included a test for reconciliation and pending transactions that might incur a network call to an out-of-process cache or a microservice?
+
+Now there's a _cost_ associated with asking a bank account to provide a summary. Just running through the summarization method in a for loop can now cause a consumer to wait an undetermined amount of time. By sending out a flood of promises, we can let each of the actors fulfill the promise on their own time and we'll get the results back far sooner than if we'd done the requests synchronously. This also gives us an added degree of reliability - by sending out these promises, we can also set a timeout so that we can build in things like a "circuit breaker" and return data indicating that we couldn't summarize all of the accounts.
