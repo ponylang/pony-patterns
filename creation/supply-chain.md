@@ -14,7 +14,7 @@ actor Writer
 
   new create(env: Env, file_name: String) =>
     let auth = env.root as AmbientAuth
-    _file = File(FilePath(auth, file_name))
+    _file = File(FilePath(auth, file_name)?)
 
   be record(it: String) =>
     _file.write(it)
@@ -31,7 +31,7 @@ actor Writer
   new create(env: Env, file_name: String) =>
     try
       let auth = env.root as AmbientAuth
-      _file = File(FilePath(auth, file_name))
+      _file = File(FilePath(auth, file_name)?)
     end
 
   be record(it: String) =>
@@ -57,7 +57,7 @@ actor Writer
   new create(env: Env, file_name: String) =>
     try
       let auth = env.root as AmbientAuth
-      _file = File(FilePath(auth, file_name))
+      _file = File(FilePath(auth, file_name)?)
     end
 
   be record(it: String) =>
@@ -100,10 +100,9 @@ use "files"
 
 actor Main
   new create(env: Env) =>
-
     try
       let auth = env.root as AmbientAuth
-      let file = recover File(FilePath(auth, "free-candy.txt")) end
+      let file = recover File(FilePath(auth, "free-candy.txt")?) end
       let writer = Writer(consume file)
     else
       env.err.print("Couldn't initialize dependencies")
