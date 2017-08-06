@@ -23,7 +23,7 @@ actor SharedRegisters
     Read the value of the named register and pass it to the given function.
     A register which has never been written to will have a value of zero.
     """
-    fn(try _data(name) else 0 end)
+    fn(try _data(name)? else 0 end)
 ```
 
 We can then write a basic program that writes to a few registers and reads from them.
@@ -142,7 +142,7 @@ actor SharedRegisters
     _data(name) = value
 
   fun ref read_now(name: String): I64 =>
-    try _data(name) else 0 end
+    try _data(name)? else 0 end
 ```
 
 Note that the safety of access to the synchronous methods is guaranteed and protected by the Pony type system - any non-exclusive use of the synchronous methods is prevented, simply by keeping the `ref` from leaking outside of the actor. Note also that in this paradigm, the `read` and `write` behaviours are just asynchronous wrappers for their synchronous counterparts, `read_now` and `write_now`.
