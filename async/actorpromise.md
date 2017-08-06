@@ -68,42 +68,29 @@ agg.balance(p)
 
 This gets us a little closer to what we want. Now, when the aggregate actor fulfills the promise, the result of that fulfillment will be sent as a parameter to the partially-applied `output` function on the `Outputter` primitive.
 
-Getting better, but not good enough. What we _really_ want to be able to do is query multiple actors to get the account summary data and then send _all_ of that data (preferably bundled up in a nice array) to a destination actor that can then display and/or process the information. For this we're going to need an intermediary - something that awaits promise fulfillment and adds to a collection when fulfilled. Once this intermediary has received all expected fulfillments, it can then send the results to a destination. You can think of this intermediary as a _promise buffer_:
+Getting better, but not good enough. What we _really_ want to be able to do is query multiple actors to get the account summary data and then send _all_ of that data (preferably bundled up in a nice array) to a destination actor that can then display and/or process the information. For this we're going to need an intermediary - something that awaits promise fulfillment and adds to a collection when fulfilled. Once this intermediary has received all expected fulfillments, it can then fulfill a single promise of the collection. This intermediary promise can be created using the `Promises.join` function.
 
-```pony
-interface CollectionReceiver[A]
-  be receivecollection(coll: Array[A] val)
-  
-actor Collector[A: Any #send]  
-  var _coll: Array[A] iso
-  let _max: USize
-  let _target: CollectionReceiver[A] tag
-  
-  new create(max: USize, target: CollectionReceiver[A] tag) =>    
-    _coll = recover Array[A] end
-    _max = max
-    _target = target
-    
-  be receive(s: A) =>
-    _coll.push(consume s)    
-    if _coll.size() == _max then      
-      let output = _coll = recover Array[A] end
-      _target.receivecollection(consume output)
-    end
-```
-
-Now that we have an intermediary, we can create multiple promises to send to multiple bank accounts:
+Now we can create multiple promises to send to multiple bank accounts:
 
 ```pony
 let accounts = ["0001"; "0002"; "0003"; "0004"]
-let collector = Collector[AccountSummary](accounts.size(), this)
-    
-for account in accounts.values() do
-  let aggregate = AccountAggregate(account, 6000)
-  let p = Promise[AccountSummary]
-  p.next[None](recover collector~receive() end)
-  aggregate.summarize(p)
-end 
+
+let create_summary_promise =
+  {(account: String): Promise[AccountSummary] =>
+    let aggregate = AccountAggregate(account, 6000)
+    // just to illustrate mutable balance
+    aggregate.handle_tx_event(recover TransactionEvent(351) end)
+    aggregate.handle_tx_event(recover TransactionEvent(224) end)
+
+    let p = Promise[AccountSummary]
+    aggregate.summarize(p)
+    p
+  } iso
+
+Promises[AccountSummary].join(
+  Iter[String](accounts.values())
+    .map[Promise[AccountSummary]](consume create_summary_promise))
+  .next[None](recover this~receive_collection() end)
 ```
 
 Our bank account aggregate can be modified to include an account summary with the **summarize** method:
@@ -113,10 +100,10 @@ be summarize(p: Promise[AccountSummary]) =>
   p(recover AccountSummary(_balance, _account) end)
 ```
 
-Finally, we add the behavior that the collector is expecting to the calling actor in order to respond to the list of account summaries:
+Finally, we add the behavior to our Main actor that will respond to the list of account summaries:
 
 ```pony
-be receivecollection(coll: Array[AccountSummary] val) =>
+be receive_collection(coll: Array[AccountSummary] val) =>
   _env.out.print("received account summaries:")
   for summary in coll.values() do
     _env.out.print("Account " + summary.accountnumber() + ": $" + 
@@ -127,6 +114,7 @@ be receivecollection(coll: Array[AccountSummary] val) =>
 Putting it all together, we can now write code like the following that creates multiple actors and queries their internal state in a completely asynchronous fashion:
 
 ```pony
+use "itertools"
 use "promises"
 
 class val TransactionEvent
@@ -144,7 +132,7 @@ class val AccountSummary
 
   new create(balance: U64, account: String) =>
     _balance = balance
-    _account = account 
+    _account = account
 
   fun currentbalance() : U64 =>
     _balance 
@@ -155,7 +143,7 @@ class val AccountSummary
 actor AccountAggregate
   let _account: String
   var _balance: U64
-  
+
   new create(account: String, starting_balance: U64) =>
     _account = account
     _balance = starting_balance
@@ -169,23 +157,30 @@ actor AccountAggregate
 
 actor Main
   let _env: Env
+
   new create(env: Env) =>
     _env = env
 
     let accounts = ["0001"; "0002"; "0003"; "0004"]
-    let collector = Collector[AccountSummary](accounts.size(), this)
-    
-    for account in accounts.values() do
-      let aggregate = AccountAggregate(account, 6000)
-      // just to illustrate mutable balance
-      aggregate.handle_tx_event(recover TransactionEvent(351) end)
-      aggregate.handle_tx_event(recover TransactionEvent(224) end) 
-      let p = Promise[AccountSummary]
-      p.next[None](recover collector~receive() end)
-      aggregate.summarize(p)
-    end 
 
-  be receivecollection(coll: Array[AccountSummary] val) =>
+    let create_summary_promise =
+      {(account: String): Promise[AccountSummary] =>
+        let aggregate = AccountAggregate(account, 6000)
+        // just to illustrate mutable balance
+        aggregate.handle_tx_event(recover TransactionEvent(351) end)
+        aggregate.handle_tx_event(recover TransactionEvent(224) end)
+
+        let p = Promise[AccountSummary]
+        aggregate.summarize(p)
+        p
+      } iso
+
+    Promises[AccountSummary].join(
+      Iter[String](accounts.values())
+        .map[Promise[AccountSummary]](consume create_summary_promise))
+      .next[None](recover this~receive_collection() end)
+
+  be receive_collection(coll: Array[AccountSummary] val) =>
     _env.out.print("received account summaries:")
     for summary in coll.values() do
       _env.out.print("Account " + summary.accountnumber() + ": $" + 
@@ -199,7 +194,7 @@ Actor systems have been around for quite some time now, but most developers don'
 
 ```pony
 for acct in _accounts.values() do
-    _summaries.push(acct.summarize())
+  _summaries.push(acct.summarize())
 end
 ```
 
