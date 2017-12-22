@@ -17,14 +17,14 @@ actor Receiver
     _notify = consume notify
 
   be receive(msg: String) =>
-    _notify.received(this, msg)
+    _notify.received(msg)
 ```
 
-It's really simple. When it receives some string, it will pass its own identity and that string along to the object it is supposed to notify. What is the object it will notify? Anything that conforms to the interface
+It's really simple. When it receives some string, it will pass that string along to the object it is supposed to notify. What is the object it will notify? Anything that conforms to the interface
 
 ```
 interface Notified
-  fun ref received(rec: Receiver ref, msg: String)
+  fun ref received(msg: String)
 ```
 
 In our contrived, simplified example, we want to know that if we call `receive`  on the `Receiver` actor, then the string we call it with will end up being passed to our notifier where we can process it. So, how do we go about that?
@@ -53,7 +53,7 @@ class iso _TestNotifier is UnitTest
   fun timed_out(h: TestHelper) =>
     h.complete(false)
 
-class TestNotifier is Notified
+class TestNotifier
   let _h: TestHelper
   let _expected: String
 
@@ -61,12 +61,12 @@ class TestNotifier is Notified
     _h = h
     _expected = expected
 
-  fun ref received(rec: Receiver ref, msg: String) =>
+  fun ref received(msg: String) =>
    _h.assert_eq[String](_expected, msg)
    _h.complete(true)
 
 interface Notified
-  fun ref received(rec: Receiver ref, msg: String)
+  fun ref received(msg: String)
 
 actor Receiver
   let _notify: Notified
@@ -75,22 +75,24 @@ actor Receiver
     _notify = consume notify
 
   be receive(msg: String) =>
-    _notify.received(this, msg)
+    _notify.received(msg)
 ```
 
 ## Discussion
 
-Notifiers work by using structural typing. We define an interface that the given notifier has to implement and then create concrete implementations. In our above solution, you can see this with:
+Notifiers work by using structural typing. We define an interface that
+the given notifier has to implement and then create concrete
+implementations. In our above solution, you can see this with:
 
 ```
 interface Notified
-  fun ref received(rec: Receiver ref, msg: String)
+  fun ref received(msg: String)
 ```
 
 and 
 
 ```
-class TestNotifier is Notified
+class TestNotifier
   let _h: TestHelper
   let _e: String
 
@@ -98,15 +100,19 @@ class TestNotifier is Notified
     _h = h
     _e = e
 
-  fun ref received(rec: Receiver ref, msg: String) =>
+  fun ref received(msg: String) =>
    _h.assert_eq[String](_e, msg)
    _h.complete(true)
 ```
 
-Our test is verifying that our Receiver correctly uses the notifier and that  when we call `receive` on a `Receiver`, we pass the correct data to the  notifier's `received` method:
+Our test is verifying that our Receiver correctly uses the notifier and that when we call `receive` on a `Receiver`, we pass the correct data to the  notifier's `received` method:
 
 ```
-  fun ref received(rec: Receiver ref, msg: String) =>
+  fun ref received(msg: String) =>
    _h.assert_eq[String](_e, msg)
    _h.complete(true)
 ```
+
+Note that thanks to structural typing, there is no need to declare
+that `TestNotifier` implements the `Notified` interface, as long as
+the signature of `received` matches the interface definition.
