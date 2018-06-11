@@ -197,4 +197,4 @@ Well, there you have it. How to test our interactions with an actor whose side-e
 
 The `FileStream` constructor takes a `File` object. That's an external dependency. When testing, avoiding external dependencies is good. In the case of a file, that might seem like a relatively benign dependency right up until the day the file system permissions on your test machine change or a directory you depend on isn't there and your tests start failing. The important part of all this is, we've left our process and can't rely on the external party to help our test (nor do we want to).
 
-If you want to see an example of this pattern in the wild, check out the  [tests for the `logger` package](https://github.com/ponylang/ponyc/blob/master/packages/logger/test.pony)  in the [Pony standard library](http://www.ponylang.org/ponyc).
+If you want to see an example of this pattern in the wild, check out the  [tests for the `logger` package](https://github.com/ponylang/ponyc/blob/master/packages/logger/_test.pony) in the [Pony standard library](https://stdlib.ponylang.org/logger--index).
