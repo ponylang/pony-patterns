@@ -1,9 +1,14 @@
 {
     "plugins": [
         "footnote-string-to-number",
-        "highlight"
+        "highlight",
+        "domain-redirect"
     ],
     "pluginsConfig": {
+        "domain-redirect": {
+            "from": "https://patterns.ponylang.org",
+            "to": "https://patterns.ponylang.io"
+        }
     }
 }
 
