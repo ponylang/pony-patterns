@@ -6,7 +6,7 @@ Here's the problem: you're writing an application that needs to execute an actio
 
 ## Solution
 
-You want to use the [Time package](https://stdlib.ponylang.org/time--index). In particular, the [Timer](https://stdlib.ponylang.org/time-Timer/) and [Timers](https://stdlib.ponylang.org/time-Timers/) types.
+You want to use the [Time package](https://stdlib.ponylang.io/time--index). In particular, the [Timer](https://stdlib.ponylang.io/time-Timer/) and [Timers](https://stdlib.ponylang.io/time-Timers/) types.
 
 A timer allows you to execute code at set intervals. Let's walk through using a timer. Below is a simple application that prints out a number to the console every 5 seconds until someone terminates the program:
 
