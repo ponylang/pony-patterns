@@ -2,7 +2,7 @@
 
 ## Problem
 
-Here's the problem: you're writing an application that needs to execute an action every few seconds. In a language with blocking operations, I could just call sleep and be done with it. It might not be the most elegant solution but it would work. In Pony, no such obvious solution exists.  One of Pony's key features is there are no blocking operations. It's a bit of a riddle: how do you wait when you can't wait?
+Here's the problem: you're writing an application that needs to execute an action every few seconds. In a language with blocking operations, I could just call sleep and be done with it. It might not be the most elegant solution but it would work. In Pony, no such obvious solution exists.  One of Pony's key features is there are not many blocking operations (example exception: the files package calls fread). It's a bit of a riddle: how do you wait when you can't wait?
 
 ## Solution
 
