@@ -1,5 +1,11 @@
-# Accessing an Actor with Arbitrary Transactions
-
+---
+title: "Accessing an Actor with Arbitrary Transactions"
+section: "Async"
+menu:
+  toc:
+    parent: "async"
+    weight: 10
+---
 ## Problem
 
 With asynchronous APIs on actors, we have the problem of not being able to combine multiple asynchronous calls to form an atomic operation, as messages to an actor may be interleaved. This means that any operation that isn't exposed as a single behaviour on the actor cannot be done in an atomic way, which puts a pressure on our API to provide "ancillary" behaviours that are just combinations and compositions of the "fundamental" behaviours. We'd prefer to solve this problem in a way that alleviated that pressure without creating a larger API surface to maintain, and without having to do the constant guesswork of imagining which combinations and compositions will be needed.

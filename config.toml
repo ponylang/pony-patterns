@@ -1,0 +1,42 @@
+baseURL = "https://patterns.ponylang.io/"
+languageCode = "en-us"
+title = "Pony Patterns"
+theme = "pony-doc-site"
+canonifyurls = false
+preserveTaxonomyNames = true
+enableGitInfo = true
+uglyURLs = true
+
+[params]
+  github = "https://www.github.com/ponylang/ponyc"
+  twitter = "https://www.twitter.com/ponylang"
+
+[related]
+  threshold = 80
+  includeNewer = true
+  toLower = false
+
+[[related.indices]]
+  name = "tags"
+  weight = 100
+
+[[menu.toc]]
+  name = "Async"
+  weight = 10
+  identifier = "async"
+
+[[menu.toc]]
+  name = "Creation"
+  weight = 20
+  identifier = "creation"
+
+[[menu.toc]]
+  name = "Performance"
+  weight = 30
+  identifier = "performance"
+
+[[menu.toc]]
+  name = "Testing"
+  weight = 40
+  identifier = "testing"
+

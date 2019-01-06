@@ -1,5 +1,3 @@
 # Pony Patterns
 
-A cookbook style book of patterns for Pony.
-
-![Main](assets/main.jpg)
+This is the source for the [Pony Patterns](https://patterns.ponylang.io/) book.

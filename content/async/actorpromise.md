@@ -1,5 +1,11 @@
-# Interrogating Actors with Promises
-
+---
+title: "Interrogating Actors with Promises"
+section: "Async"
+menu:
+  toc:
+    parent: "async"
+    weight: 20
+---
 ## Problem
 
 Pony gives us an excellent abstraction for actors. We can define fields within those actors to maintain state and rely on the single-threaded nature of inbound message processing to ensure safe access to those fields. A problem arises when one actor wants to access the internal _state_ of another actor.
