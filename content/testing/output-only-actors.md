@@ -1,5 +1,11 @@
-# Testing Output Only Actors
-
+---
+title: "Testing Output Only Actors"
+section: "Testing"
+menu:
+  toc:
+    parent: "testing"
+    weight: 20
+---
 ## Problem
 
 A lot of the Pony code you will need to test involves actors that take input and create output that leaves your system. A good example of this is testing writing to a file. How can you verify that the contents of the file are what you expect? You could write the file as normal and then compare its contents to what you were expecting. In the end, though, that doesn't work for everything. What if you are writing to standard out or over a network? Luckily, there is a general purpose pattern to address this problem.

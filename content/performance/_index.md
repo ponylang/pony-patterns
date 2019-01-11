@@ -1,5 +1,13 @@
-# Performance
-
+---
+title: "Overview"
+section: "Performance"
+layout: overview
+menu:
+  toc:
+    identifier: "performance-overview"
+    parent: "performance"
+    weight: 1
+---
 Why are you interested in Pony? We bet at least a bit of your answer involves its promise of high-performance code. When it comes to writing code that runs fast, Pony sets you up for success in a way that few languages do. That said, you can still write slow code.
 
 The patterns in this chapter aim to help teach you a variety of tricks to help you write fast code. Most of them will focus on one or both of the following:

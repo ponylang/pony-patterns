@@ -1,5 +1,11 @@
-# Limiting String Allocations
-
+---
+title: "Limiting String Allocations"
+section: "Performance"
+menu:
+  toc:
+    parent: "performance"
+    weight: 10
+---
 ## Problem
 
 Your code is performance sensitive and needs to make your `String` concatenation code as fast as possible.

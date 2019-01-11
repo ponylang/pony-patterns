@@ -1,10 +1,11 @@
-# Testing
-
-Most of us are familiar with unit testing code with more traditional concurrency models. In this case of threaded code, for many, this means throwing up your hands in disgust and walking away. Testing concurrency with threads is hard. Testing concurrency in Pony is much easier but, if you haven't encountered anything like it before it can be hard to know where to start.
-
-The patterns in this chapter will cover various ways of testing your Pony code. We will pay particular attention to how to test actors. Please note that this chapter assumes that you are familiar with the basics of using PonyTest, the Pony unit testing framework. If you aren't, please review the [PonyTest documentation](https://stdlib.ponylang.io/ponytest--index/).
-# Testing Notifier Interactions
-
+---
+title: "Testing Notifier Interactions"
+section: "Testing"
+menu:
+  toc:
+    parent: "testing"
+    weight: 10
+---
 ## Problem
 
 Event driven code is very common in Pony. Many classes take a "notifier" class that has callbacks that get triggered when certain events happen. The network code such as `UDPNotify` and `TCPNotify` are examples of this. As you write your own Pony code, the notifier pattern is one you'll end up using quite a bit. Testing that your code is correctly interacting with notifiers is straightforward; however, how you go about doing that isn't immediately obvious. Imagine for a moment that you have the following actor:
