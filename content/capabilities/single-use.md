@@ -50,7 +50,7 @@ actor RestrictedService
     promise(current_count = current_count + 1)
 ```
 
-Now, we can provide our actors and objects with a controlled limited access must consume their `SingleUseAuth` tokens in order to use them, making them single-use object capabilities received from an authorized source. This guarantees us that it cannot
+Now, we can provide our actors and objects with a controlled limited access must consume their `SingleUseAuth` tokens in order to use them, making them single-use object capabilities received from an authorized source. This guarantees us that it cannot call our service more than once, since the token must be expended in order to use it:
 
 ```pony
 use "promises"
@@ -73,7 +73,7 @@ actor AuthorizedActor
     number = number'
 ```
 
-Finally, `Main` can create tokens and provide them to our `AuthorizedActor`s as it sees fit. Here, this is done in a loop.
+Finally, `Main` can create tokens and provide them to our `AuthorizedActor`s as it sees fit. Here, this is done in a loop:
 
 ```pony
 use "collections"
