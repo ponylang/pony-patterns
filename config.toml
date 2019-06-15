@@ -40,3 +40,8 @@ uglyURLs = true
   weight = 40
   identifier = "testing"
 
+[[menu.toc]]
+  name = "Capabilities"
+  weight = 50
+  identifier = "capabilities"
+
