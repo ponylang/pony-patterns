@@ -41,7 +41,7 @@ uglyURLs = true
   identifier = "testing"
 
 [[menu.toc]]
-  name = "Capabilities"
+  name = "Object Capabilities"
   weight = 50
-  identifier = "capabilities"
+  identifier = "object-capabilities"
 
