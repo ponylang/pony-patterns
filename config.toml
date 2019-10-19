@@ -31,16 +31,21 @@ uglyURLs = true
   identifier = "creation"
 
 [[menu.toc]]
-  name = "Object Capabilities"
+  name = "Data Sharing"
   weight = 30
+  identifier = "data-sharing"
+
+[[menu.toc]]
+  name = "Object Capabilities"
+  weight = 40
   identifier = "object-capabilities"
 
 [[menu.toc]]
   name = "Performance"
-  weight = 40
+  weight = 50
   identifier = "performance"
 
 [[menu.toc]]
   name = "Testing"
-  weight = 50
+  weight = 60
   identifier = "testing"
