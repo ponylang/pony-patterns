@@ -31,17 +31,16 @@ uglyURLs = true
   identifier = "creation"
 
 [[menu.toc]]
-  name = "Performance"
+  name = "Object Capabilities"
   weight = 30
+  identifier = "object-capabilities"
+
+[[menu.toc]]
+  name = "Performance"
+  weight = 40
   identifier = "performance"
 
 [[menu.toc]]
   name = "Testing"
-  weight = 40
-  identifier = "testing"
-
-[[menu.toc]]
-  name = "Object Capabilities"
   weight = 50
-  identifier = "object-capabilities"
-
+  identifier = "testing"
