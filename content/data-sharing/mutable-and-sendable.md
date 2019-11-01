@@ -27,11 +27,11 @@ actor Worker
   _supervisor = supervisor
   
   be do_work(id: USize) =>
-	let result = [as I32: 1; 2; 3; 4] // initial state array
-	// do heavy lifting here; mutate array as needed
-	_supervisor.update(id, Lists[I32](result))
-	
-	
+    let result = [as I32: 1; 2; 3; 4] // initial state array
+    // do heavy lifting here; mutate array as needed
+    _supervisor.update(id, Lists[I32](result))
+    
+    
 actor Requester
   let _supervisor: Supervisor
   
