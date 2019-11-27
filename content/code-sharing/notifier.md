@@ -167,7 +167,7 @@ First, a notifier should always be an `iso`. Why? Because the notify object will
 
 And in our concrete `Notify` implementation where we default the reference type when creating a new `Notify` to `iso`:
 
-```
+```pony
   new iso create(env: Env) =>
     _env = env
 ```
