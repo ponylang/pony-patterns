@@ -1,5 +1,5 @@
 ---
-title: "Mixins"
+title: "Mixin"
 section: "Code Sharing"
 menu:
   toc:

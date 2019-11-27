@@ -8,7 +8,7 @@ menu:
 ---
 ## Problem
 
-You need to specialize an actor so that at certain times during it's lifecycle, you can take an approriate action. For example, all TCP connections are fundamentally the same but, what they do at certain points like:
+You need to specialize an actor so that at certain times during it's life-cycle, you can take an appropriate action. For example, all TCP connections are fundamentally the same but, what they do at certain points like:
 
 - when opened
 - sending data
@@ -16,6 +16,8 @@ You need to specialize an actor so that at certain times during it's lifecycle, 
 - when closing
 
 will need to change based on "the type" of TCP connection in question.
+
+Actor specialization arises often when you want to create reusable Pony code. There's a pattern in the standard library that is one of the more common ways to address. Let's have a look at the "Notifier pattern".
 
 ## Solution
 
@@ -59,31 +61,8 @@ class Timer
   time, and then fires at an interval. When a `Timer` fires, it calls
   the `apply` method of the `TimerNotify` object that was passed to it
   when it was created.
-
-  The following example waits 5 seconds and then fires every 2
-  seconds, and when it fires the `TimerNotify` object prints how many
-  times it has been called:
-
-  ```pony
-  use "time"
-
-  actor Main
-    new create(env: Env) =>
-      let timers = Timers
-      let timer = Timer(Notify(env), 5_000_000_000, 2_000_000_000)
-      timers(consume timer)
-
-  class Notify is TimerNotify
-    let _env: Env
-    var _counter: U32 = 0
-    new iso create(env: Env) =>
-      _env = env
-    fun ref apply(timer: Timer, count: U64): Bool =>
-      _env.out.print(_counter.string())
-      _counter = _counter + 1
-      true
-  ```
   """
+
   var _expiration: U64
   var _interval: U64
   let _notify: TimerNotify
@@ -132,4 +111,67 @@ class Timer
 
     (_interval > 0) or ((_expiration - current) < (1 << 63))
 ```
+
 ## Discussion
+
+It's important to note that the notifier pattern is fundamentally one that involves callbacks. And that in particular, it is about specializing actors.
+
+As seen in the `Timer` example from the standard library, all "reusable" logic for is part of the actor. The points where a user would want to specialize what happens, involve calling methods on the supplied "notify" object.
+
+For example, from our example above:
+
+```pony
+      if not _notify(this, count) then
+```
+
+Each time the `Timer` fires, we call the `apply` method of the `_notify` object allowing situation-specific code to be executed. In the case of the `TimerNotify` API, a boolean is returned. If the return value is `false`, the timer isn't rearmed and our other callback is called:
+
+```pony
+        _notify.cancel(this)
+```
+
+What does this look this to a user? Here's an example:
+
+```pony
+use "time"
+
+actor Main
+  new create(env: Env) =>
+    let timers = Timers
+    let timer = Timer(Notify(env), 5_000_000_000, 2_000_000_000)
+    timers(consume timer)
+
+class Notify is TimerNotify
+  let _env: Env
+  var _counter: U32 = 0
+
+  new iso create(env: Env) =>
+    _env = env
+
+  fun ref apply(timer: Timer, count: U64): Bool =>
+    _env.out.print(_counter.string())
+    _counter = _counter + 1
+    true
+```
+
+There's a couple of key points that our example highlights about our implementation that weren't clear before.
+
+First, a notifier should always be an `iso`. Why? Because the notify object will probably need to keep and update state. If we were to supply the same notify to multiple `Timer` actors, the state would become shared and be unsafe across actors. In the `Timer` implementation you will see this in create taking a `TimerNotify iso`
+
+```pony
+  new iso create(
+    notify: TimerNotify iso,
+    expiration: U64,
+    interval: U64 = 0)
+```
+
+And in our concrete `Notify` implementation where we default the reference type when creating a new `Notify` to `iso`:
+
+```
+  new iso create(env: Env) =>
+    _env = env
+```
+
+The notifier pattern is incredibly powerful. It makes it very easy for programmers to easily plug-in to existing functionality and get up and running. In the majority of specialization cases, the notifier pattern is probably what you want. However, there is one drawback that you need to be aware of for more advanced cases.
+
+Notifiers can not receive messages. They can send messages to actors they hold references to, but they have no way to receive arbitrary messages. Access to the notifier is completely controlled by the encompassing actor. As limitations go, this usually isn't a problem. However, it can be problematic for some more advanced use-cases. If you find yourself needing to send messages to a notifier, we suggest you take a look at [the Mixin pattern](/code-sharing/mixin.html).
