@@ -28,7 +28,7 @@ Primitives serve a couple of different purposes in Pony. Here, we are using a pr
 Doubler(U64(1))
 ```
 
-Regular Pony package rules still apply, so the package that `Doubler` is part of needs to be imported, but otherwise, you can use a primitive with an `apply` method much as you would global functions in a language like `C`.
+Regular Pony package rules still apply, so the package that `Doubler` is a part of needs to be imported, but otherwise, you can use a primitive with an `apply` method much as you would global functions in a language like `C`.
 
 Further, you can use a `primitive` to namespace several "globally accessible functions." Here's an example from the Pony standard library:
 
@@ -59,3 +59,5 @@ primitive Nanos
   fun from_wall_clock(wall: (I64, I64)): U64 =>
     ((wall._1 * 1000000000) + wall._2).u64()
 ```
+
+In general, if you are looking to do anything that might be classified as a static function or a utility function in another language, you probably want to use a Primitive in Pony.

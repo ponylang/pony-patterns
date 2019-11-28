@@ -8,7 +8,7 @@ menu:
 ---
 ## Problem
 
-You need to specialize an actor so that at certain times during it's life-cycle, you can take an appropriate action. For example, all TCP connections are fundamentally the same but, what they do at certain points like:
+You need to specialize an actor so that at certain times during its life-cycle, you can take an appropriate action. For example, all TCP connections are fundamentally the same but, what they do at certain points like:
 
 - when opened
 - sending data
@@ -116,7 +116,7 @@ class Timer
 
 It's important to note that the notifier pattern is fundamentally one that involves callbacks. And that in particular, it is about specializing actors.
 
-As seen in the `Timer` example from the standard library, all "reusable" logic for is part of the actor. The points where a user would want to specialize what happens, involve calling methods on the supplied "notify" object.
+As seen in the `Timer` example from the standard library, all "reusable" logic is part of the actor. The points where a user would want to specialize what happens, involve calling methods on the supplied "notify" object.
 
 For example, from our example above:
 
@@ -130,7 +130,7 @@ Each time the `Timer` fires, we call the `apply` method of the `_notify` object 
         _notify.cancel(this)
 ```
 
-What does this look this to a user? Here's an example:
+What does this look to a user? Here's an example:
 
 ```pony
 use "time"
@@ -174,4 +174,4 @@ And in our concrete `Notify` implementation where we default the reference type 
 
 The notifier pattern is incredibly powerful. It makes it very easy for programmers to easily plug-in to existing functionality and get up and running. In the majority of specialization cases, the notifier pattern is probably what you want. However, there is one drawback that you need to be aware of for more advanced cases.
 
-Notifiers can not receive messages. They can send messages to actors they hold references to, but they have no way to receive arbitrary messages. Access to the notifier is completely controlled by the encompassing actor. As limitations go, this usually isn't a problem. However, it can be problematic for some more advanced use-cases. If you find yourself needing to send messages to a notifier, we suggest you take a look at [the Mixin pattern](/code-sharing/mixin.html).
+Notifiers cannot receive messages. They can send messages to actors they hold references to, but they have no way to receive arbitrary messages. Access to the notifier is completely controlled by the encompassing actor. As limitations go, this usually isn't a problem. However, it can be problematic for some more advanced use-cases. If you find yourself needing to send messages to a notifier, we suggest you take a look at [the Mixin pattern](/code-sharing/mixin.html).
