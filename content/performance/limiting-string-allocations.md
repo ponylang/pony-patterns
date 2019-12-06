@@ -59,7 +59,7 @@ let output = recover String(file_name.size()
 
 allocates all the memory it is going to need in one go; cutting our memory total allocations by five. Then by using `append`
 
-```
+```pony
 output.append(file_name)
 output.append(":")
 output.append(file_linenum)
