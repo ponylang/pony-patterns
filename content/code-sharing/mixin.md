@@ -49,7 +49,7 @@ class Foo is MixinLike
     _counter
 ```
 
-See what is going on? `Foo` has to define *something* that can supply the value that `_a_field` returns which is in turn used by `double_field`. We can expand this further to allow not both reading and writing of values "within" our mixin.
+See what is going on? `Foo` has to define *something* that can supply the value that `_a_field` returns which is in turn used by `double_field`. We can expand this further to allow both reading and writing of values "within" our mixin.
 Let's take a look at what that looks like with some naming that is a bit more realistic:
 
 ```pony
@@ -76,6 +76,6 @@ class Counter is CounterIncrementer
 
 ## Discussion
 
-Our `Counter` example is a little contrived, but it demonstrates everything we need to implement a mixin like usage pattern in Pony. There's more ceremony than you have is languages that support mixins natively, but unlike many of them you also have more control over how "foreign" code access the internal state of your objects.
+Our `Counter` example is a little contrived, but it demonstrates everything we need to implement a mixin like usage pattern in Pony. There's more ceremony than you have in languages that support mixins natively, but unlike many of them you also have more control over how "foreign" code access the internal state of your objects.
 
 For a more advanced usage of the mixin pattern where it is used to "turn the [notifier pattern](/code-sharing/notifier.html) inside out", check out the code for [Lori networking library](https://github.com/seantallen/lori).
