@@ -84,6 +84,3 @@ class CookieMachine
 In our above example, `ChocolateMachine` declares that it is a `CandyMachine` by using `is CandyMachine`. By nominally typing itself as a `CandyMachine`, it picks up the default implementation of `do_you_want_free_candy`. `CookieMachine`, on the other hand, is not nominally typed as a `CandyMachine` and therefore doesn't pick up the default implementation.
 
 Default implementations can be great way to share implementations across classes. However, the limitations that requires them to be stateless can at times be very constricting. If you need "stateful default implementations", check out the [Mixin pattern](/code-sharing/mixin.html).
-
-
-
