@@ -26,26 +26,31 @@ uglyURLs = true
   identifier = "async"
 
 [[menu.toc]]
-  name = "Creation"
+  name = "Code Sharing"
   weight = 20
+  identifier = "code-sharing"
+
+[[menu.toc]]
+  name = "Creation"
+  weight = 30
   identifier = "creation"
 
 [[menu.toc]]
   name = "Data Sharing"
-  weight = 30
+  weight = 40
   identifier = "data-sharing"
 
 [[menu.toc]]
   name = "Object Capabilities"
-  weight = 40
+  weight = 50
   identifier = "object-capabilities"
 
 [[menu.toc]]
   name = "Performance"
-  weight = 50
+  weight = 60
   identifier = "performance"
 
 [[menu.toc]]
   name = "Testing"
-  weight = 60
+  weight = 70
   identifier = "testing"
