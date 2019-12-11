@@ -8,9 +8,9 @@ menu:
 ---
 ## Problem
 
-You want to share code between classes (or actors), but Pony doesn't have inheritance. What's an enterprising programmer to do? Pony is object-oriented and object-orientation means inheritance, right?
+You want to share code between classes (or actors), but Pony doesn't allow you to inherit from other classes. What's an enterprising programmer to do? Pony is object-oriented and object-orientation means inheritance via classes, right?
 
-Pony believes in "composition over inheritance" so, inheritance isn't available. However, this doesn't mean that you can't share implementation across differing types. Enter [default implementations on traits and interfaces](https://tutorial.ponylang.io/types/traits-and-interfaces.html).
+Pony believes in "composition over inheritance" so, inheritance as you might be familiar with it isn't available. However, this doesn't mean that you can't share implementation across differing types. Enter [default implementations on traits and interfaces](https://tutorial.ponylang.io/types/traits-and-interfaces.html).
 
 ## Solution
 
