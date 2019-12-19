@@ -89,7 +89,7 @@ Finally, we `consume` our reference to the `iso` `copy` array and send it to our
 
 ## Discussion
 
-The copying pattern goes hand in hand with the use of [persistent data structures to share data](data-sharing/persistent-data-structures.html) between actors. Each method involves copying data. Which pattern should you pick? Whichever one will minimize the number of copies.
+The copying pattern goes hand in hand with the use of [persistent data structures to share data](persistent-data-structures.html) between actors. Each method involves copying data. Which pattern should you pick? Whichever one will minimize the number of copies.
 
 Persistent data structures involve copying on each update. The copying pattern involves a copy each time we send the data to another actor. As a general rule of thumb, you should figure out which you will do more: update or send. If you are updating more, use the copying pattern. If you are sending more, use persistent data structures.
 
