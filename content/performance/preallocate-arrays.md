@@ -38,4 +38,4 @@ This expansion of an array is often called "reallocating." In general, you want 
 
 By preallocating more space than you need immediately, you are limiting future allocations and copying.
 
-If you are interested in the particulars  `Array`'s resizing algorithm, you can check out [the source](https://github.com/ponylang/ponyc/blob/master/packages/builtin/array.pony).
+If you are interested in the particulars  `Array`'s resizing algorithm, you can check out [the source](https://github.com/ponylang/ponyc/blob/main/packages/builtin/array.pony).
