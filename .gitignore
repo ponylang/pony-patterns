@@ -1,1 +1,10 @@
-site/*
+# Dependencies
+/__pycache__
+/venv
+/.venv
+
+# Build files
+/site
+
+# Caches and logs
+*.log
