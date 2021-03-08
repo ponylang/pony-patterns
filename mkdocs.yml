@@ -42,6 +42,7 @@ theme:
     accent: amber
 
 nav:
+  - Home: 'index.md'
   - Asynchronous Patterns:
     - Overview: 'async/index.md'
     - Accessing an Actor with Arbitrary Transactions: 'async/access.md'
