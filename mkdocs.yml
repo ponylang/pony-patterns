@@ -1,0 +1,75 @@
+site_name: Pony Patterns
+
+copyright: Copyright &copy; 2021 The Pony Developers
+edit_uri: edit/main/docs/
+repo_url: https://github.com/ponylang/pony-patterns/
+use_directory_urls: false
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ponylang
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/ponylang
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - smarty
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+theme:
+  name: material
+
+  favicon: assets/logo.png
+
+  features:
+    - navigation.instant
+    - navigation.sections
+
+  icon:
+    repo: fontawesome/brands/github
+
+  logo: assets/logo.png
+
+  palette:
+    primary: brown
+    accent: amber
+
+nav:
+  - Home: 'index.md'
+  - Asynchronous Patterns:
+    - Overview: 'async/index.md'
+    - Accessing an Actor with Arbitrary Transactions: 'async/access.md'
+    - Interrogating Actors with Promises: 'async/actorpromise.md'
+    - Waiting: 'async/waiting.md'
+  - Code Sharing Patterns:
+    - Overview: 'code-sharing/index.md'
+    - Global Function: 'code-sharing/global-function.md'
+    - Inheritance: 'code-sharing/inheritance.md'
+    - Mixin: 'code-sharing/mixin.md'
+    - Notifier: 'code-sharing/notifier.md'
+  - Creation Patterns:
+    - Overview: 'creation/index.md'
+    - Supply Chain: 'creation/supply-chain.md'
+  - Data Sharing Patterns:
+    - Overview: 'data-sharing/index.md'
+    - Copying: 'data-sharing/copying.md'
+    - Isolated Field: 'data-sharing/isolated-field.md'
+    - Persistent Data Structures: 'data-sharing/persistent-data-structures.md'
+  - Object Capabilities Patterns:
+    - Overview: 'object-capabilities/index.md'
+    - Single User Object Capabilities: 'object-capabilities/single-use.md'
+  - Performance Patterns:
+    - Overview: 'performance/index.md'
+    - Limiting String Allocations: 'performance/limiting-string-allocations.md'
+    - Preallocate Arrays: 'performance/preallocate-arrays.md'
+  - Testing Patterns:
+    - Overview: 'testing/index.md'
+    - Testing Notifier Interactions: 'testing/notifier-interactions.md'
+    - Testing Output Only Actors: 'testing/output-only-actors.md'
