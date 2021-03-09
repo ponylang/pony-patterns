@@ -1,3 +1,2 @@
-mkdocs>=1.1.2
-mkdocs-material>=7.0.4
+git+https://${INSIDERS_PAT}@github.com/squidfunk/mkdocs-material-insiders.git
 mkdocs-htmlproofer-plugin>=0.1.0
