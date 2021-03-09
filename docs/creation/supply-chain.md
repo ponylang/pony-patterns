@@ -45,7 +45,7 @@ actor Writer
 
 We're now left with one more compiler error to address.
 
-```
+```text
 x.pony:13:9: couldn't find write in None val
     _file.write(it)
          ^

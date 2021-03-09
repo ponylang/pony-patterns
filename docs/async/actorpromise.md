@@ -56,6 +56,7 @@ In the simplest case, we can have the `AccountAggregate` actor fulfill the promi
  be balance(p: Promise[U64]) =>
     p(_balance)
 ```
+
 We can then send the promise to the aggregate with the following code:
 
 ```pony
