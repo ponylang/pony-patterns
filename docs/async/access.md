@@ -53,7 +53,7 @@ actor Main
 
 Because of Pony's causal messaging, we can expect this program to perform those operations in the written order, printing the following:
 
-```
+```text
 The value of x is 99
 The value of y is 100
 ```
@@ -101,7 +101,7 @@ actor Main
 
 Sure enough, when we run this program, we see that our `increment` will only sometimes increase the observed value, with the results varying based on how the concurrent operations happen to line up in any given execution.
 
-```
+```text
 Incremented x to 100
 Incremented x to 101
 Incremented x to 101
@@ -178,7 +178,7 @@ actor Mathematician
 
 Sure enough, our example program using 10 concurrent `Mathematician`s to increment the same register will now give the expected output, with each `increment` transaction guaranteed to be atomic.
 
-```
+```text
 Incremented x to 100
 Incremented x to 101
 Incremented x to 102
