@@ -74,7 +74,7 @@ agg.balance(p)
 
 This gets us a little closer to what we want. Now, when the aggregate actor fulfills the promise, the result of that fulfillment will be sent as a parameter to the partially-applied `output` function on the `Outputter` primitive.
 
-Getting better, but not good enough. What we _really_ want to be able to do is query multiple actors to get the account summary data and then send _all_ of that data (preferably bundled up in a nice array) to a destination actor that can then display and/or process the information. For this we're going to need an intermediary - something that awaits promise fulfillment and adds to a collection when fulfilled. Once this intermediary has received all expected fulfillments, it can then fulfill a single promise of the collection. This intermediary promise can be created using the `Promises.join` function.
+Getting better, but not good enough. What we _really_ want to be able to do is query multiple actors to get the account summary data and then send _all_ of that data (preferably bundled up in a nice array) to a destination actor that can then display and/or process the information. For this we're going to need an intermediary - something that awaits promise fulfillment and adds to a collection when fulfilled. Once this intermediary has received every expected fulfillment, it can then fulfill a single promise of the collection. This intermediary promise can be created using the `Promises.join` function.
 
 Now we can create multiple promises to send to multiple bank accounts:
 
@@ -204,7 +204,7 @@ for acct in _accounts.values() do
 end
 ```
 
-The problem with this is that as our real-world problems get more complex, simple loops like this are just not powerful enough. In bigger, more complex models, there is often a _cost_ to asking an actor for its internal state. It might not be a pre-calculated field. Instead, invoking `summarize` might make calls to external systems, databases, or microservices.
+The problem with this is that as our real-world problems get more complex, simple loops like this are just not powerful enough. In bigger, more complex models, there is often a _cost_ to asking an actor for its internal state. It might not be a precalculated field. Instead, invoking `summarize` might make calls to external systems, databases, or microservices.
 
 Naively running through the summarization method in a for loop could cause a consumer to wait an indeterminate amount of time. By sending out a flood of promises, we can let each of the actors fulfill the promise on their own time and we'll get the results back far sooner than if we'd done the requests synchronously. This also gives us an added degree of reliability - by sending out these promises, we can also set a timeout in the collector so that we can build in things like a "circuit breaker" and return data indicating that we couldn't summarize all of the accounts.
 

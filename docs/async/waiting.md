@@ -49,9 +49,9 @@ Zooming in on the key bits, we first set up our timers, create one and add it to
     timers(consume timer)
 ```
 
-The Timer constructor takes 3 arguments, the class to notify, how long until our timer expires and how often to fire. In our example code, an instance of NumberGenerator will be called every 5 billion nanoseconds i.e. every 5 seconds until the program is killed.
+The Timer constructor takes 3 arguments, the class to notify, how long until our timer expires and how often to fire. In our example code, an instance of `NumberGenerator` will be called every 5 billion nanoseconds i.e. every 5 seconds until the program is killed.
 
-Here's our method in NumberGenerator that gets executed:
+Here's our method in `NumberGenerator` that gets executed:
 
 ```pony
   fun ref apply(timer: Timer, count: U64): Bool =>
