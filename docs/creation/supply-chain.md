@@ -7,7 +7,7 @@ hide:
 
 ## Problem
 
-The Pony type system is very demanding when it comes to handling errors. The lack of `null` means that you are forced to initialize every variable and explictly handle every possible source of initialization error. In return, you get freedom from `Null Pointer Exceptions` and their equivalents. However, a naive use of Pony's `None` type when initializing dependencies can lead to poor programmer ergononmics and frustration. This is particularly true when constructing actors. In Pony, an actor's constructor runs asynchronously so, unlike a class, it can't be a partial function.
+The Pony type system is very demanding when it comes to handling errors. The lack of `null` means that you are forced to initialize every variable and explicitly handle every possible source of initialization error. In return, you get freedom from `Null Pointer Exceptions` and their equivalents. However, a naive use of Pony's `None` type when initializing dependencies can lead to poor programmer ergononmics and frustration. This is particularly true when constructing actors. In Pony, an actor's constructor runs asynchronously so, unlike a class, it can't be a partial function.
 
 Take, as an example, a Pony actor that receives messages and writes them to a file. Our first naive pass might look something like:
 

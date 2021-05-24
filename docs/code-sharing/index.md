@@ -5,7 +5,7 @@ hide:
 
 # Code Sharing Patterns
 
-Pony is an object-oriented language. Data and behavior are co-located in classes and actors. However, Pony's OO is different than the OO you might be used to. Pony favors composition over inheritance.
+Pony is an object-oriented language. Data and behavior are co-located in classes and actors. However, Pony's object-orientation is different than the object-orientation you might be used to. Pony favors composition over inheritance.
 
 What does it mean to favor composition over inheritance? Well, for starters, Pony has no inheritance. When you favor composition over inheritance, you favor "has-a" relationships over "is-a" relationships.
 

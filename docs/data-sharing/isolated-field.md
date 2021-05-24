@@ -9,7 +9,7 @@ hide:
 
 You have a mutable data structure that you are building up over time in an actor and eventually need to send it to another actor. You could use the [copying pattern](copying.md). However, the copying pattern is not without issue.
 
-The problem with the copying pattern is that you are... copying. Copying large data structures isn't cheap. Even with small data structures, copying will result in many allocations and [avoiding allocations](https://www.ponylang.io/reference/pony-performance-cheatsheet/#avoid-allocations) is one of the critical pieces of advice in the [Pony Performance Cheatsheet](https://www.ponylang.io/reference/pony-performance-cheatsheet/).
+The problem with the copying pattern is that you are... copying. Copying large data structures isn't cheap. Even with small data structures, copying will result in many allocations and [avoiding allocations](https://www.ponylang.io/reference/pony-performance-cheatsheet/#avoid-allocations) is one of the critical pieces of advice in the [Pony Performance Cheat Sheet](https://www.ponylang.io/reference/pony-performance-cheatsheet/).
 
 If your use case meets one critical criterion, you can avoid copying. That criteria? You can "give away" the mutable data rather than having hold on to a reference so you can continue to update your copy later.
 
@@ -75,7 +75,7 @@ What's going on with that? If you are new to Pony, that might be a very confusin
 - `_data` is rebound to a new empty `Array[U8] iso`
 - the previous value of `_data` is assigned to `to_send`
 
-Did you follow that? When the expression is done, we are left with 2 `Array[U8] iso's in scope:
+Did you follow that? When the expression is done, we are left with 2 `Array[U8] iso`'s in scope:
 
 - The local variable `to_send` which is an isolated array of 10 characters
 - Our actor field `_data` that has been reinitialized to an empty array.

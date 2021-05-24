@@ -14,4 +14,4 @@ The patterns in this chapter aim to help teach you a variety of tricks to help y
 
 Neither of these techniques is unique to Pony. They are both fairly standard means of getting more performance from programs in any language. How you go about that is often specific to individual languages. Here's your entree getting the most out of Pony.
 
-In addition to checking out the Patterns in this chapter, we strongly advise that you check out the [Pony Performance Cheatsheet](https://www.ponylang.io/reference/pony-performance-cheatsheet/).
+In addition to checking out the Patterns in this chapter, we strongly advise that you check out the [Pony Performance Cheat Sheet](https://www.ponylang.io/reference/pony-performance-cheatsheet/).

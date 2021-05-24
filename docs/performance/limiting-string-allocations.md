@@ -17,7 +17,7 @@ Replace any usage of `String.add` with `String.append`. Going from code like:
 let output = file_name + ":" + file_linenum + ":" + file_linepos + ": " + msg
 ```
 
-to `String.append` where we pre-allocate the memory needed to hold our final string.
+to `String.append` where we preallocate the memory needed to hold our final string.
 
 ```pony
 let output = recover String(file_name.size()
