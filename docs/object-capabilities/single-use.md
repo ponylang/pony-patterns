@@ -81,11 +81,9 @@ actor Main
   new create(env: Env) =>
     let service = RestrictedService
     for i in Range(0, 10) do
-      try
-        let foo = AuthorizedActor(service)
-        let auth = SingleUseAuth(env.root as AmbientAuth)
-        foo.request_new_number(consume auth)
-      end
+      let foo = AuthorizedActor(service)
+      let auth = SingleUseAuth(env.root)
+      foo.request_new_number(consume auth)
     end
 ```
 
@@ -125,11 +123,9 @@ actor Main
   new create(env: Env) =>
     let service = RestrictedService
     for i in Range(0, 10) do
-      try
-        let foo = AuthorizedActor(service)
-        let auth = SingleUseAuth(env.root as AmbientAuth)
-        foo.request_new_number(consume auth)
-      end
+      let foo = AuthorizedActor(service)
+      let auth = SingleUseAuth(env.root)
+      foo.request_new_number(consume auth)
     end
 ```
 

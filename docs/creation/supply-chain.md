@@ -7,36 +7,36 @@ hide:
 
 ## Problem
 
-The Pony type system is very demanding when it comes to handling errors. The lack of `null` means that you are forced to initialize every variable and explicitly handle every possible source of initialization error. In return, you get freedom from `Null Pointer Exceptions` and their equivalents. However, a naive use of Pony's `None` type when initializing dependencies can lead to poor programmer ergononmics and frustration. This is particularly true when constructing actors. In Pony, an actor's constructor runs asynchronously so, unlike a class, it can't be a partial function.
+The Pony type system is very demanding when it comes to handling errors. The lack of `null` means that you are forced to initialize every variable and explicitly handle every possible source of initialization error. In return, you get freedom from `Null Pointer Exceptions` and their equivalents. However, a naive use of Pony's `None` type when initializing dependencies can lead to poor programmer ergonomics and frustration. This is particularly true when constructing actors. In Pony, an actor's constructor runs asynchronously so, unlike a class, it can't be a partial function.
 
-Take, as an example, a Pony actor that receives messages and writes them to a file. Our first naive pass might look something like:
+Take, as an example, a Pony actor that receives messages and writes them to a file within a temporary directory. Our first naive pass might look something like:
 
 ```pony
 use "files"
 
-actor Writer
+actor TempWriter
   let _file: File
 
-  new create(env: Env, file_name: String) =>
-    let auth = env.root as AmbientAuth
-    _file = File(FilePath(auth, file_name)?)
+  new create(auth: FileAuth, file_name: String) =>
+    let dir = FilePath.mkdtemp(auth)?
+    _file = File(dir)
 
   be record(it: String) =>
     _file.write(it)
 ```
 
-We've already hit our first problem. Our above code won't compile. Why? Well, it doesn't handle errors. For starters, `env.root as AmbientAuth` can fail. We might not be able to get the capability to acquire ambient authority. [Capabilities](https://en.wikipedia.org/wiki/Capability-based_addressing) as implemented in Pony allow you to restrict what subsystems in your program can do. Whereas in a non-capabilities language like Java, any class can open a file or a socket, in Pony you have to be given the capability to do that. This means that you might lack that capability and it could fail. If we were to address that, we would also need to address that our `File` object might not be able to be initialized. In order to deal with our errors, we'll need to make `file` be of type `(File | None)`. This union type states that we can have a file or nothing. An iteration to address this gets us almost all the way to being able to compile but not quite:
+We've already hit our first problem. Our above code won't compile. Why? Well, it doesn't handle errors. For starters, `FilePath.mkdtemp(auth)?` can fail. We might not be able to create the directory to write.  If we were to address that, we would also need to address that our `File` object might not be able to be initialized. In order to deal with our errors, we'll need to make `file` be of type `(File | None)`. This union type states that we can have a file or nothing. An iteration to address this gets us almost all the way to being able to compile but not quite:
 
 ```pony
 use "files"
 
-actor Writer
+actor TempWriter
   var _file: (File | None) = None
 
-  new create(env: Env, file_name: String) =>
+  new create(auth: FileAuth, file_name: String) =>
     try
-      let auth = env.root as AmbientAuth
-      _file = File(FilePath(auth, file_name)?)
+      let dir = FilePath.mkdtemp(auth)?
+      _file = File(dir)
     end
 
   be record(it: String) =>
@@ -46,7 +46,7 @@ actor Writer
 We're now left with one more compiler error to address.
 
 ```text
-x.pony:13:9: couldn't find write in None val
+x.pony:13:10: couldn't find write in None val
     _file.write(it)
          ^
 ```
@@ -56,13 +56,13 @@ One more change address that `file` could be uninitialized:
 ```pony
 use "files"
 
-actor Writer
+actor TempWriter
   var _file: (File | None) = None
 
-  new create(env: Env, file_name: String) =>
+  new create(auth: FileAuth, file_name: String) =>
     try
-      let auth = env.root as AmbientAuth
-      _file = File(FilePath(auth, file_name)?)
+      let dir = FilePath.mkdtemp(auth)?
+      _file = File(dir)
     end
 
   be record(it: String) =>
@@ -93,12 +93,7 @@ And even if there was, we want to fail on initialization, not lazily at some unk
 
 All of the problems that we enumerated above come from attempting to create objects whose creation can fail in the constructor of our actor. Rather than delay errors until we are in our actor's constructor, a much better approach is to supply our dependencies fully initialized.
 
-In our previous case, we were relying on two things:
-
-* Ambient Authority
-* Existence of our File
-
-If we initialize these outside of our actor then we can easily report construction errors and avoid messing with `None` as a possibility inside our `Writer` actor:
+In our previous case, we were relying on our ability to successfully create the temporary directory that we will create our file in. If we initialize the directory outside of our actor then we can easily report construction errors and avoid messing with `None` as a possibility inside our `TempWriter` actor:
 
 ```pony
 use "files"
@@ -106,18 +101,17 @@ use "files"
 actor Main
   new create(env: Env) =>
     try
-      let auth = env.root as AmbientAuth
-      let file = recover File(FilePath(auth, "free-candy.txt")?) end
-      let writer = Writer(consume file)
+      let dir = FilePath.mkdtemp(env.root)?
+      let writer = TempWriter(dir, "free-candy.txt")
     else
-      env.err.print("Couldn't initialize dependencies")
+      env.err.print("Couldn't create temporary directory")
     end
 
-actor Writer
+actor TempWriter
   let _file: File
 
-  new create(file: File iso) =>
-    _file = consume file
+  new create(dir: FilePath, file_name: String) =>
+    _file = File(dir)
 
   be record(it: String) =>
     _file.write(it)
@@ -125,7 +119,7 @@ actor Writer
 
 ## Discussion
 
-This pattern is applicable across a wide swath of Pony code. There are many objects that like `File` can fail to initialize. Some examples include network sockets, regular expressions, and anything that involves parsing user input.
+This pattern is applicable across a wide swath of Pony code. There are many methods that like `File.mkdtemp` can fail to successfully complete. Some examples include network sockets, regular expressions, and anything that involves parsing user input.
 
 In addition to the benefits we've already enumerated previously, by using [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) to solve our Pony specific problem, we also reap the advantages of DI, in particular, a much more testable actor.
 
