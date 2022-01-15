@@ -3,7 +3,7 @@ hide:
   - toc
 ---
 
-# Single User Object Capabilities
+# Single Use Object Capabilities
 
 ## Problem
 
