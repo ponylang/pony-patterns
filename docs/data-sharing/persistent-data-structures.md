@@ -67,7 +67,7 @@ Persistent data structures involve copying on each update. The copying pattern i
 
 In the end, that's just a rule of thumb. Your best bet is to benchmark and pick the method that gives you the best performance for your use case.
 
-If you aren't familiar with persistent data structures, we suggest you pick up a copy of the book [Purely Functional Data Structures](https://www.amazon.com/Purely-Functional-Data-Structures-Okasaki/dp/0521663504). Another option is to download a copy of [the thesis](https://www.cs.cmu.edu/~rwh/theses/okasaki.pdf) upon which the book is based. The Pony [standard library](https://stdlib.ponylang.io/collections-persistent--index/) contains a few, but you may need to design your own.
+If you aren't familiar with persistent data structures, we suggest you pick up a copy of the book [Purely Functional Data Structures](https://www.amazon.com/Purely-Functional-Data-Structures-Okasaki/dp/0521663504). The Pony [standard library](https://stdlib.ponylang.io/collections-persistent--index/) contains a few, but you may need to design your own.
 
 If you are interested in learning more about the persistent [`Vec`](https://stdlib.ponylang.io/collections-persistent-Vec/) and [`HashMap`](https://stdlib.ponylang.io/collections-persistent-HashMap/) data structures from the Pony standard library, you can check out:
 
