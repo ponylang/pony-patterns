@@ -89,7 +89,7 @@ nav:
     - Persistent Data Structures: 'data-sharing/persistent-data-structures.md'
   - Object Capabilities Patterns:
     - Overview: 'object-capabilities/index.md'
-    - Single User Object Capabilities: 'object-capabilities/single-use.md'
+    - Single Use Object Capabilities: 'object-capabilities/single-use.md'
   - Performance Patterns:
     - Overview: 'performance/index.md'
     - Limiting String Allocations: 'performance/limiting-string-allocations.md'
