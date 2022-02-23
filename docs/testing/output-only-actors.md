@@ -20,7 +20,7 @@ Our solution draws on three primary elements:
 The code below can be used to test that you are outputting data correctly to a file stream. In this particular case, "correctly" means that when we call `print` on `MyImportantClass` with the argument "Hello World!" that we would get "Hello World!" as output from the stream that `MyImportantClass` is using.
 
 ```pony
-use "ponytest"
+use "pony_test"
 use "promises"
 
 class MyImportantClass
