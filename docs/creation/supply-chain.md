@@ -101,7 +101,7 @@ use "files"
 actor Main
   new create(env: Env) =>
     try
-      let dir = FilePath.mkdtemp(env.root)?
+      let dir = FilePath.mkdtemp(FileAuth(env.root))?
       let writer = TempWriter(dir, "free-candy.txt")
     else
       env.err.print("Couldn't create temporary directory")
