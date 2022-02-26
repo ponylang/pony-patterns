@@ -12,6 +12,7 @@ mixin
 mixins
 namespace
 natively
+ponylang
 preallocate
 preallocating
 precalculated

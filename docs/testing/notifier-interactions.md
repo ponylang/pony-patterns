@@ -32,7 +32,7 @@ In our contrived, simplified example, we want to know that if we call `receive` 
 ## Solution
 
 ```pony
-use "ponytest"
+use "pony_test"
 
 actor Main is TestList
   new create(env: Env) => PonyTest(env, this)
