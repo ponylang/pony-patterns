@@ -43,7 +43,7 @@ actor Receiver
 
 ## Discussion
 
-That's a pretty simple looking solution, especially when you compare it to the [copying pattern](/data-sharing/copying.html), which is another way to solve this problem. So what's going on here?
+That's a pretty simple looking solution, especially when you compare it to the [copying pattern](copying.md), which is another way to solve this problem. So what's going on here?
 
 The key is that our `_data` vector isn't mutable. In fact, `var _data: Vec[U8] = Vec[U8]` is creating a `val`. So, we aren't dealing with mutable data; we are creating a new immutable vector each time we "mutate" it. That's why we need to assign to `_data` in the `collect` method:
 
