@@ -11,7 +11,7 @@ You have some common logic that you want to share between classes (or actors). Y
 
 ## Solution
 
-Creating a "mixin like" thing in Pony is pretty straightforward. If you checked out the [inheritance pattern](/cinheritance.md), then you've already seen most of the mixin pattern in action.
+Creating a "mixin like" thing in Pony is pretty straightforward. If you checked out the [inheritance pattern](inheritance.md), then you've already seen most of the mixin pattern in action.
 
 Let's start by recapping the inheritance pattern and then add in our mixin twist.
 
