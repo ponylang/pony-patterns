@@ -15,7 +15,7 @@ Use a `primitive`.
 
 ```pony
 primitive Doubler
-  fun apply(U64: num): U64 =>
+  fun apply(num: U64): U64 =>
     num * 2
 ```
 
