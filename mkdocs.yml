@@ -37,6 +37,7 @@ theme:
 
   features:
     - content.code.copy
+    - content.code.select
     - navigation.indexes
     - navigation.instant
     - navigation.sections
