@@ -36,6 +36,7 @@ theme:
   favicon: assets/logo.png
 
   features:
+    - content.code.copy
     - navigation.indexes
     - navigation.instant
     - navigation.sections
