@@ -36,4 +36,4 @@ Once your content is done, please open a pull request against this repo with you
 
 Be sure to keep your PR to a single pattern. If you are working on multiple patterns, make sure they are each on their own branch and that before creating a new branch that you are on the main branch (others multiple patterns might end up in your pull request). Each PR should be for a single logical change. We request that you create a good commit messages as laid out in  ['How to Write a Git Commit Message'](http://chris.beams.io/posts/git-commit/).
 
-If your PR is for a single logical change (which is should be) but spans multiple commits, we'll ask you to squash them into a single commit before we merge. Steve Klabnik wrote a handy guide for that:  [How to squash commits in a GitHub pull request](http://blog.steveklabnik.com/posts/2012-11-08-how-to-squash-commits-in-a-github-pull-request).
+If your PR is for a single logical change (which is should be) but spans multiple commits, we'll squash them into a single commit when we merge. In that case, please make sure that your first comment on the PR is the final commit message we should use.
