@@ -129,7 +129,7 @@ Each time the `Timer` fires, we call the `apply` method of the `_notify` object 
         _notify.cancel(this)
 ```
 
-What does this look to a user? Here's an example:
+What does this look like to a user? Here's an example:
 
 ```pony
 use "time"
