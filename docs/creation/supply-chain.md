@@ -19,13 +19,14 @@ actor TempWriter
 
   new create(auth: FileAuth, file_name: String) =>
     let dir = FilePath.mkdtemp(auth)?
+    let log = FilePath.from(dir, file_name)?
     _file = File(dir)
 
   be record(it: String) =>
     _file.write(it)
 ```
 
-We've already hit our first problem. Our above code won't compile. Why? Well, it doesn't handle errors. For starters, `FilePath.mkdtemp(auth)?` can fail. We might not be able to create the directory to write.  If we were to address that, we would also need to address that our `File` object might not be able to be initialized. In order to deal with our errors, we'll need to make `file` be of type `(File | None)`. This union type states that we can have a file or nothing. An iteration to address this gets us almost all the way to being able to compile but not quite:
+We've already hit our first problem. Our above code won't compile. Why? Well, it doesn't handle errors. For starters, `FilePath.mkdtemp(auth)?` and `FilePath.from(dir, file_name)?` can both fail. We might not be able to create the directory.  If we were to address that, we would also need to address that our `File` object might not be able to be initialized. In order to deal with our errors, we'll need to make `file` be of type `(File | None)`. This union type states that we can have a file or nothing. An iteration to address this gets us almost all the way to being able to compile but not quite:
 
 ```pony
 use "files"
@@ -36,7 +37,8 @@ actor TempWriter
   new create(auth: FileAuth, file_name: String) =>
     try
       let dir = FilePath.mkdtemp(auth)?
-      _file = File(dir)
+      let log = FilePath.from(dir, file_name)?
+      _file = File(log)
     end
 
   be record(it: String) =>
@@ -46,7 +48,7 @@ actor TempWriter
 We're now left with one more compiler error to address.
 
 ```text
-x.pony:13:10: couldn't find write in None val
+x.pony:14:10: couldn't find write in None val
     _file.write(it)
          ^
 ```
@@ -62,7 +64,8 @@ actor TempWriter
   new create(auth: FileAuth, file_name: String) =>
     try
       let dir = FilePath.mkdtemp(auth)?
-      _file = File(dir)
+      let log = FilePath.from(dir, file_name)?
+      _file = File(log)
     end
 
   be record(it: String) =>
@@ -71,11 +74,41 @@ actor TempWriter
     end
 ```
 
-In the final above example, in our `record` behavior, we match on `file` and only attempt to write if it is of type `File`. Awesome. We have working code. Except, ugh. There are actually several problems lurking.
+With this change, in our `record` behavior, we match on `file` and only attempt to write if it is of type `File`. Awesome. We have working code. Except, ugh. There is are actually a couple problems still lurking.
 
-One is programmer ergonomics. If you are using `file` a lot in this actor, you are going to be constantly matching to make sure you are handling `None` correctly.
+First, while `File` doesn't return an error, it can fail. The `File` constructor docs state:
 
-We are also silently eating failures. If this actor can't start up properly then we might not want to continue running. We aren't going to know that of course. As far as a caller is concerned, we've successfully initialized and we are writing data to the file. What might actually be happening is that every call to `record` results in absolutely nothing. Tracking that down could turn out to be a nightmare.
+> Attempt to open for read/write, creating if it doesn't exist, preserving the contents if it does exist.
+> Set `errno` according to result.
+
+To correctly use `File`, we have to check the `errno()` method to see if there was a failure. Oof. We can address this hidden issue by using the `CreateFile` primitive that will return a `(File | FileErrNo)`. If we get a `FileErrNo`, we can leave `_file` as `None`.
+
+```pony
+use "files"
+
+actor TempWriter
+  var _file: (File | None) = None
+
+  new create(auth: FileAuth, file_name: String) =>
+    try
+      let dir = FilePath.mkdtemp(auth)?
+      let log = FilePath.from(dir, file_name)?
+      match CreateFile(log)
+      | let f: File => _file = f
+      end
+    end
+
+  be record(it: String) =>
+    match _file
+    | let f: File => f.write(it)
+    end
+```
+
+Phew! Are we done? Nope. There's still a couple of problems.
+
+One is programmer ergonomics. If you are using `_file` a lot in this actor, you are going to be constantly matching to make sure you are handling `None` correctly.
+
+Even worse, we are also silently eating failures. If this actor can't start up properly then we might not want to continue running. We aren't going to know. As far as a caller is concerned, we've successfully initialized and we are writing data to the file. What might actually be happening is that every call to `record` results in absolutely nothing. Tracking that down could turn out to be a nightmare.
 
 Lastly, even if we wanted to communicate failure back, this is an actor. Everything is asynchronous and there's no straightforward way to say something like:
 
@@ -93,7 +126,7 @@ And even if there was, we want to fail on initialization, not lazily at some unk
 
 All of the problems that we enumerated above come from attempting to create objects whose creation can fail in the constructor of our actor. Rather than delay errors until we are in our actor's constructor, a much better approach is to supply our dependencies fully initialized.
 
-In our previous case, we were relying on our ability to successfully create the temporary directory that we will create our file in. If we initialize the directory outside of our actor then we can easily report construction errors and avoid messing with `None` as a possibility inside our `TempWriter` actor:
+In our previous case, we were relying on our ability to successfully create the temporary directory that we will create our file in. If we initialize the directory and file outside of our actor then we can easily report construction errors and avoid messing with `None` as a possibility inside our `TempWriter` actor:
 
 ```pony
 use "files"
@@ -102,16 +135,24 @@ actor Main
   new create(env: Env) =>
     try
       let dir = FilePath.mkdtemp(FileAuth(env.root))?
-      let writer = TempWriter(dir, "free-candy.txt")
+      let log = FilePath.from(dir, "free-candy.txt")?
+      let file = recover iso
+        match CreateFile(log)
+        | let f: File => f
+        else
+          error
+        end
+      end
+      TempWriter(consume file)
     else
-      env.err.print("Couldn't create temporary directory")
+      env.err.print("Couldn't create dependencies")
     end
 
 actor TempWriter
   let _file: File
 
-  new create(dir: FilePath, file_name: String) =>
-    _file = File(dir)
+  new create(file: File iso) =>
+    _file = consume file
 
   be record(it: String) =>
     _file.write(it)
