@@ -20,7 +20,7 @@ actor TempWriter
   new create(auth: FileAuth, file_name: String) =>
     let dir = FilePath.mkdtemp(auth)?
     let log = FilePath.from(dir, file_name)?
-    _file = File(dir)
+    _file = File(log)
 
   be record(it: String) =>
     _file.write(it)
