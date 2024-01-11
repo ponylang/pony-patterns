@@ -53,7 +53,7 @@ x.pony:14:10: couldn't find write in None val
          ^
 ```
 
-One more change address that `file` could be uninitialized:
+One more change addresses that `_file` could be uninitialized:
 
 ```pony
 use "files"
