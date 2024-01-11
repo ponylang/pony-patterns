@@ -26,7 +26,7 @@ actor TempWriter
     _file.write(it)
 ```
 
-We've already hit our first problem. Our above code won't compile. Why? Well, it doesn't handle errors. For starters, `FilePath.mkdtemp(auth)?` and `FilePath.from(dir, file_name)?` can both fail. We might not be able to create the directory.  If we were to address that, we would also need to address that our `File` object might not be able to be initialized. In order to deal with our errors, we'll need to make `file` be of type `(File | None)`. This union type states that we can have a file or nothing. An iteration to address this gets us almost all the way to being able to compile but not quite:
+We've already hit our first problem. Our above code won't compile. Why? Well, it doesn't handle errors. For starters, `FilePath.mkdtemp(auth)?` and `FilePath.from(dir, file_name)?` can both fail. We might not be able to create the directory. If we were to address that, we would also need to address that our `File` object might not be able to be initialized. In order to deal with our errors, we'll need to make `_file` be of type `(File | None)`. This union type states that we can have a file or nothing. An iteration to address this gets us almost all the way to being able to compile but not quite:
 
 ```pony
 use "files"
