@@ -74,7 +74,7 @@ actor TempWriter
     end
 ```
 
-With this change, in our `record` behavior, we match on `file` and only attempt to write if it is of type `File`. Awesome. We have working code. Except, ugh. There is are actually a couple problems still lurking.
+With this change, in our `record` behavior, we match on `_file` and only attempt to write if it is of type `File`. Awesome. We have working code. Except, ugh. There are actually a couple problems still lurking.
 
 First, while `File` doesn't return an error, it can fail. The `File` constructor docs state:
 
