@@ -7,7 +7,7 @@ hide:
 
 ## Problem
 
-You want to construct an object or return a meaningful error message. Unfortunately, in Pony there's no way to do that. Pony constructors always return an initialized instance of their class unless, the constructor is partial in which case nothing is return as we jump to the nearest error handler.
+You want to construct an object or return a meaningful error message. Unfortunately, in Pony there's no way to do that. Pony constructors always return an initialized instance of their class unless, the constructor is partial in which case nothing is returned as we jump to the nearest error handler.
 
 ```pony
 class Foo
