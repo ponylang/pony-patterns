@@ -80,4 +80,5 @@ actor Main
       None
     | let e: Error =>
       env.err.print(e.msg)
+    end
 ```
