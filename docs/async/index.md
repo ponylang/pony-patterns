@@ -1,6 +1,8 @@
 ---
 hide:
-  - toc
+  - toc---
+title: Asynchronous Patterns
+description: Patterns for dealing with the asynchronous nature of Pony. Unlike most languages, Pony has zero blocking operations.
 ---
 
 # Asynchronous Patterns

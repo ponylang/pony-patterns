@@ -1,4 +1,5 @@
 site_name: Pony Patterns
+site_description: "A cookbook style book of patterns for Pony."
 
 copyright: Copyright &copy; 2021 The Pony Developers
 edit_uri: edit/main/docs/
@@ -24,6 +25,7 @@ markdown_extensions:
   - smarty
   - toc:
       permalink: true
+  - meta
 
 plugins:
   - search
@@ -32,6 +34,7 @@ plugins:
 
 theme:
   name: material
+  custom_dir: overrides
 
   favicon: assets/logo.png
 
