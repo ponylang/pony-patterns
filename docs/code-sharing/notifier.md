@@ -18,6 +18,8 @@ will need to change based on "the type" of TCP connection in question.
 
 Actor specialization arises often when you want to create reusable Pony code. There's a pattern in the standard library that is one of the more common ways to address. Let's have a look at the "Notifier pattern".
 
+Note that our example is based on the `Timers` actor from the standard library. `Timers` is an actor but it has an intermediate class that it uses as part of its design; that class `Timer` is what we will be looking at. It demonstrates the notifier pattern quite well. It's just important to remember that everything that happens in the `Timer` class is reusable logic that calls into logic to specialize a `Timers` actor.
+
 ## Solution
 
 ```pony
@@ -49,7 +51,7 @@ interface TimerNotify
     None
 ```
 
-And our corresponding actor:
+And our corresponding object to specialise:
 
 ```pony
 use "collections"
@@ -115,7 +117,7 @@ class Timer
 
 It's important to note that the notifier pattern is fundamentally one that involves callbacks. And that in particular, it is about specializing actors.
 
-As seen in the `Timer` example from the standard library, all "reusable" logic is part of the actor. The points where a user would want to specialize what happens, involve calling methods on the supplied "notify" object.
+As seen in the `Timer` example from the standard library, all "reusable" logic is part of an actor `Timers`. The points where a user would want to specialize what happens, involve calling methods on the supplied "notify" object.
 
 For example, from our example above:
 
@@ -155,7 +157,7 @@ class Notify is TimerNotify
 
 There's a couple of key points that our example highlights about our implementation that weren't clear before.
 
-First, a notifier should always be an `iso`. Why? Because the notify object will probably need to keep and update state. If we were to supply the same notify to multiple `Timer` actors, the state would become shared and be unsafe across actors. In the `Timer` implementation you will see this in create taking a `TimerNotify iso`
+First, a notifier should always be an `iso`. Why? Because the notify object will probably need to keep and update state. If we were to supply the same notify to multiple actors, the state would become shared and be unsafe across actors. In the `Timer` implementation you will see this in create taking a `TimerNotify iso`
 
 ```pony
   new iso create(
