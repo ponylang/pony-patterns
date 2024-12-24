@@ -4,8 +4,10 @@ boolean
 codebase
 creational
 ergononmics
+FFI
 harken
 implementers
+initializer
 lookups
 microservices
 mixin
@@ -23,5 +25,6 @@ sendable
 stateful
 summarization
 TCP
+teardown
 toc
 unforgeable

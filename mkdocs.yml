@@ -84,6 +84,7 @@ nav:
     - Notifier: 'code-sharing/notifier.md'
   - Creation Patterns:
     - Overview: 'creation/index.md'
+    - FFI Global Initializer: 'creation/ffi-global-initializer.md'
     - Static Constructor: 'creation/static-constructor.md'
     - Supply Chain: 'creation/supply-chain.md'
   - Data Sharing Patterns:
