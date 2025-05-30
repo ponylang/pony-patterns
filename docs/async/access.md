@@ -63,8 +63,8 @@ Now, let's say we want to do some higher-level operations on these registers, an
 ```pony
 actor Mathematician
   let _reg: SharedRegisters
-  let _out: StdStream
-  new create(reg: SharedRegisters, out: StdStream) =>
+  let _out: OutStream
+  new create(reg: SharedRegisters, out: OutStream) =>
     _reg = reg
     _out = out
 
@@ -157,8 +157,8 @@ Now let's take a look at a revised implementation of `Mathematician` that uses t
 ```pony
 actor Mathematician
   let _reg: SharedRegisters
-  let _out: StdStream
-  new create(reg: SharedRegisters, out: StdStream) =>
+  let _out: OutStream
+  new create(reg: SharedRegisters, out: OutStream) =>
     _reg = reg
     _out = out
 
