@@ -1,2 +1,2 @@
-git+https://${INSIDERS_PAT}@github.com/squidfunk/mkdocs-material-insiders.git
+mkdocs-material
 mkdocs-htmlproofer-plugin>=0.1.0
