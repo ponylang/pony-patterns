@@ -8,6 +8,7 @@ FFI
 harken
 implementers
 initializer
+lifecycle
 lookups
 microservices
 mixin

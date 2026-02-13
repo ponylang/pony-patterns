@@ -76,6 +76,9 @@ nav:
     - Accessing an Actor with Arbitrary Transactions: 'async/access.md'
     - Interrogating Actors with Promises: 'async/actorpromise.md'
     - Waiting: 'async/waiting.md'
+  - Behavioral Patterns:
+    - Overview: 'behavioral/index.md'
+    - State Machine: 'behavioral/state-machine.md'
   - Code Sharing Patterns:
     - Overview: 'code-sharing/index.md'
     - Global Function: 'code-sharing/global-function.md'
