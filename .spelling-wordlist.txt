@@ -18,11 +18,13 @@ natively
 OCaml
 oof
 ponylang
+postgres
 preallocate
 preallocating
 precalculated
 runtime
 sendable
+SSL
 stateful
 summarization
 TCP
