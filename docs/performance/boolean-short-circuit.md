@@ -53,7 +53,7 @@ actor Main
     "result"
 ```
 
-This is the pattern used by Pony's standard library `logger` package. The log levels form a hierarchy — `Fine`, `Info`, `Warn`, `Error` — from most to least verbose. A logger configured at `Warn` will only log messages at `Warn` or `Error`.
+This is the pattern used by the [ponylang/logger](https://github.com/ponylang/logger) library. The log levels form a hierarchy — `Fine`, `Info`, `Warn`, `Error` — from most to least verbose. A logger configured at `Warn` will only log messages at `Warn` or `Error`.
 
 Let's walk through how the API design makes this work.
 
