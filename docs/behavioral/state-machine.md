@@ -39,7 +39,7 @@ Every behavior also needs the `if _open` guard. With two behaviors that's manage
 
 ## Solution
 
-Rather than track the phase with a flag, represent each phase as its own type. Define an interface for the operations the actor supports, and have each phase implement the behavior that's valid for it.
+Rather than track the phase with a flag, represent each phase as its own type. Define an interface (or trait) for the operations the actor supports, and have each phase implement the behavior that's valid for it.
 
 ```pony
 interface _WriterState
