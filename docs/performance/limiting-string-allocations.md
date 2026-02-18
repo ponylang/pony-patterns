@@ -72,3 +72,5 @@ output
 we don't create any additional objects.
 
 All told, by switching from `String.add` to `String.append`, drop down to a single memory allocation and a single object being created. Replacing a single use of `+` with `append` isn't going to get you much, however, if the code you are replacing is called a lot, it's going to be a huge win. In the case of our solution above, we took the code from the Pony `logger` package. Given how often logging methods get called, switching from `+` to `append` has a huge impact.
+
+The `logger` package also uses the [Boolean Short-Circuit](boolean-short-circuit.md) pattern to avoid evaluating the string construction at all when the log level isn't met.

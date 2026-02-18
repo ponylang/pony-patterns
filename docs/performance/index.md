@@ -7,11 +7,12 @@ hide:
 
 Why are you interested in Pony? We bet at least a bit of your answer involves its promise of high-performance code. When it comes to writing code that runs fast, Pony sets you up for success in a way that few languages do. That said, you can still write slow code.
 
-The patterns in this chapter aim to help teach you a variety of tricks to help you write fast code. Most of them will focus on one or both of the following:
+The patterns in this chapter aim to help teach you a variety of tricks to help you write fast code. Most of them will focus on one or more of the following:
 
 - Limit memory allocations
-- Limit the number of objects your create
+- Limit the number of objects you create
+- Avoid unnecessary work entirely
 
-Neither of these techniques is unique to Pony. They are both fairly standard means of getting more performance from programs in any language. How you go about that is often specific to individual languages. Here's your entree getting the most out of Pony.
+None of these techniques is unique to Pony. They are all fairly standard means of getting more performance from programs in any language. How you go about that is often specific to individual languages. Here's your entree getting the most out of Pony.
 
 In addition to checking out the Patterns in this chapter, we strongly advise that you check out the [Pony Performance Cheat Sheet](https://www.ponylang.io/reference/pony-performance-cheatsheet/).
