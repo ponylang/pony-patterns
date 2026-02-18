@@ -8,6 +8,7 @@ FFI
 harken
 implementers
 initializer
+lifecycle
 lookups
 microservices
 mixin
@@ -17,12 +18,14 @@ natively
 OCaml
 oof
 ponylang
+postgres
 preallocate
 preallocating
 precalculated
 Requesters
 runtime
 sendable
+SSL
 stateful
 summarization
 TCP
