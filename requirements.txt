@@ -1,2 +1,2 @@
-mkdocs-material
+mkdocs-material==9.7.1
 mkdocs-htmlproofer-plugin>=0.1.0
