@@ -97,6 +97,9 @@ nav:
     - Isolated Field: 'data-sharing/isolated-field.md'
     - Mutable and Sendable: 'data-sharing/mutable-and-sendable.md'
     - Persistent Data Structures: 'data-sharing/persistent-data-structures.md'
+  - Error Handling Patterns:
+    - Overview: 'error-handling/index.md'
+    - Error as Union Type: 'error-handling/error-as-union-type.md'
   - Object Capabilities Patterns:
     - Overview: 'object-capabilities/index.md'
     - Single Use Object Capabilities: 'object-capabilities/single-use.md'
