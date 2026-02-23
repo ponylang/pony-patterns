@@ -32,7 +32,7 @@ primitive Formatter
     end
 ```
 
-This compiles and works, but it has two problems. The obvious one is that the code is verbose and fragile — every new numeric type needs another match arm, and it's easy to miss one. The less obvious one is performance: every call to `int` boxes the argument.
+This compiles and works, but it has two problems. The obvious one is that the code is verbose and fragile — every new numeric type needs another match arm, and it's easy to miss one. The less obvious one is performance: every call to `int` boxes the argument — the runtime wraps the primitive value in a heap-allocated object, even though the value itself would fit in a machine register. In a hot loop, that's a heap allocation and eventual garbage collection for every call.
 
 ## Solution
 
