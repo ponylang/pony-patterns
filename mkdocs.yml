@@ -101,6 +101,7 @@ nav:
     - Single Use Object Capabilities: 'object-capabilities/single-use.md'
   - Performance Patterns:
     - Overview: 'performance/index.md'
+    - Avoid Boxing with Parameterization: 'performance/avoid-boxing.md'
     - Boolean Short-Circuit: 'performance/boolean-short-circuit.md'
     - Limiting String Allocations: 'performance/limiting-string-allocations.md'
     - Preallocate Arrays: 'performance/preallocate-arrays.md'
