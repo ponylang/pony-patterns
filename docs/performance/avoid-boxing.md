@@ -48,7 +48,7 @@ The constraint `(Int & Integer[A])` tells the compiler that `A` is some integer 
 
 ## Discussion
 
-Primitive values like `U32` and `Bool` are small enough to live in a machine register. But when Pony needs to pass one where any type is expected (an `Any val` parameter, or a union like `(U32 | U64)`), it wraps the value in a heap-allocated object. This wrapping is called boxing. The runtime allocates memory, copies the value in, and later the garbage collector has to reclaim that memory. For a single call, the cost is negligible. In a hot loop processing thousands of values, it adds up fast.
+Primitive values like `U32` and `Bool` are small enough to live in a machine register. But when Pony needs to pass one where any type is expected (an `Any val` parameter, or a union like `(U32 | String)`), it wraps the value in a heap-allocated object. This wrapping is called boxing. The runtime allocates memory, copies the value in, and later the garbage collector has to reclaim that memory. For a single call, the cost is negligible. In a hot loop processing thousands of values, it adds up fast.
 
 You might think narrowing the parameter from `Any val` to a specific union like `(U32 | U64)` would help. It doesn't. The runtime still needs a tagged representation to distinguish the variants, so both types get boxed at the call site. The only way to avoid boxing is to let the compiler know the single concrete type, which is what type parameters provide.
 
