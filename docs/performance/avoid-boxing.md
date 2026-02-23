@@ -52,7 +52,7 @@ Primitive values like `U32` and `Bool` are small enough to live in a machine reg
 
 You might think narrowing the parameter from `Any val` to a specific union like `(U32 | U64)` would help. It doesn't. The runtime still needs a tagged representation to distinguish the variants, so both types get boxed at the call site. The only way to avoid boxing is to let the compiler know the single concrete type, which is what type parameters provide.
 
-The examples above parameterize a single function, but the pattern applies equally to classes and actors. Consider a collector actor that accumulates values:
+The example above parameterizes a single function, but the pattern applies equally to classes and actors. Consider a collector actor that accumulates values:
 
 ```pony
 // Boxing version: every value sent to this actor gets boxed
