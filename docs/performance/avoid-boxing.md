@@ -32,7 +32,7 @@ primitive Formatter
     end
 ```
 
-This compiles and works, but it has two problems. The obvious one is that the code is verbose and fragile — every new numeric type needs another match arm, and it's easy to miss one. The less obvious one is performance: every call to `int` boxes the argument — the runtime wraps the primitive value in a heap-allocated object, even though the value itself would fit in a machine register. In a hot loop, that's a heap allocation and eventual garbage collection for every call.
+This compiles and works, but it has two problems. The obvious one is that the code is verbose and fragile: every new numeric type needs another match arm, and it's easy to miss one. The less obvious one is performance. Every call to `int` boxes the argument, wrapping the primitive value in a heap-allocated object even though it would fit in a machine register. In a hot loop, that's a heap allocation and eventual garbage collection for every call.
 
 ## Solution
 
@@ -44,20 +44,20 @@ primitive Formatter
     value.string()
 ```
 
-The constraint `(Int & Integer[A])` tells the compiler that `A` is some integer type that implements `Integer`. At each call site, the compiler knows the exact type — `U32`, `I64`, or whatever the caller passes — and generates code that works directly with that type. No boxing, no matching, and a compile error if someone passes a non-integer.
+The constraint `(Int & Integer[A])` tells the compiler that `A` is some integer type that implements `Integer`. At each call site, the compiler knows the exact type (`U32`, `I64`, or whatever the caller passes) and generates code that works directly with that type. No boxing, no matching, and a compile error if someone passes a non-integer.
 
 This is exactly the approach used by `Format.int` in the standard library.
 
 ## Discussion
 
-Primitive values like `U32` and `Bool` are small enough to live in a machine register. But when Pony needs to pass one where any type is expected — an `Any val` parameter, a union like `(U32 | U64)` — it wraps the value in a heap-allocated object. This wrapping is called boxing. The runtime allocates memory, copies the value in, and later the garbage collector has to reclaim that memory. For a single call, the cost is negligible. In a hot loop processing thousands of values, it adds up fast.
+Primitive values like `U32` and `Bool` are small enough to live in a machine register. But when Pony needs to pass one where any type is expected (an `Any val` parameter, or a union like `(U32 | U64)`), it wraps the value in a heap-allocated object. This wrapping is called boxing. The runtime allocates memory, copies the value in, and later the garbage collector has to reclaim that memory. For a single call, the cost is negligible. In a hot loop processing thousands of values, it adds up fast.
 
-You might think narrowing the parameter from `Any val` to a specific union like `(U32 | U64)` would help. It doesn't — the runtime still needs a tagged representation to distinguish the variants, so both types get boxed at the call site. The only way to avoid boxing is to let the compiler know the single concrete type, which is what type parameters provide.
+You might think narrowing the parameter from `Any val` to a specific union like `(U32 | U64)` would help. It doesn't. The runtime still needs a tagged representation to distinguish the variants, so both types get boxed at the call site. The only way to avoid boxing is to let the compiler know the single concrete type, which is what type parameters provide.
 
 The examples above parameterize a single function, but the pattern applies equally to classes and actors. Consider a collector actor that accumulates values:
 
 ```pony
-// Boxing version — every value sent to this actor gets boxed
+// Boxing version: every value sent to this actor gets boxed
 actor Collector
   let _data: Array[Any val] = Array[Any val]
 
@@ -68,7 +68,7 @@ actor Collector
 Each message sent to `collect` boxes its argument. Parameterizing the actor eliminates the boxing:
 
 ```pony
-// No boxing — the compiler knows the concrete type
+// No boxing: the compiler knows the concrete type
 actor Collector[A: Any val]
   let _data: Array[A] = Array[A]
 
@@ -76,4 +76,4 @@ actor Collector[A: Any val]
     _data.push(value)
 ```
 
-Now `Collector[U64]` stores unboxed `U64` values, and `Collector[String]` stores `String` references — each instantiation is specialized to its type. The trade-off is that a single collector instance can only hold one type, but in practice that's usually what you want. Code that genuinely needs mixed types can still use `Any val`, paying the boxing cost only where heterogeneity is actually needed.
+Now `Collector[U64]` stores unboxed `U64` values, and `Collector[String]` stores `String` references. Each instantiation is specialized to its type. The trade-off is that a single collector instance can only hold one type, but in practice that's usually what you want. Code that genuinely needs mixed types can still use `Any val`, paying the boxing cost only where heterogeneity is actually needed.
