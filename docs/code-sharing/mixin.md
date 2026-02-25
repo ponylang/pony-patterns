@@ -77,4 +77,4 @@ class Counter is CounterIncrementer
 
 Our `Counter` example is a little contrived, but it demonstrates everything we need to implement a mixin like usage pattern in Pony. There's more ceremony than you have in languages that support mixins natively, but unlike many of them you also have more control over how "foreign" code access the internal state of your objects.
 
-For a more advanced usage of the mixin pattern where it is used to "turn the [notifier pattern](notifier.md) inside out", check out the code for [Lori networking library](https://github.com/seantallen/lori).
+For a more advanced usage of the mixin pattern where it is used to "turn the [notifier pattern](notifier.md) inside out", check out the code for [Lori networking library](https://github.com/ponylang/lori).
