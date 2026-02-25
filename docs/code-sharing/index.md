@@ -32,3 +32,7 @@ The mixin pattern is like the inheritance pattern but "even more so". If you are
 ## Global Function
 
 Does your favorite language have bare functions of some sort? Do you wish Pony had bare functions or perhaps... global functions? If so, the global function pattern is for you.
+
+## Object Algebra
+
+Need to extend a system with both new data variants and new operations without modifying existing code? The object algebra pattern uses Pony's interfaces with default implementations and structural typing to solve the Expression Problem.

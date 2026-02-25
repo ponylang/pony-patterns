@@ -85,6 +85,7 @@ nav:
     - Inheritance: 'code-sharing/inheritance.md'
     - Mixin: 'code-sharing/mixin.md'
     - Notifier: 'code-sharing/notifier.md'
+    - Object Algebra: 'code-sharing/object-algebra.md'
   - Creation Patterns:
     - Overview: 'creation/index.md'
     - FFI Global Initializer: 'creation/ffi-global-initializer.md'
