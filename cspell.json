@@ -2,11 +2,16 @@
   "version": "0.2",
   "language": "en",
   "files": ["docs/**/*.md"],
-  "dictionaries": ["en-gb", "pony-terms"],
+  "dictionaries": ["en-gb", "pony-terms", "project-words"],
   "dictionaryDefinitions": [
     {
       "name": "pony-terms",
       "path": "./.cspell/pony-terms.txt",
+      "addWords": false
+    },
+    {
+      "name": "project-words",
+      "path": "./.cspell/project-words.txt",
       "addWords": false
     }
   ],
