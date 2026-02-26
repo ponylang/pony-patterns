@@ -42,6 +42,8 @@ actor Main
 
 This compiles and runs, producing a message with no recipient and no subject. The builder silently accepted incomplete data because every field had a default. The caller forgot `.to()` and the compiler didn't say a word.
 
+You could add validation to `build()` — check that `_to` isn't empty and return an error or raise `error` if it is. That catches the mistake, but now the caller has to handle a runtime error every time they build a message, even when they did fill in every field. The compiler can't tell a correct build chain from a broken one, so every call site pays the cost of error handling.
+
 ## Solution
 
 Instead of a single builder type with all the methods, define a separate interface for each construction phase. Each interface exposes exactly one advancement method whose return type is the next phase's interface. The compiler enforces the build order: you literally can't call the wrong method because it doesn't exist on the type you're holding.
