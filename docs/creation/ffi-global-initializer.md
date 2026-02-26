@@ -40,3 +40,5 @@ primitive LibraryInitializer
   fun _final() =>
     @magic_global_shutdown()
 ```
+
+For managing per-instance FFI resource handles that need cleanup when you're done with them, see the [FFI Resource Lifecycle](../resource-management/ffi-resource-lifecycle.md) pattern.

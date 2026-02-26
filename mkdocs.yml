@@ -109,6 +109,9 @@ nav:
     - Boolean Short-Circuit: 'performance/boolean-short-circuit.md'
     - Limiting String Allocations: 'performance/limiting-string-allocations.md'
     - Preallocate Arrays: 'performance/preallocate-arrays.md'
+  - Resource Management Patterns:
+    - Overview: 'resource-management/index.md'
+    - FFI Resource Lifecycle: 'resource-management/ffi-resource-lifecycle.md'
   - Testing Patterns:
     - Overview: 'testing/index.md'
     - Testing Notifier Interactions: 'testing/notifier-interactions.md'
