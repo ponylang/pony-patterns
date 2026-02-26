@@ -7,7 +7,7 @@ hide:
 
 ## Problem
 
-You're building an object that requires several fields, and some of them are mandatory. A common approach is a fluent builder where every method returns the same builder type, letting the caller chain calls in any order.
+You're building an object that requires several fields, and some of them are mandatory. When the constructor has many parameters, it's easy to mix up their order or forget one entirely. A fluent builder helps by letting you name each field as you set it, but the common approach — where every method returns the same builder type — doesn't enforce that required fields are actually provided.
 
 ```pony
 class MessageBuilder
