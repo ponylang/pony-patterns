@@ -81,6 +81,7 @@ nav:
     - State Machine: 'behavioral/state-machine.md'
   - Code Sharing Patterns:
     - Overview: 'code-sharing/index.md'
+    - Embed and Delegate: 'code-sharing/embed-and-delegate.md'
     - Global Function: 'code-sharing/global-function.md'
     - Inheritance: 'code-sharing/inheritance.md'
     - Mixin: 'code-sharing/mixin.md'
