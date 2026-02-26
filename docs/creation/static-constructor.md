@@ -82,3 +82,5 @@ actor Main
       env.err.print(e.msg)
     end
 ```
+
+If you find yourself reaching for this pattern to enforce domain constraints on `val` types — for example, ensuring a `String` meets length or character requirements — consider the standard library's `constrained_types` package instead. It provides a `Validator` interface, a `Constrained` wrapper that makes the validation guarantee visible in the type, and a `MakeConstrained` builder that returns either the validated type or a `ValidationFailure` with error messages. Where a static constructor is a one-off solution, `constrained_types` provides reusable infrastructure for the same idea. See the [Constrained Types](../domain-modeling/constrained-types.md) pattern for details.
