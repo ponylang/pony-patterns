@@ -92,6 +92,7 @@ nav:
     - FFI Global Initializer: 'creation/ffi-global-initializer.md'
     - Static Constructor: 'creation/static-constructor.md'
     - Supply Chain: 'creation/supply-chain.md'
+    - Typed Step Builder: 'creation/typed-step-builder.md'
   - Data Sharing Patterns:
     - Overview: 'data-sharing/index.md'
     - Copying: 'data-sharing/copying.md'
