@@ -51,7 +51,7 @@ Instead of a single builder type with all the methods, define a separate interfa
 We'll build an email message in three mandatory steps: set the recipient, set the subject, then set the body. Here's the first phase:
 
 ```pony
-interface MessageRecipient
+interface MessageBuildRecipient
   fun ref to(recipient: String): MessageSubject
 ```
 
