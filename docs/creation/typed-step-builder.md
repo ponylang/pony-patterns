@@ -130,7 +130,7 @@ class _MessageBuilder
     "To: " + _to + "\nSubject: " + _subject + "\n\n" + body'
 
 primitive Messages
-  fun apply(): MessageRecipient =>
+  fun apply(): MessageBuildRecipient =>
     _MessageBuilder
 
 actor Main
