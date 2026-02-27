@@ -96,7 +96,7 @@ The caller never sees `_MessageBuilder` directly. A factory primitive provides t
 
 ```pony
 primitive Messages
-  fun apply(): MessageRecipient =>
+  fun apply(): MessageBuildRecipient =>
     _MessageBuilder
 ```
 
