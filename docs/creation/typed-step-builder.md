@@ -62,7 +62,7 @@ interface MessageBuildSubject
   fun ref subject(subject': String): MessageBuildBody
 ```
 
-Once you've set the recipient, you're holding a `MessageSubject`. The only thing you can do is call `subject()`, which advances you to the final phase.
+Once you've set the recipient, you're holding a `MessageBuildSubject`. The only thing you can do is call `subject()`, which advances you to the final phase.
 
 ```pony
 interface MessageBody
