@@ -105,7 +105,7 @@ primitive Messages
 Here's the complete program:
 
 ```pony
-interface MessageRecipient
+interface MessageBuildRecipient
   fun ref to(recipient: String): MessageSubject
 
 interface MessageSubject
