@@ -143,7 +143,7 @@ actor Main
     env.out.print(message)
 ```
 
-Try skipping a step and the compiler stops you. Calling `Messages().subject("Hello")` fails because `Messages()` returns a `MessageRecipient`, which only has `to()`. Calling `Messages().to("alice@example.com").body("How are you?")` also fails because `.to()` returns a `MessageSubject`, which only has `subject()`. Out-of-order calls are compile errors, not runtime surprises.
+Try skipping a step and the compiler stops you. Calling `Messages().subject("Hello")` fails because `Messages()` returns a `MessageBuildRecipient`, which only has `to()`. Calling `Messages().to("alice@example.com").body("How are you?")` also fails because `.to()` returns a `MessageBuildSubject`, which only has `subject()`. Out-of-order calls are compile errors, not runtime surprises.
 
 ## Discussion
 
