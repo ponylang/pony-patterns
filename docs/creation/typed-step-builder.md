@@ -122,7 +122,7 @@ class _MessageBuilder
     _to = recipient
     this
 
-  fun ref subject(subject': String): MessageBody =>
+  fun ref subject(subject': String): MessageBuildBody =>
     _subject = subject'
     this
 
