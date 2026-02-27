@@ -41,6 +41,8 @@ This works until it doesn't. Three things can go wrong:
 
 The root cause is the same in all three cases: nothing in the code tracks whether the handle is still valid.
 
+Pony is a memory-safe language, and Pony users expect memory safety (and concurrency safety) to be guaranteed for any program that compiles. An FFI-wrapping Pony package is responsible for carefully upholding these guarantees, and any package that fails to do so will be distrusted and unused in the Pony community.
+
 ## Solution
 
 The fix is to track the handle's validity inside the wrapper itself using a sentinel value. A sentinel is a known-invalid value that marks the resource as "already released." Combined with Pony's `dispose()` convention for explicit cleanup and `_final()` as a garbage-collection safety net, this gives you three guarantees: no resource leaks (the finalizer catches forgotten cleanups), no double-frees (the sentinel prevents freeing twice), and no dangling pointer access (every method checks the sentinel before touching the handle).
