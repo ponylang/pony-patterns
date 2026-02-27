@@ -59,7 +59,7 @@ A `MessageBuildRecipient` has exactly one method: `to()`. It takes the recipient
 
 ```pony
 interface MessageBuildSubject
-  fun ref subject(subject': String): MessageBody
+  fun ref subject(subject': String): MessageBuildBody
 ```
 
 Once you've set the recipient, you're holding a `MessageSubject`. The only thing you can do is call `subject()`, which advances you to the final phase.
