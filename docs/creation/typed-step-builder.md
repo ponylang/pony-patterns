@@ -65,7 +65,7 @@ interface MessageBuildSubject
 Once you've set the recipient, you're holding a `MessageBuildSubject`. The only thing you can do is call `subject()`, which advances you to the final phase.
 
 ```pony
-interface MessageBody
+interface MessageBuildBody
   fun ref body(body': String): String
 ```
 
