@@ -46,7 +46,7 @@ You could add validation to `build()` — check that `_to` isn't empty and retur
 
 ## Solution
 
-Instead of a single builder type with all the methods, define a separate interface for each construction phase. Each interface exposes exactly one advancement method whose return type is the next phase's interface. The compiler enforces the build order: you literally can't call the wrong method because it doesn't exist on the type you're holding.
+The key insight is to make illegal states unrepresentable: instead of validating at runtime that required fields were provided, structure the types so that an incomplete build can't compile. Instead of a single builder type with all the methods, define a separate interface for each construction phase. Each interface exposes exactly one advancement method whose return type is the next phase's interface. The compiler enforces the build order: you literally can't call the wrong method because it doesn't exist on the type you're holding.
 
 We'll build an email message in three mandatory steps: set the recipient, set the subject, then set the body. Here's the first phase:
 
