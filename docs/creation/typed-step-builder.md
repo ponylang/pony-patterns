@@ -58,7 +58,7 @@ interface MessageBuildRecipient
 A `MessageBuildRecipient` has exactly one method: `to()`. It takes the recipient and returns a `MessageBuildSubject`. There's no way to finish without providing a recipient first.
 
 ```pony
-interface MessageSubject
+interface MessageBuildSubject
   fun ref subject(subject': String): MessageBody
 ```
 
