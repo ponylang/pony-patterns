@@ -108,7 +108,7 @@ Here's the complete program:
 interface MessageBuildRecipient
   fun ref to(recipient: String): MessageBuildSubject
 
-interface MessageSubject
+interface MessageBuildSubject
   fun ref subject(subject': String): MessageBody
 
 interface MessageBody
