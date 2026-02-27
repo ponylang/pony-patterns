@@ -111,7 +111,7 @@ interface MessageBuildRecipient
 interface MessageBuildSubject
   fun ref subject(subject': String): MessageBuildBody
 
-interface MessageBody
+interface MessageBuildBody
   fun ref body(body': String): String
 
 class _MessageBuilder
