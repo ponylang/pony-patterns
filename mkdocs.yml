@@ -105,6 +105,7 @@ nav:
     - Error as Union Type: 'error-handling/error-as-union-type.md'
   - Object Capabilities Patterns:
     - Overview: 'object-capabilities/index.md'
+    - Authority Hierarchy: 'object-capabilities/authority-hierarchy.md'
     - Single Use Object Capabilities: 'object-capabilities/single-use.md'
   - Performance Patterns:
     - Overview: 'performance/index.md'

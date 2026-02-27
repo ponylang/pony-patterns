@@ -137,4 +137,6 @@ The biggest runtime impact with the use of object capabilities with object token
 
 The concept presented in this pattern could be extended for any number of tokens we want to give to our actors. For example, if you ever needed something like a credit flow control protocol where you didn't trust the clients of the service to behave -- you could dole out multiple unforgeable tickets to limit their use of the service, based on how many clients exist, or how often they request a token, or any other criteria you need, without worrying about the internal workings of these clients.
 
+The auth tokens used in this pattern don't appear out of thin air. The [Authority Hierarchy](authority-hierarchy.md) pattern explains how to design hierarchies of capability tokens like `CustomAuth`, narrowing broad authority into specific permissions step by step. That pattern decides *what* operations are permitted; this one limits *how many times* they can be exercised.
+
 All in all, the object capabilities system can be used as a way to have better control over our programs' accesses, as well as give clients the freedom to handle these tokens as they see fit. Using a single-use token can make this access more restrictive, without actually limiting the API of our libraries.
