@@ -52,7 +52,7 @@ We'll build an email message in three mandatory steps: set the recipient, set th
 
 ```pony
 interface MessageBuildRecipient
-  fun ref to(recipient: String): MessageSubject
+  fun ref to(recipient: String): MessageBuildSubject
 ```
 
 A `MessageRecipient` has exactly one method: `to()`. It takes the recipient and returns a `MessageSubject`. There's no way to finish without providing a recipient first.
