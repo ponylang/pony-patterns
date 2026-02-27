@@ -34,6 +34,8 @@ The page structure is always:
 
 No other H2 headings. Favor flowing narrative prose in Discussion over H3 subsections. If the discussion is long enough that distinct topics genuinely need signposting, subsections are acceptable, but the default should be connected prose with transitions between ideas.
 
+Mermaid diagrams are supported via the `pymdownx.superfences` custom fence. Both `graph` and `sequenceDiagram` types work. In sequence diagrams, `participant` names must be single letters (`participant A as EchoServer`). Multi-character participant names silently break rendering. The simplest approach is to skip `participant` declarations entirely and use names directly in the arrows.
+
 ## Problem Section
 
 Start from the user's concrete need, not an abstract statement about software engineering. Frame it as something they're trying to do: "Your system needs X", "You want to enforce Y", "You have a value that could be one of several things".

@@ -29,6 +29,10 @@ Pony doesn't do inheritance, but with default implementations for traits and int
 
 The mixin pattern is like the inheritance pattern but "even more so". If you are looking for a full-on Java-style "class A extends class B" type experience, then the mixin pattern is what you are looking for.
 
+## Embed and Delegate
+
+When a mixin's logic grows too large for trait default methods, move it into a dedicated class. The actor becomes a thin behavior-dispatching shell; the class holds all the state and logic. This is the pattern behind Pony's I/O libraries.
+
 ## Global Function
 
 Does your favorite language have bare functions of some sort? Do you wish Pony had bare functions or perhaps... global functions? If so, the global function pattern is for you.
