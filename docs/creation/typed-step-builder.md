@@ -90,7 +90,7 @@ class _MessageBuilder
     "To: " + _to + "\nSubject: " + _subject + "\n\n" + body'
 ```
 
-`_MessageBuilder` has all three methods, one from each phase. Notice there's no `is` clause declaring that it implements any of the interfaces. It doesn't need one. Pony interfaces use structural subtyping: any type whose methods match an interface's signatures automatically satisfies that interface. Since `_MessageBuilder` has `to()` returning `MessageSubject`, it satisfies `MessageRecipient`. Since it has `subject()` returning `MessageBody`, it satisfies `MessageSubject`. And since it has `body()` returning `String`, it satisfies `MessageBody`. One class, three interface views.
+`_MessageBuilder` has all three methods, one from each phase. Notice there's no `is` clause declaring that it implements any of the interfaces. It doesn't need one. Pony interfaces use structural subtyping: any type whose methods match an interface's signatures automatically satisfies that interface. Since `_MessageBuilder` has `to()` returning `MessageBuildSubject`, it satisfies `MessageBuildRecipient`. Since it has `subject()` returning `MessageBuildBody`, it satisfies `MessageBuildSubject`. And since it has `body()` returning `String`, it satisfies `MessageBuildBody`. One class, three interface views.
 
 The caller never sees `_MessageBuilder` directly. A factory primitive provides the entry point:
 
