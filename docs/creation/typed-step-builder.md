@@ -106,7 +106,7 @@ Here's the complete program:
 
 ```pony
 interface MessageBuildRecipient
-  fun ref to(recipient: String): MessageSubject
+  fun ref to(recipient: String): MessageBuildSubject
 
 interface MessageSubject
   fun ref subject(subject': String): MessageBody
