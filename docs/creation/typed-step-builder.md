@@ -78,7 +78,7 @@ class _MessageBuilder
   var _to: String = ""
   var _subject: String = ""
 
-  fun ref to(recipient: String): MessageSubject =>
+  fun ref to(recipient: String): MessageBuildSubject =>
     _to = recipient
     this
 
