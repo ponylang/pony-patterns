@@ -155,4 +155,4 @@ The pattern extends naturally to repeatable steps within a phase. If one of your
 
 The Typed Step Builder becomes especially powerful when combined with constrained types. If `to()` accepts an `EmailAddress` that can only be constructed through validation instead of a bare `String`, the builder enforces not just that a recipient was provided but that it's a well-formed address. The builder handles ordering at compile time; constrained types handle value validity at the point of construction. Together they guarantee the final object has all required fields, provided in the right order, with every field individually validated.
 
-Builders can also support reuse. Adding a `reset()` method to each interface that returns `MessageRecipient` gives the caller a way to abandon a partial build and start over from the first phase without allocating a new builder.
+Builders can also support reuse. Adding a `reset()` method to each interface that returns `MessageBuildRecipient` gives the caller a way to abandon a partial build and start over from the first phase without allocating a new builder.
