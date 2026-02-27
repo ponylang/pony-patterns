@@ -109,7 +109,7 @@ interface MessageBuildRecipient
   fun ref to(recipient: String): MessageBuildSubject
 
 interface MessageBuildSubject
-  fun ref subject(subject': String): MessageBody
+  fun ref subject(subject': String): MessageBuildBody
 
 interface MessageBody
   fun ref body(body': String): String
