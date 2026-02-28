@@ -74,6 +74,7 @@ nav:
   - Asynchronous Patterns:
     - Overview: 'async/index.md'
     - Accessing an Actor with Arbitrary Transactions: 'async/access.md'
+    - Batch and Yield: 'async/batch-and-yield.md'
     - Interrogating Actors with Promises: 'async/actorpromise.md'
     - Waiting: 'async/waiting.md'
   - Behavioral Patterns:

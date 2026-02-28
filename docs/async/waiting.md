@@ -76,6 +76,8 @@ $ ./timer
 
 It's not the most exciting output in the world but, it's a pattern that can be adapted to many different scenarios. `Timer` can be put to use for rate limiting outgoing network connections, creating buffers that flush at a set interval, implementing timeouts and variety of other time based _blocking_ operations.
 
+The [Batch and Yield](batch-and-yield.md) pattern tackles a related scheduling concern from the opposite direction. Waiting is about delaying work until a future point in time; Batch and Yield is about yielding during work that's happening now so other actors can make progress.
+
 ---
 
 This pattern is based on a [blog post](http://www.monkeysnatchbanana.com/2016/01/16/pony-patterns-waiting/) previously published by Sean T. Allen.
