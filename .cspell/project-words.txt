@@ -1,3 +1,6 @@
 backpressure
+MessagePack
+msgpack
+RESP
 unrepresentable
 Wadler
