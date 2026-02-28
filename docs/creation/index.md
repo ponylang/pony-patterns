@@ -5,8 +5,12 @@ hide:
 
 # Creation Patterns
 
-The patterns in this chapter harken back to the "Creational Patterns" from the original Gang of Four [Design Patterns](https://en.wikipedia.org/wiki/Design_Patterns) book. In that chapter of their book, they discussed a number of now famous ways you can tackle instantiating objects including _Builder_ and _Factory Method_.
+Pony constructors always return an initialized instance of their type. There's no `null`, no uninitialized state, and actor constructors can't be partial. These constraints push you toward patterns that might be unfamiliar if you're coming from languages where constructors can fail freely or return null.
 
-Pony has object-oriented features that make existing object-oriented creational patterns applicable to the language. However, the addition of actors and Pony's type system also lead to patterns that may be unfamiliar to object-orientation experts. Further, Pony is a rather functional programming friendly language which adds still more wrinkles.
+[FFI Global Initializer](ffi-global-initializer.md) uses a primitive's `_init` method to run C library initialization exactly once, taking advantage of the fact that primitives are singletons.
 
-In this chapter, we will cover the Pony variants of tried and true creational patterns while also adding new ones that are unique to Pony.
+[Static Constructor](static-constructor.md) wraps object construction in a primitive's `apply` method so it can return either the constructed object or a meaningful error, something Pony constructors can't do on their own.
+
+[Supply Chain](supply-chain.md) solves the problem of actor constructors that depend on things that can fail. Rather than juggling `(File | None)` unions inside the actor, you initialize dependencies before constructing the actor and pass them in fully built.
+
+[Typed Step Builder](typed-step-builder.md) enforces construction order at compile time. Each build step returns a different interface type, so the compiler prevents calling steps out of order or skipping required fields.

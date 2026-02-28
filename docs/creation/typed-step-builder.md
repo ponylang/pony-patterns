@@ -1,0 +1,158 @@
+---
+hide:
+  - toc
+---
+
+# Typed Step Builder
+
+## Problem
+
+You're building an object that requires several fields, and some of them are mandatory. When the constructor has many parameters, it's easy to mix up their order or forget one entirely. A fluent builder helps by letting you name each field as you set it, but the common approach — where every method returns the same builder type — doesn't enforce that required fields are actually provided.
+
+```pony
+class MessageBuilder
+  var _to: String = ""
+  var _subject: String = ""
+  var _body: String = ""
+
+  fun ref to(recipient: String): MessageBuilder =>
+    _to = recipient
+    this
+
+  fun ref subject(subject': String): MessageBuilder =>
+    _subject = subject'
+    this
+
+  fun ref body(body': String): MessageBuilder =>
+    _body = body'
+    this
+
+  fun build(): String =>
+    "To: " + _to + "\nSubject: " + _subject + "\n\n" + _body
+```
+
+The fields default to empty strings because Pony requires every field to be initialized in the constructor. That means `build()` always has valid data as far as the type system is concerned. Nothing prevents a caller from skipping straight to the end:
+
+```pony
+actor Main
+  new create(env: Env) =>
+    let msg = MessageBuilder.body("How are you?").build()
+    env.out.print(msg)
+```
+
+This compiles and runs, producing a message with no recipient and no subject. The builder silently accepted incomplete data because every field had a default. The caller forgot `.to()` and the compiler didn't say a word.
+
+You could add validation to `build()` — check that `_to` isn't empty and return an error or raise `error` if it is. That catches the mistake, but now the caller has to handle a runtime error every time they build a message, even when they did fill in every field. The compiler can't tell a correct build chain from a broken one, so every call site pays the cost of error handling.
+
+## Solution
+
+The key insight is to make illegal states unrepresentable: instead of validating at runtime that required fields were provided, structure the types so that an incomplete build can't compile. Instead of a single builder type with all the methods, define a separate interface for each construction phase. Each interface exposes exactly one advancement method whose return type is the next phase's interface. The compiler enforces the build order: you literally can't call the wrong method because it doesn't exist on the type you're holding.
+
+We'll build an email message in three mandatory steps: set the recipient, set the subject, then set the body. Here's the first phase:
+
+```pony
+interface MessageBuildRecipient
+  fun ref to(recipient: String): MessageBuildSubject
+```
+
+A `MessageBuildRecipient` has exactly one method: `to()`. It takes the recipient and returns a `MessageBuildSubject`. There's no way to finish without providing a recipient first.
+
+```pony
+interface MessageBuildSubject
+  fun ref subject(subject': String): MessageBuildBody
+```
+
+Once you've set the recipient, you're holding a `MessageBuildSubject`. The only thing you can do is call `subject()`, which advances you to the final phase.
+
+```pony
+interface MessageBuildBody
+  fun ref body(body': String): String
+```
+
+The last phase collects the body and returns the finished message as a `String`. In a real application this final method would typically return a domain object rather than a string; we're keeping it simple here.
+
+Now the concrete class that ties it all together:
+
+```pony
+class _MessageBuilder
+  var _to: String = ""
+  var _subject: String = ""
+
+  fun ref to(recipient: String): MessageBuildSubject =>
+    _to = recipient
+    this
+
+  fun ref subject(subject': String): MessageBuildBody =>
+    _subject = subject'
+    this
+
+  fun ref body(body': String): String =>
+    "To: " + _to + "\nSubject: " + _subject + "\n\n" + body'
+```
+
+`_MessageBuilder` has all three methods, one from each phase. Notice there's no `is` clause declaring that it implements any of the interfaces. It doesn't need one. Pony interfaces use structural subtyping: any type whose methods match an interface's signatures automatically satisfies that interface. Since `_MessageBuilder` has `to()` returning `MessageBuildSubject`, it satisfies `MessageBuildRecipient`. Since it has `subject()` returning `MessageBuildBody`, it satisfies `MessageBuildSubject`. And since it has `body()` returning `String`, it satisfies `MessageBuildBody`. One class, three interface views.
+
+The caller never sees `_MessageBuilder` directly. A factory primitive provides the entry point:
+
+```pony
+primitive Messages
+  fun apply(): MessageBuildRecipient =>
+    _MessageBuilder
+```
+
+`Messages()` returns a `MessageRecipient`, so the caller starts at phase one. Each method advances to the next phase, and the compiler enforces the order.
+
+Here's the complete program:
+
+```pony
+interface MessageBuildRecipient
+  fun ref to(recipient: String): MessageBuildSubject
+
+interface MessageBuildSubject
+  fun ref subject(subject': String): MessageBuildBody
+
+interface MessageBuildBody
+  fun ref body(body': String): String
+
+class _MessageBuilder
+  var _to: String = ""
+  var _subject: String = ""
+
+  fun ref to(recipient: String): MessageBuildSubject =>
+    _to = recipient
+    this
+
+  fun ref subject(subject': String): MessageBuildBody =>
+    _subject = subject'
+    this
+
+  fun ref body(body': String): String =>
+    "To: " + _to + "\nSubject: " + _subject + "\n\n" + body'
+
+primitive Messages
+  fun apply(): MessageBuildRecipient =>
+    _MessageBuilder
+
+actor Main
+  new create(env: Env) =>
+    let message =
+      Messages()
+        .to("alice@example.com")
+        .subject("Hello")
+        .body("How are you?")
+    env.out.print(message)
+```
+
+Try skipping a step and the compiler stops you. Calling `Messages().subject("Hello")` fails because `Messages()` returns a `MessageBuildRecipient`, which only has `to()`. Calling `Messages().to("alice@example.com").body("How are you?")` also fails because `.to()` returns a `MessageBuildSubject`, which only has `subject()`. Out-of-order calls are compile errors, not runtime surprises.
+
+## Discussion
+
+The core idea is that a single concrete class can satisfy multiple phase types simultaneously. In our example, `_MessageBuilder` has all three methods, so it conforms to all three interfaces at once. The example uses interfaces because Pony's structural subtyping means the class doesn't need to declare anything extra. Traits work just as well; you'd add `is (MessageRecipient & MessageSubject & MessageBody)` to the class declaration. Either way, adding a new phase means defining a new type and adding a new method on the concrete class.
+
+This pattern shares a key idea with the [State Machine](../behavioral/state-machine.md) pattern: both use different types to represent different phases of a lifecycle. The difference is in what they're solving. State Machine creates separate objects for each state and swaps them at runtime to change behavior. The actor delegates to whichever state object is current, and different states respond to the same message differently. Typed Step Builder uses a single object behind multiple interface views to enforce construction ordering at compile time. State Machine is about runtime behavior dispatch; Typed Step Builder is about compile-time sequencing guarantees.
+
+The pattern extends naturally to repeatable steps within a phase. If one of your phases allows multiple calls before advancing, give it a method that stays in the current phase alongside the advancement method. For example, a `cc()` method on `MessageBuildRecipient` could return `MessageBuildRecipient` while `to()` still advances to `MessageBuildSubject`. The caller can add as many CC recipients as they like, and the compiler still forces them to call `to()` before moving on. The same idea works for optional fields: put them on the phase interface alongside the required advancement method.
+
+The Typed Step Builder becomes especially powerful when combined with constrained types. If `to()` accepts an `EmailAddress` that can only be constructed through validation instead of a bare `String`, the builder enforces not just that a recipient was provided but that it's a well-formed address. The builder handles ordering at compile time; constrained types handle value validity at the point of construction. Together they guarantee the final object has all required fields, provided in the right order, with every field individually validated.
+
+Builders can also support reuse. Adding a `reset()` method to each interface that returns `MessageBuildRecipient` gives the caller a way to abandon a partial build and start over from the first phase without allocating a new builder.
