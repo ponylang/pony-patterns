@@ -1,0 +1,1 @@
+Sitemap: https://patterns.ponylang.io/sitemap.xml
