@@ -30,6 +30,7 @@ markdown_extensions:
 plugins:
   - search
   - htmlproofer:
+      enabled: !ENV [ENABLED_HTMLPROOFER, True]
       raise_error: True
   - llmstxt:
       full_output: llms-full.txt
