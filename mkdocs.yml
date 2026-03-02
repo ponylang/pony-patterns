@@ -1,4 +1,6 @@
 site_name: Pony Patterns
+site_url: https://patterns.ponylang.io/
+site_description: A cookbook of patterns for writing idiomatic Pony code.
 
 copyright: Copyright &copy; 2025 The Pony Developers
 edit_uri: edit/main/docs/
@@ -29,6 +31,31 @@ plugins:
   - search
   - htmlproofer:
       raise_error: True
+  - llmstxt:
+      full_output: llms-full.txt
+      sections:
+        Asynchronous Patterns:
+          - async/*.md
+        Behavioral Patterns:
+          - behavioral/*.md
+        Code Sharing Patterns:
+          - code-sharing/*.md
+        Creation Patterns:
+          - creation/*.md
+        Data Sharing Patterns:
+          - data-sharing/*.md
+        Domain Modeling Patterns:
+          - domain-modeling/*.md
+        Error Handling Patterns:
+          - error-handling/*.md
+        Object Capabilities Patterns:
+          - object-capabilities/*.md
+        Performance Patterns:
+          - performance/*.md
+        Resource Management Patterns:
+          - resource-management/*.md
+        Testing Patterns:
+          - testing/*.md
 
 theme:
   name: material
