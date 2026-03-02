@@ -12,4 +12,4 @@ ID = "Your_Site_ID"
 
 [build.environment]
   PYTHON_VERSION = "3.12"
-  VALIDATE_EXTERNAL_URLS = "false"
+  ENABLED_HTMLPROOFER="false"
