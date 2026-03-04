@@ -146,6 +146,9 @@ nav:
   - Resource Management Patterns:
     - Overview: 'resource-management/index.md'
     - FFI Resource Lifecycle: 'resource-management/ffi-resource-lifecycle.md'
+  - Streaming Patterns:
+    - Overview: 'streaming/index.md'
+    - Peek Before Consume: 'streaming/peek-before-consume.md'
   - Testing Patterns:
     - Overview: 'testing/index.md'
     - Testing Notifier Interactions: 'testing/notifier-interactions.md'

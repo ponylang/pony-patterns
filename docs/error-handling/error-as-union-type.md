@@ -131,6 +131,6 @@ The type alias and pattern matching work identically to the primitive case. Choo
 
 ### Related patterns and real-world usage
 
-The [Static Constructor](../creation/static-constructor.md) pattern applies union-type returns to object construction — the factory function returns either the constructed object or an error describing why construction failed.
+The [Static Constructor](../creation/static-constructor.md) pattern applies union-type returns to object construction — the factory function returns either the constructed object or an error describing why construction failed. The [Peek Before Consume](../streaming/peek-before-consume.md) pattern uses union-type returns to distinguish three outcomes in streaming protocol parsers: a parsed value, incomplete data, and malformed input.
 
 This pattern appears throughout the Pony ecosystem. The [ponylang/lori](https://github.com/ponylang/lori) networking library defines `SendError` as a union of `SendErrorNotConnected` and `SendErrorNotWriteable`. The [ponylang/postgres](https://github.com/ponylang/postgres) driver uses `ClientQueryError` to distinguish query failures. The standard library's `files` package uses `FileErrNo` to represent OS-level file errors.
