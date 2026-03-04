@@ -198,3 +198,5 @@ Using the "access pattern" in Pony, we can create actors that provide not only a
 The accessed actor can control the scope of what is possible in a transaction by controlling the reference capability of the reference that is passed to the transaction lambda. For example, we could choose to pass `box` instead of a `ref` if we wanted to provide read-only access to the transaction.
 
 Even though we said that the transaction lambda is seeing the actor "as it sees itself", the accessed actor can still hide implementation details in the same way as any other class - by making those fields and methods private. The private fields and methods will not be accessible from within the transaction, so the implementation details can remain protected and hidden from the API surface.
+
+The [Batch and Yield](batch-and-yield.md) pattern solves the opposite problem. Where Access ensures that multi-step operations execute atomically without interleaving, Batch and Yield deliberately introduces interleaving so that an actor processing a large collection doesn't monopolize a scheduler thread.
