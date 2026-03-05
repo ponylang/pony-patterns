@@ -40,3 +40,7 @@ Does your favorite language have bare functions of some sort? Do you wish Pony h
 ## Object Algebra
 
 Need to extend a system with both new data variants and new operations without modifying existing code? The object algebra pattern uses Pony's interfaces with default implementations and structural typing to solve the Expression Problem.
+
+## Parser Combinators
+
+Build parsers that read like grammars by using operator overloading to turn sequencing into `*` and choice into `/`. Small, composable parser objects snap together into complex recognizers.
