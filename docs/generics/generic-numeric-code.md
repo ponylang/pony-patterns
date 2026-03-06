@@ -7,7 +7,7 @@ hide:
 
 ## Problem
 
-You want to write a class that works with any unsigned integer type. A block cipher component, say, that stores a value and provides parity checking and XOR operations. Your first instinct is probably to use `Unsigned` as the type constraint:
+You want to write a class that works with any unsigned integer type. A block cipher component, say, that stores a value and provides parity checking and XOR operations. Your first instinct might be to use `Unsigned` as the type constraint:
 
 ```pony
 class Block[T: Unsigned]
