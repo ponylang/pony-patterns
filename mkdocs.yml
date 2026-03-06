@@ -133,6 +133,7 @@ nav:
   - Domain Modeling Patterns:
     - Overview: 'domain-modeling/index.md'
     - Constrained Types: 'domain-modeling/constrained-types.md'
+    - Value Classes: 'domain-modeling/value-classes.md'
   - Error Handling Patterns:
     - Overview: 'error-handling/index.md'
     - Error as Union Type: 'error-handling/error-as-union-type.md'
