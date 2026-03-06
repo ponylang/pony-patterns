@@ -129,4 +129,6 @@ One thing to be aware of: between batches, other messages sent to this actor wil
 
 You'll see this same structure in Pony's networking layer. `TCPConnection` delivers incoming data to a `received` method that returns a `Bool`. Returning `true` tells the enclosing behavior to continue delivering data. Returning `false` causes the behavior to exit — it's literally Batch and Yield. The next read will come from a new behavior call, giving the scheduler a chance to run other actors in between.
 
+The [Supervisor and Worker](supervisor-worker.md) pattern distributes work across multiple actors. If your workers are processing large datasets, they should use Batch and Yield internally so each worker plays fair with the scheduler while doing its share.
+
 The [Waiting](waiting.md) pattern tackles a related scheduling concern from the opposite direction. Waiting is about how to delay work when you can't block (using timers to schedule future actions). Batch and Yield is about yielding during work that's happening now. Both are about cooperating with Pony's non-blocking scheduler, just from different angles.
