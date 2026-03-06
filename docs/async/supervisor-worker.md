@@ -110,7 +110,7 @@ actor Worker
     _supervisor = supervisor
 
   be work(input: String val) =>
-    let result = input.upper()
+    let result = recover val input.upper() end
     _supervisor.done(this, result)
 
 actor Supervisor
@@ -155,7 +155,9 @@ actor Worker
 
   be work(input: String val) =>
     // simulate some processing
-    let result = input.size().string() + " chars in '" + input + "'"
+    let result = recover val
+      input.size().string() + " chars in '" + input + "'"
+    end
     _supervisor.done(this, result)
 
 actor Supervisor
