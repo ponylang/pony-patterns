@@ -80,6 +80,8 @@ Add the pattern to the `nav` section in `mkdocs.yml`. Categories are listed alph
     - Pattern Name: 'category-name/pattern-name.md'
 ```
 
+Also update the `llmstxt` `sections` block in `mkdocs.yml` to include the new category. Keep the sections in alphabetical order. If adding a pattern to an existing category that's already listed, no change is needed.
+
 ### Cross-references
 
 When the new pattern relates to existing patterns, add links in both directions. The new pattern should link to the related ones in its Discussion, and the related patterns should be updated to mention the new one.
