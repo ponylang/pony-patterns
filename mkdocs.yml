@@ -55,6 +55,8 @@ plugins:
           - performance/*.md
         Resource Management Patterns:
           - resource-management/*.md
+        Streaming Patterns:
+          - streaming/*.md
         Testing Patterns:
           - testing/*.md
 
