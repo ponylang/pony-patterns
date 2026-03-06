@@ -68,7 +68,7 @@ Create the markdown file in the appropriate category directory under `docs/`. If
 
 ### Category index pages
 
-If the pattern belongs in a new category, create a `docs/<category>/index.md` with the same front matter (`hide: toc`), an H1 like "Category Name Patterns", and a brief paragraph describing what the category covers.
+If the pattern belongs in a new category, create a `docs/<category>/index.md` with the same front matter (`hide: toc`), an H1 like "Category Name Patterns", and a brief paragraph describing what the category covers. Also add an entry for the new category in `docs/index.md` under the "What's here" section, following the same format as the existing entries (bold linked name, then a sentence or two explaining what the category addresses). Keep the entries in alphabetical order.
 
 ### Updating navigation
 
