@@ -1,3 +1,2 @@
 mkdocs-material==9.7.1
-mkdocs-htmlproofer-plugin>=0.1.0
 mkdocs-llmstxt==0.5.0
