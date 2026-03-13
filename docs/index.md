@@ -22,6 +22,8 @@ Patterns are organized by the kind of problem they solve.
 
 **[Error Handling Patterns](error-handling/index.md)** go beyond Pony's built-in `error` keyword. Union types give you richer error handling where the compiler helps you cover every case.
 
+**[Generics Patterns](generics/index.md)** cover the situations where a straightforward generic approach doesn't compile. Pony's type system has rules around numeric types and capabilities that aren't always obvious, and these patterns show you how to work with them.
+
 **[Object Capabilities Patterns](object-capabilities/index.md)** show how to use Pony's object capability system to control what parts of your program can do. Authority hierarchies, single-use capabilities, and the discipline that makes capability security practical.
 
 **[Performance Patterns](performance/index.md)** are for when you need to squeeze out more speed. Avoiding boxing, short-circuiting, preallocating, and keeping string allocations under control.
