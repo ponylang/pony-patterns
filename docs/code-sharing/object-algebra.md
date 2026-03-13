@@ -203,3 +203,5 @@ If you're building something that needs to be extended in both dimensions — ne
 The [Solutions to the Expression Problem Using Object Algebras](https://i.cs.hku.hk/~bruno/oa/) site presents solutions in several languages beyond Java. We modeled our Pony version on the Java solution because it's the closest to what most Object Oriented programmers would be familiar with, but the other solutions could also be implemented in Pony.
 
 For a deeper treatment, see the original "[Extensibility for the Masses](https://www.cs.utexas.edu/~wcook/Drafts/2012/ecoop2012.pdf)" paper by Bruno Oliveira and William Cook.
+
+The [Parser Combinators](parser-combinators.md) pattern applies a similar compositional idea to a different domain. Where object algebras compose interpretations over a fixed set of operations, parser combinators compose operations (sequencing, choice, repetition) over a fixed interpretation. Both build complex behavior from small, reusable pieces; they just vary different axes.
