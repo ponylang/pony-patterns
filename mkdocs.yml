@@ -107,6 +107,7 @@ nav:
   - Behavioral Patterns:
     - Overview: 'behavioral/index.md'
     - State Machine: 'behavioral/state-machine.md'
+    - Visitor: 'behavioral/visitor.md'
   - Code Sharing Patterns:
     - Overview: 'code-sharing/index.md'
     - Embed and Delegate: 'code-sharing/embed-and-delegate.md'
