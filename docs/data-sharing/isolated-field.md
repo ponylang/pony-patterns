@@ -80,6 +80,8 @@ Did you follow that? When the expression is done, we are left with 2 `Array[U8] 
 - The local variable `to_send` which is an isolated array of 10 characters
 - Our actor field `_data` that has been reinitialized to an empty array.
 
+The `recover Array[U8] end` expressions are instances of the [Recover for Isolated Return](../creation/recover-iso.md) pattern: they create a `ref` array inside a recover block and lift it to `iso`.
+
 We are now free to take our mutable data that we've been collecting and send it along to the waiting `Receiver` actor:
 
 ```pony

@@ -93,3 +93,5 @@ The copying pattern goes hand in hand with the use of [persistent data structure
 Persistent data structures involve copying on each update. The copying pattern involves a copy each time we send the data to another actor. As a general rule of thumb, you should figure out which you will do more: update or send. If you are updating more, use the copying pattern. If you are sending more, use persistent data structures.
 
 In the end, that's just a rule of thumb. Your best bet is to benchmark and pick the method that gives you the best performance for your use case. In our simple example, we are going to update our `_data` array 10 times for every one time we copy it to send. In this case, we are pretty sure that our rule of thumb would stand up to benchmarking.
+
+If the `recover` block syntax in this pattern is unfamiliar, the [Recover for Isolated Return](../creation/recover-iso.md) pattern explains the technique and its constraints in detail.
