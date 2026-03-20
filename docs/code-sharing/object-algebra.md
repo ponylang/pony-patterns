@@ -7,7 +7,7 @@ hide:
 
 ## Problem
 
-There's a real problem inherent in most data modeling we tend to do with our programming languages. It's so common that Philip Wadler gave it a name, "[the Expression Problem](https://homepages.inf.ed.ac.uk/wadler/papers/expression/expression.txt)". A full discussion is out of scope for this pattern — refer to the linked original formulation for the details. Here's the short version:
+There's a real problem inherent in most data modeling we tend to do with our programming languages. It's so common that Philip Wadler gave it a name, "[the Expression Problem](/assets/wadler-expression-problem.txt)". A full discussion is out of scope for this pattern — refer to the linked original formulation for the details. Here's the short version:
 
 ### Expression Problem in Object-Oriented Languages
 
@@ -28,7 +28,7 @@ There are a variety of solutions to the Expression Problem in various languages,
 
 ## Solution
 
-The [Solutions to the Expression Problem Using Object Algebras](https://i.cs.hku.hk/~bruno/oa/) site presents solutions in a variety of languages. What follows is a Pony version modeled on the [Java version](https://i.cs.hku.hk/~bruno/oa/OA_J.zip).
+The [Solutions to the Expression Problem Using Object Algebras](https://i.cs.hku.hk/~bruno/oa/) site presents solutions in a variety of languages. What follows is a Pony version modeled on the [Java version](/assets/object-algebras-java-examples.zip).
 
 The problem presented is the need to create a simple expression interpreter that starts with two operations, `lit` and `add`, which we need to be able to evaluate. We then need to extend our data types by adding a new operation `sub` and a new interpretation that pretty-prints the expression.
 
@@ -202,6 +202,6 @@ If you're building something that needs to be extended in both dimensions — ne
 
 The [Solutions to the Expression Problem Using Object Algebras](https://i.cs.hku.hk/~bruno/oa/) site presents solutions in several languages beyond Java. We modeled our Pony version on the Java solution because it's the closest to what most Object Oriented programmers would be familiar with, but the other solutions could also be implemented in Pony.
 
-For a deeper treatment, see the original "[Extensibility for the Masses](https://www.cs.utexas.edu/~wcook/Drafts/2012/ecoop2012.pdf)" paper by Bruno Oliveira and William Cook.
+For a deeper treatment, see the original "[Extensibility for the Masses](/assets/extensibility-for-the-masses.pdf)" paper by Bruno Oliveira and William Cook.
 
 The [Parser Combinators](parser-combinators.md) pattern applies a similar compositional idea to a different domain. Where object algebras compose interpretations over a fixed set of operations, parser combinators compose operations (sequencing, choice, repetition) over a fixed interpretation. Both build complex behavior from small, reusable pieces; they just vary different axes.
