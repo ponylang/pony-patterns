@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v4.1.1
       - name: Check workflow files
-        uses: docker://ghcr.io/ponylang/shared-docker-ci-actionlint:20260311
+        uses: docker://ghcr.io/ponylang/shared-docker-ci-actionlint:20260120
         with:
           args: -color

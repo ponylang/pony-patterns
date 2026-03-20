@@ -95,5 +95,5 @@ The cspell config (`cspell.json`) excludes fenced code blocks and inline code fr
 After writing:
 
 1. Run cspell to check spelling. If `npx` is not available, use Docker: `docker run --rm -v "$(pwd):/workdir" -w /workdir ghcr.io/streetsidesoftware/cspell:latest "docs/<category>/*.md"` plus any modified files.
-2. Run `mkdocs build --strict` to verify the site builds. If mkdocs is not installed, create a venv: `python3 -m venv .venv && .venv/bin/pip install mkdocs mkdocs-material` then use `.venv/bin/mkdocs build --strict`. The `.venv` directory is already in `.gitignore`.
+2. Run `mkdocs build --strict` to verify the site builds without broken links. If mkdocs is not installed, create a venv: `python3 -m venv .venv && .venv/bin/pip install mkdocs mkdocs-material mkdocs-htmlproofer-plugin` then use `.venv/bin/mkdocs build --strict`. The `.venv` directory is already in `.gitignore`.
 3. Confirm the nav ordering looks right.
