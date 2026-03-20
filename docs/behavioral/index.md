@@ -5,4 +5,4 @@ hide:
 
 # Behavioral Patterns
 
-How should you organize your actor when its behavior depends on its current state? You could track the state with a flag and check it in every behavior, but that gets old fast. The patterns in this chapter offer better approaches, using Pony's type system to make the structure of your actor's behavior explicit and compiler-checked.
+Runtime behavior rarely stays simple. An actor might need to dispatch differently depending on its current phase, or a data structure might need to support multiple processing strategies without baking any one of them in. The patterns in this chapter show how to structure that kind of logic so it stays clean as it grows.
