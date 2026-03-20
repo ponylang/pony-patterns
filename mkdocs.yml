@@ -146,6 +146,7 @@ nav:
     - Preallocate Arrays: 'performance/preallocate-arrays.md'
   - Resource Management Patterns:
     - Overview: 'resource-management/index.md'
+    - Disposable Actor: 'resource-management/disposable-actor.md'
     - FFI Resource Lifecycle: 'resource-management/ffi-resource-lifecycle.md'
   - Streaming Patterns:
     - Overview: 'streaming/index.md'
