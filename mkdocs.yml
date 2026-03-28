@@ -49,14 +49,14 @@ plugins:
           - domain-modeling/*.md
         Error Handling Patterns:
           - error-handling/*.md
+        Generics Patterns:
+          - generics/*.md
         Object Capabilities Patterns:
           - object-capabilities/*.md
         Performance Patterns:
           - performance/*.md
         Resource Management Patterns:
           - resource-management/*.md
-        Streaming Patterns:
-          - streaming/*.md
         Testing Patterns:
           - testing/*.md
 
@@ -140,6 +140,9 @@ nav:
   - Error Handling Patterns:
     - Overview: 'error-handling/index.md'
     - Error as Union Type: 'error-handling/error-as-union-type.md'
+  - Generics Patterns:
+    - Overview: 'generics/index.md'
+    - Generic Numeric Code: 'generics/generic-numeric-code.md'
   - Object Capabilities Patterns:
     - Overview: 'object-capabilities/index.md'
     - Authority Hierarchy: 'object-capabilities/authority-hierarchy.md'
