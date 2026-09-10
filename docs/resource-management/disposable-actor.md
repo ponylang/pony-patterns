@@ -11,30 +11,34 @@ Your Pony program has actors that hold resources: a TCP listener waiting for con
 
 ```pony
 use "net"
+use notifier = "net/notifier"
 
-class MyListener is TCPListenNotify
+class MyListenNotify is notifier.TCPListenNotify
   let _env: Env
 
-  new iso create(env: Env) =>
+  new create(env: Env) =>
     _env = env
 
-  fun ref listening(listen: TCPListener ref) =>
+  fun ref on_listening(listen: notifier.TCPListener ref) =>
     _env.out.print("Listening")
 
-  fun ref not_listening(listen: TCPListener ref) =>
+  fun ref on_not_listening(listen: notifier.TCPListener ref) =>
     _env.out.print("Failed to listen")
 
-  fun ref connected(listen: TCPListener ref): TCPConnectionNotify iso^ =>
-    object iso is TCPConnectionNotify
-      fun ref received(conn: TCPConnection ref, data: Array[U8] iso,
-        times: USize): Bool => true
-      fun ref connect_failed(conn: TCPConnection ref) => None
+  fun ref on_connected(listen: notifier.TCPListener ref):
+    notifier.ServerTCPConnectionNotify iso^
+  =>
+    object iso is notifier.ServerTCPConnectionNotify
+      fun ref on_start_failure(conn: notifier.ServerTCPConnection ref,
+        reason: StartFailureReason) => None
+      fun ref on_received(conn: notifier.ServerTCPConnection ref,
+        data: Array[U8] iso): ReadAction => KeepReading
     end
 
 actor Main
   new create(env: Env) =>
-    TCPListener(TCPListenAuth(env.root),
-      recover MyListener(env) end, "localhost", "8989")
+    notifier.TCPListener(TCPListenAuth(env.root),
+      recover MyListenNotify(env) end, "localhost", "8989")
     env.out.print("Started")
 ```
 
@@ -55,7 +59,7 @@ interface tag DisposableActor
 
 One behavior, no arguments, no return value. An actor that implements `dispose()` is making a promise: "call this and I'll clean up after myself." The `tag` capability means you can call `dispose()` on any reference to the actor, regardless of what capability you hold. That's the whole point: shutdown messages need to reach actors from anywhere.
 
-Many standard library actors already implement this. `TCPListener.dispose()` stops listening and closes the socket. `TCPConnection.dispose()` finishes pending writes and closes the connection. `Timers.dispose()` cancels all pending timers and unsubscribes from the event system. You don't need to do anything special to use them with this pattern; they're ready to go.
+Many standard library actors already implement this. `net/notifier`'s `TCPListener.dispose()` stops listening and closes the socket. `ServerTCPConnection.dispose()` and `ClientTCPConnection.dispose()` from the same package close the connection. `Timers.dispose()` cancels all pending timers and unsubscribes from the event system. You don't need to do anything special to use them with this pattern; they're ready to go.
 
 For your own actors, implementing `dispose()` means deciding what "clean up" looks like. An actor managing a database connection pool might close all connections. An actor coordinating workers might tell each worker to stop. The specifics depend on what your actor owns:
 
@@ -85,12 +89,13 @@ Now, you could call `dispose()` on each actor yourself. With two or three actors
 
 ```pony
 use "bureaucracy"
+use notifier = "net/notifier"
 
 actor Main
   new create(env: Env) =>
     let custodian = Custodian
 
-    let listener = TCPListener(...)
+    let listener = notifier.TCPListener(...)
     let ticker = Ticker(env)
 
     custodian(listener)
@@ -107,26 +112,30 @@ In practice, "shutdown time" is usually a signal. Here's a complete program that
 ```pony
 use "bureaucracy"
 use "net"
+use notifier = "net/notifier"
 use "signals"
 use "time"
 
-class MyListener is TCPListenNotify
+class MyListenNotify is notifier.TCPListenNotify
   let _env: Env
 
-  new iso create(env: Env) =>
+  new create(env: Env) =>
     _env = env
 
-  fun ref listening(listen: TCPListener ref) =>
+  fun ref on_listening(listen: notifier.TCPListener ref) =>
     _env.out.print("Listening on 8989")
 
-  fun ref not_listening(listen: TCPListener ref) =>
+  fun ref on_not_listening(listen: notifier.TCPListener ref) =>
     _env.out.print("Failed to listen")
 
-  fun ref connected(listen: TCPListener ref): TCPConnectionNotify iso^ =>
-    object iso is TCPConnectionNotify
-      fun ref received(conn: TCPConnection ref, data: Array[U8] iso,
-        times: USize): Bool => true
-      fun ref connect_failed(conn: TCPConnection ref) => None
+  fun ref on_connected(listen: notifier.TCPListener ref):
+    notifier.ServerTCPConnectionNotify iso^
+  =>
+    object iso is notifier.ServerTCPConnectionNotify
+      fun ref on_start_failure(conn: notifier.ServerTCPConnection ref,
+        reason: StartFailureReason) => None
+      fun ref on_received(conn: notifier.ServerTCPConnection ref,
+        data: Array[U8] iso): ReadAction => KeepReading
     end
 
 class TermHandler is SignalNotify
@@ -159,8 +168,8 @@ actor Main
   new create(env: Env) =>
     let custodian = Custodian
 
-    let listener = TCPListener(TCPListenAuth(env.root),
-      recover MyListener(env) end, "localhost", "8989")
+    let listener = notifier.TCPListener(TCPListenAuth(env.root),
+      recover MyListenNotify(env) end, "localhost", "8989")
     let ticker = Ticker(env)
 
     custodian(listener)
@@ -175,7 +184,7 @@ When the process receives SIGTERM, `TermHandler.apply` fires, which disposes the
 
 ## Discussion
 
-Pony uses structural typing, so actors don't need to explicitly declare `is DisposableActor`. If an actor has a `dispose()` behavior, it satisfies the interface automatically. That's why `TCPListener`, `TCPConnection`, `Timers`, and `ProcessMonitor` all work with `Custodian` even though none of them mention `DisposableActor` in their type declarations. You just pass them in and it works.
+Pony uses structural typing, so actors don't need to explicitly declare `is DisposableActor`. If an actor has a `dispose()` behavior, it satisfies the interface automatically. That's why `net/notifier`'s `TCPListener` and `ServerTCPConnection`, along with `Timers` and `ProcessMonitor`, all work with `Custodian` even though none of them mention `DisposableActor` in their type declarations. You just pass them in and it works.
 
 `Custodian` itself implements `dispose()`, which means it's a `DisposableActor` too. You can nest custodians. A subsystem might have its own custodian managing its internal actors, and you register that custodian with a top-level one. Disposing the top-level custodian cascades through the tree. This is useful for larger programs where different subsystems have independent lifecycles but you still want a single kill switch at the top.
 

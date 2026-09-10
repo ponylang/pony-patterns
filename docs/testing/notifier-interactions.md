@@ -7,7 +7,7 @@ hide:
 
 ## Problem
 
-Event driven code is very common in Pony. Many classes take a "notifier" class that has callbacks that get triggered when certain events happen. The network code such as `UDPNotify` and `TCPNotify` are examples of this. As you write your own Pony code, the notifier pattern is one you'll end up using quite a bit. Testing that your code is correctly interacting with notifiers is straightforward; however, how you go about doing that isn't immediately obvious. Imagine for a moment that you have the following actor:
+Event driven code is very common in Pony. Many classes take a "notifier" class that has callbacks that get triggered when certain events happen. The network code such as `UDPSocketNotify` and `TCPListenNotify` in `net/notifier` are examples of this. As you write your own Pony code, the notifier pattern is one you'll end up using quite a bit. Testing that your code is correctly interacting with notifiers is straightforward; however, how you go about doing that isn't immediately obvious. Imagine for a moment that you have the following actor:
 
 ```pony
 actor Receiver
