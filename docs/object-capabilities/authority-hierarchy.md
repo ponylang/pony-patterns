@@ -7,7 +7,7 @@ hide:
 
 ## Problem
 
-You're building a library that controls access to system resources like network sockets, the filesystem, or external processes. Pony's object capability system lets you enforce this through authority tokens, and the broadest token is `AmbientAuth`, which the runtime hands to `Main` through `env.root`.
+You're building a package that controls access to system resources like network sockets, the filesystem, or external processes. Pony's object capability system lets you enforce this through authority tokens, and the broadest token is `AmbientAuth`, which the runtime hands to `Main` through `env.root`.
 
 The simplest thing to do is require `AmbientAuth` everywhere:
 
@@ -114,7 +114,7 @@ graph TD
 
 The standard library's `net` package defines exactly this hierarchy. The `files` package adds a separate branch with `FileAuth` derived directly from `AmbientAuth`, and you could imagine other packages adding their own top-level branches for process spawning, environment variables, and so on.
 
-To see how this works when you design your own hierarchy, here's a complete example for an imaginary storage library. The library supports reading and writing to a data store, and you want callers to request read-only or write-only access:
+To see how this works when you design your own hierarchy, here's a complete example for an imaginary storage package. The package supports reading and writing to a data store, and you want callers to request read-only or write-only access:
 
 ```pony
 primitive StorageAuth
@@ -182,6 +182,6 @@ graph TD
 
 If you hold a `TCPListenAuth`, you can't use it to create a `TCPConnectAuth`. The constructor for `TCPConnectAuth` accepts `(AmbientAuth | NetAuth | TCPAuth)`, and `TCPListenAuth` isn't in that union. You'd need to go back up the hierarchy to `TCPAuth` or higher and come back down the other branch. This is the whole point: authority only flows downward, never sideways.
 
-When designing your own hierarchy, start from the broadest capability your library offers and subdivide by the kinds of side effects it can perform. Each leaf should correspond to one kind of operation. If your library does both network I/O and file I/O, those should be separate branches. Within network I/O, if listening and connecting have different security implications, they should be separate leaves. The standard library's `net` package extends this hierarchy further with `TCPServerAuth`, which narrows `TCPListenAuth` by one more level.
+When designing your own hierarchy, start from the broadest capability your package offers and subdivide by the kinds of side effects it can perform. Each leaf should correspond to one kind of operation. If your package does both network I/O and file I/O, those should be separate branches. Within network I/O, if listening and connecting have different security implications, they should be separate leaves. The standard library's `net` package extends this hierarchy further with `TCPServerAuth`, which narrows `TCPListenAuth` by one more level.
 
 Authority hierarchy controls *what* a component is allowed to do. The [Single Use Object Capabilities](single-use.md) pattern addresses a different dimension: *how many times* a component can exercise its authority. The two compose naturally. You might define a hierarchy of auth tokens to control which operations are available, then wrap a leaf token in an `iso` class to make it single-use. The hierarchy narrows the scope; the single-use wrapper limits the count.

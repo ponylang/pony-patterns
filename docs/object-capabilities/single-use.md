@@ -139,4 +139,4 @@ The concept presented in this pattern could be extended for any number of tokens
 
 The auth tokens used in this pattern don't appear out of thin air. The [Authority Hierarchy](authority-hierarchy.md) pattern explains how to design hierarchies of capability tokens like `CustomAuth`, narrowing broad authority into specific permissions step by step. That pattern decides *what* operations are permitted; this one limits *how many times* they can be exercised.
 
-All in all, the object capabilities system can be used as a way to have better control over our programs' accesses, as well as give clients the freedom to handle these tokens as they see fit. Using a single-use token can make this access more restrictive, without actually limiting the API of our libraries.
+All in all, the object capabilities system can be used as a way to have better control over our programs' accesses, as well as give clients the freedom to handle these tokens as they see fit. Using a single-use token can make this access more restrictive, without actually limiting the API of our packages.

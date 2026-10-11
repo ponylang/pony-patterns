@@ -31,7 +31,7 @@ The mixin pattern is like the inheritance pattern but "even more so". If you are
 
 ## Embed and Delegate
 
-When a mixin's logic grows too large for trait default methods, move it into a dedicated class. The actor becomes a thin behavior-dispatching shell; the class holds all the state and logic. This is the pattern behind Pony's I/O libraries.
+When a mixin's logic grows too large for trait default methods, move it into a dedicated class. The actor becomes a thin behavior-dispatching shell; the class holds all the state and logic. This is the pattern behind Pony's I/O packages.
 
 ## Global Function
 
