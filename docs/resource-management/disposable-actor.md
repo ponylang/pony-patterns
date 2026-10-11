@@ -59,7 +59,7 @@ interface tag DisposableActor
 
 One behavior, no arguments, no return value. An actor that implements `dispose()` is making a promise: "call this and I'll clean up after myself." The `tag` capability means you can call `dispose()` on any reference to the actor, regardless of what capability you hold. That's the whole point: shutdown messages need to reach actors from anywhere.
 
-Many standard library actors already implement this. `net/notifier`'s `TCPListener.dispose()` stops listening and closes the socket. `ServerTCPConnection.dispose()` and `ClientTCPConnection.dispose()` from the same package close the connection. `Timers.dispose()` cancels all pending timers and unsubscribes from the event system. You don't need to do anything special to use them with this pattern; they're ready to go.
+Many standard library actors already implement this. `net/notifier`'s `TCPListener.dispose()` stops listening and closes the socket. `ServerTCPConnection.dispose()` and `ClientTCPConnection.dispose()` from the same module close the connection. `Timers.dispose()` cancels all pending timers and unsubscribes from the event system. You don't need to do anything special to use them with this pattern; they're ready to go.
 
 For your own actors, implementing `dispose()` means deciding what "clean up" looks like. An actor managing a database connection pool might close all connections. An actor coordinating workers might tell each worker to stop. The specifics depend on what your actor owns:
 
