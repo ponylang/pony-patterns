@@ -432,7 +432,7 @@ Most parsers build an abstract syntax tree (AST) as they match. Instead of just 
 
 Real parsers also report errors with location information. When parsing fails, "expected a digit at line 3, column 12" is a lot more helpful than `false`. They handle whitespace so the grammar doesn't have to mention spaces everywhere. And they support recursive grammars, where a rule can refer to itself. Think matching nested parentheses, or an expression language where `1 + (2 * 3)` is valid. Our example can't express that because a parser would need to reference itself before it's been created.
 
-Pony's [`peg`](https://github.com/ponylang/peg) package is a full parser combinator implementation that handles all of these: ASTs, error reporting, whitespace, and recursive grammars. [`changelog-tool`](https://github.com/ponylang/changelog-tool), which validates and manipulates CHANGELOG files, is a good example of `peg` in production with a real grammar.
+Pony's [`peg`](https://github.com/ponylang/peg) library is a full parser combinator implementation that handles all of these: ASTs, error reporting, whitespace, and recursive grammars. [`changelog-tool`](https://github.com/ponylang/changelog-tool), which validates and manipulates CHANGELOG files, is a good example of `peg` in production with a real grammar.
 
 ### Beyond parsing
 
@@ -443,5 +443,5 @@ If the compositional idea resonates, the [Object Algebra](object-algebra.md) pat
 ### Learn more
 
 - [Monadic Parser Combinators](https://www.cs.nott.ac.uk/~pszgmh/monparsing.pdf) by Graham Hutton and Erik Meijer. The foundational paper on building parsers from composable functions. It uses Haskell, but the ideas translate to any language.
-- [Parsing Expression Grammars](https://bford.info/pub/lang/peg.pdf) by Bryan Ford. PEGs are the formal grammar theory behind most combinator packages, including Pony's `peg`. The key insight is ordered choice: try alternatives in order and commit to the first one that matches.
-- The Pony [`peg`](https://github.com/ponylang/peg) package. A real parser combinator package for Pony that builds on the same ideas shown here.
+- [Parsing Expression Grammars](https://bford.info/pub/lang/peg.pdf) by Bryan Ford. PEGs are the formal grammar theory behind most combinator libraries, including Pony's `peg`. The key insight is ordered choice: try alternatives in order and commit to the first one that matches.
+- The Pony [`peg`](https://github.com/ponylang/peg) library. A real parser combinator library for Pony that builds on the same ideas shown here.

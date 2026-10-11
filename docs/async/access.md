@@ -118,7 +118,7 @@ In Pony, an actor's behaviour acts like a single atomic transaction over the act
 
 We could try defining `increment` as a behaviour of the `SharedRegisters` actor, such that it would be one atomic transaction. However, we'd soon find ourselves wanting to do other multi-operation transactions, and we might find our `SharedRegisters` actor to be getting a bit bloated if we added all of them as behaviours.
 
-Furthermore, if the `SharedRegisters` were part of a package maintained separately from the applications using it, the maintainer would be hard-pressed to imagine all of the multi-operation transactions that might be useful to the application developers. A more general solution that doesn't require the package developer to worry about this kind of guesswork would be desirable.
+Furthermore, if the `SharedRegisters` were part of a library maintained separately from the applications using it, the maintainer would be hard-pressed to imagine all of the multi-operation transactions that might be useful to the application developers. A more general solution that doesn't require the library developer to worry about this kind of guesswork would be desirable.
 
 ## Solution
 
