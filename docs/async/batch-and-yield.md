@@ -47,7 +47,7 @@ actor Processor
   be process(data: Array[U64] val, from: USize = 0) =>
     let until = from + _batch_size
     try
-      for i in Range(from, until.min(data.size())) do
+      for i in Range[USize].till(from, until.min(data.size())) do
         _out.print(data(i)?.string())
       end
     end
@@ -60,7 +60,7 @@ actor Main
   new create(env: Env) =>
     let data = recover val
       let arr = Array[U64](1000)
-      for i in Range[U64](0, 1000) do
+      for i in Range[U64].till(0, 1000) do
         arr.push(i)
       end
       arr
@@ -95,7 +95,7 @@ actor Processor
   fun ref _process_batch(data: Array[U64] val, from: USize) =>
     let until = from + _batch_size
     try
-      for i in Range(from, until.min(data.size())) do
+      for i in Range[USize].till(from, until.min(data.size())) do
         _out.print(data(i)?.string())
       end
     end
@@ -108,7 +108,7 @@ actor Main
   new create(env: Env) =>
     let data = recover val
       let arr = Array[U64](1000)
-      for i in Range[U64](0, 1000) do
+      for i in Range[U64].till(0, 1000) do
         arr.push(i)
       end
       arr

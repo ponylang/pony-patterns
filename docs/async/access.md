@@ -94,7 +94,7 @@ actor Main
 
     reg.write("x", 99)
 
-    for i in collections.Range(0, 10) do
+    for i in collections.Range[USize].till(0, 10) do
       Mathematician(reg, out).increment("x")
     end
 ```
