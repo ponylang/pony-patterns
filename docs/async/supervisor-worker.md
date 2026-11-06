@@ -16,7 +16,7 @@ A first instinct might be to have the supervisor just fire off work and hope for
 ```pony
 actor Main
   new create(env: Env) =>
-    for i in Range(0, 10) do
+    for i in Range[USize].till(0, 10) do
       Worker(env.out).work(i)
     end
     // ...now what? When are they done?

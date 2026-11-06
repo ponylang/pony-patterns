@@ -80,7 +80,7 @@ use "collections"
 actor Main
   new create(env: Env) =>
     let service = RestrictedService
-    for i in Range(0, 10) do
+    for i in Range[USize].till(0, 10) do
       let foo = AuthorizedActor(service)
       let auth = SingleUseAuth(env.root)
       foo.request_new_number(consume auth)
@@ -122,7 +122,7 @@ actor AuthorizedActor
 actor Main
   new create(env: Env) =>
     let service = RestrictedService
-    for i in Range(0, 10) do
+    for i in Range[USize].till(0, 10) do
       let foo = AuthorizedActor(service)
       let auth = SingleUseAuth(env.root)
       foo.request_new_number(consume auth)
